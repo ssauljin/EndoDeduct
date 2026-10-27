@@ -473,366 +473,7 @@ Note that $\mathcal{PR}$ is Pareto distribution, a special case of the GB2 distr
 %In Case 5 the three positions $U^{N}_i$ and $U^{Y}_{i,j}$ are replaced by the single latent uniform $U^{D}_i$ that generates the level $D_i$ itself, i.e., $D_i=F_D^{-1}(U^{D}_i;\bm{x}_i)$: the pairs $(D_i,N_i)$ and $(D_i,Y_{i,j})$ still follow $C_{DN}$ and $C_{DY}$, and $N_i\perp Y_{i,j}\,|\,U^{D}_i$, but $N_i$ and $Y_{i,j}$ are dependent given the observed level $D_i$ through their common position inside the atom (policy-years with many claims tend to sit at the end of the atom with the smaller latent deductible and larger losses). In Case 6, in addition, the latent normal variable of each $Y_{i,j}$ has correlation $\rho_{NY}=0.3$ with the residual of the latent normal variable of $N_i$ given the deductible, which induces a positive dependence between the frequency and the severity given the deductible. Cases 5 and 6 thus assess the sensitivity of the joint models to two forms of violation of the conditional independence assumption.
 \rev{The dependence parameters are $\rho_N=-0.5$ in Case 2, $\rho_Y=-0.5$ in Case 3, and $(\rho_N,\rho_Y)=(-0.6,-0.4)$ in Case 4; they are the parameters of the Gaussian copulas between the latent uniforms and the claims, and because of the ties in the ordinal deductible the Kendall's $\tau$ between the observed level and the claims is attenuated (for example, in Case 4 the average Kendall's $\tau$ between $D_i$ and $N_i$ is about $-0.28$ and that between $D_i$ and $Y_{i,j}$ about $-0.15$, compared with $2\arcsin(\rho)/\pi=-0.41$ and $-0.26$ on the latent scale).}
 
-Through the sequential maximum likelihood scheme as in the paragraphs following  \eqref{eq:jointloglik}, we estimated the parameters \rev{$\bm{\kappa}$, $\bm{\beta}_D$ of the ordinal deductible model, $\bm{\beta}_Y$, $\alpha$ (and $\rho_Y$) of the severity models SEM1--3 and SDM1--3, and $\bm{\beta}_N$, $r$ (and $\rho_N$) of the frequency models FEM1, FEM2, FEM2G and FDM1--2} under each case with the reporting scenarios\rev{; the joint models use the Gaussian copula, i.e., the copula family of the data-generating process. As in Section~\ref{sec:empirical}, FEM2 and FEM2G evaluate $p(d;\bm{x})$ with the severity models SEM3 and SEM1, respectively, and FDM2 with the joint severity model SDM3 and the fitted deductible model. Starting values are obtained from the data of the respective scenario (a log-linear regression for the severity, a Poisson regression for the frequency and $\rho=0$ for the copula); the true values are never used.} The estimation performance for parameter $\theta$ was assessed with the following measures:
-$$
-\begin{aligned}
-\text{Mean}&:= \overline{\hat{\theta}}=\frac{1}{500} \sum_{r=1}^{500} \hat{\theta}^{(r)}, \\
-\text{RMSE}&:= \sqrt{\frac{1}{500} \sum_{r=1}^{500} (\hat{\theta}^{(r)} - \theta)^2}, \\
-\text{Bias}&:= \overline{\hat{\theta}} - \theta, \\
-\text{Var}&:= \frac{1}{500} \sum_{r=1}^{500} (\hat{\theta}^{(r)} - \overline{\hat{\theta}} )^2,
-\end{aligned}
-$$
-where $\hat{\theta}^{(r)}$ is the estimated value of $\theta$ under the specified model using the $r${th} simulation sample. \rev{In the tables of the Appendix, the entry ``(s.e.)'' below each mean denotes the Monte Carlo standard error of the mean, $\sqrt{\text{Var}/500}$, so that a bias that is small relative to this Monte Carlo standard error is compatible with an unbiased estimator; note also that $\text{RMSE}^2=\text{Var}+\text{Bias}^2$. Since these are finite-sample Monte Carlo results for one particular design, we refer to an estimator whose bias is negligible relative to its RMSE as ``approximately unbiased'' in what follows, without claiming exact unbiasedness.} \\
-To assess the predictive performance of insurance claims with $\hat{\theta}^{(r)}$, the following mean absolute errors (MAE) of \rev{the frequency and severity components of the pure premium in} (\ref{eq:censoredpremium}), (\ref{eq:truncatedpremium}) are measured under each model,
-\begin{align*}
-    \text{Frequency}&:=\frac{1}{500}\sum_{r=1}^{500}\left(\frac{1}{5000}\sum_{s=1}^{5000}|N^{*(r)}_s -\hat{N}^{*(r)}_s|\right),\nonumber\\
-    \text{Severity}&:=
-        \frac{1}{500}\sum_{r=1}^{500}\left(\frac{1}{S^{(r)}}\sum_{\rev{t}=1}^{S^{(r)}}|Y^{*(r)}_{\rev{t}} -\hat{Y}^{*(r)}_{\rev{t}}|\right),\nonumber
-\end{align*}
- where $S^{(r)}$ is the total number of \rev{claim} observations under censored reporting and truncated reporting in $r$th dataset and $\hat{N}^{*(r)}_s$ / $\hat{Y}^{*(r)}_{\rev{t}}$ are predicted values of claim frequency / severity in $r$th dataset, respectively\rev{, namely the conditional means of the observed frequency and severity given the deductible and the covariates under the fitted model: $\hat{\rm E}(N|D=d;\bm{x})$ and $\hat{\rm E}(\{Y-d\}_+|D=d;\bm{x})$ under censored reporting, and $\hat{\rm E}(N^*|D=d;\bm{x})=\hat p(d;\bm{x})\hat{\rm E}(N|D=d;\bm{x})$ and $\hat{\rm E}(Y-d|Y>d,D=d;\bm{x})$ under truncated reporting, where the marginal models evaluate ${\rm E}(N|D=d;\bm{x})$ and the distribution of $Y$ given $D=d$ without conditioning on the deductible. Because these MAEs are dominated by the irreducible variability of the claims (in particular of the heavy-tailed severities), we also report the error of the premium components themselves, which is what matters for ratemaking:}
-{\color{blue}
-\begin{align*}
-    \text{Frequency}_{\text{prem}}&:=\frac{1}{500}\sum_{r=1}^{500}\left(\frac{1}{5000}\sum_{s=1}^{5000}|m^{(r)}_s -\hat{m}^{(r)}_s|\right),\qquad
-    \text{Severity}_{\text{prem}}:=\frac{1}{500}\sum_{r=1}^{500}\left(\frac{1}{S^{(r)}}\sum_{t=1}^{S^{(r)}}|\mu^{(r)}_t -\hat{\mu}^{(r)}_t|\right),
-\end{align*}
-}
-\rev{where $m_s^{(r)}$ and $\mu_t^{(r)}$ are the true conditional means of the observed frequency and severity given $(D,\bm{x})$ under the data-generating process (the frequency and severity factors of \eqref{eq:censoredpremium} or \eqref{eq:truncatedpremium}, computed with the true parameters) and $\hat m_s^{(r)}$, $\hat\mu_t^{(r)}$ their estimates under the fitted model. The detailed estimation results (mean, Monte Carlo standard error, RMSE and bias of each parameter) are reported in Tables~\ref{tab:AppSimDed}--\ref{tab:AppSimEndCase4} in the Appendix, and are summarized graphically in Figures~\ref{fig:simcase1}--\ref{fig:simcase4}; the optimizer converged in all replications and for all models.}%with one exception (the deductible model in one replication of Case 6, whose line search terminated abnormally at estimates that are nevertheless regular), 
-
-\subsection{Case 1 : $D_i$ is exogenous to $N, Y$}
-
-Figure \ref{fig:simcase1} \rev{and Tables~\ref{tab:AppSimExoCase1}--\ref{tab:AppSimEndCase1} show} that even in case the exogeneity of deductible is assured both for the frequency and severity, usage of either FEM2 or SEM2/SEM3 is less efficient in terms of the estimation performance so that the RMSE are larger than the ones from FEM1 and SEM1, respectively. As FEM2 depends on $p(d;\bm{x})$ from the severity models, FEM2G suffers less than FEM2. \rev{The joint models do not find spurious dependence: the estimates of $\rho_Y$ in SDM1--3 and of $\rho_N$ in FDM1--2 are centered at zero, their regression coefficients are approximately unbiased, and the price paid for estimating an unnecessary dependence parameter is small, with RMSEs close to those of the corresponding marginal models (Table~\ref{tab:AppSimEndCase1}). The ordinal deductible model itself is estimated with negligible bias in all cases (Table~\ref{tab:AppSimDed}).} Table \ref{tab:maecase1} shows that the predictions for the censored and truncated reporting scenarios exhibit comparable levels of estimation error \rev{under all models} when the deductible is exogenous\rev{; the while the premium errors of the joint models are larger than those of the marginal models, the actual errors of the joint models are comparable to or even smaller than those of the marginal models.}
-
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=\linewidth]{simcase1.pdf}
-    \caption{\rev{Estimates of the severity (upper panels) and frequency (lower panels) parameters in Case 1; the dashed line is the true value and the shaded boxes are the joint models}}
-    \label{fig:simcase1}
-\end{figure}
-
-\begin{table}[!h]
-\renewcommand{\tabcolsep}{0.8mm}
-\renewcommand{\arraystretch}{1}
-\footnotesize
-\centering
-{\color{blue}
-\begin{tabular}[h]{ccccccc}
-\toprule
-\multirow{2}{*}{Frequency} & \multicolumn{2}{c}{Censored} & \multicolumn{4}{c}{Truncated}\\
-\cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-7}
- & FEM1 & FDM1 & FEM1 & FEM2 & FDM1 & FDM2\\
-\midrule
-MAE & 0.8652 & 0.8651 & 0.5619 & 0.5618 & 0.5618 & 0.5616 \\
-MAE$_{\text{prem}}$ & 0.0236 & 0.0265 & 0.0144 & 0.0166 & 0.0157 & 0.0191 \\
-\hhline{=======}
-\end{tabular}
-\\
-\vspace{0.3cm}
-\begin{tabular}[h]{ccccccccc}
-\toprule
-\multirow{2}{*}{Severity} & \multicolumn{4}{c}{Censored} & \multicolumn{4}{c}{Truncated}\\
-\cmidrule(l{3pt}r{3pt}){2-5} \cmidrule(l{3pt}r{3pt}){6-9}
- & SEM1 & SEM2 & SDM1 & SDM2 & SEM1 & SEM3 & SDM1 & SDM3\\
-\midrule
-MAE & 3006.3 & 3006.6 & 3006.0 & 3006.2 & 4083.7 & 4083.6 & 4083.7 & 4082.9 \\
-MAE$_{\text{prem}}$ & 103.7 & 107.6 & 113.3 & 122.1 & 146.2 & 185.0 & 155.4 & 211.2 \\
-\hhline{=========}
-\end{tabular}
-}
-\caption{MAE of the frequency and severity models in Case 1}\label{tab:maecase1}
-\end{table}
-
-
-\FloatBarrier
-
-\subsection{Case 2 : $D_i$ is exogenous to $Y$ and $(D, N)$ is from a Gaussian copula with $\rho_N=-0.5$}
-Figure \ref{fig:simcase2} shows that even in case the exogeneity of deductible is assured for the severity, usage of  SEM2/SEM3 is less efficient in terms of the estimation performance so that the RMSE are larger than the ones from SEM1.  It is further observed that usage of FEM2 suffers from biases in the estimated parameters as it fails to capture possible endogeneity of the deductible with incomplete data\rev{: the intercept of $\bm{\beta}_N$ is overestimated by about $0.18$ and $r$ by about $0.5$ (Table~\ref{tab:AppSimExoCase2}), i.e., the thinning of the claims by the endogenous deductible is wrongly attributed to the mean and the dispersion of $N$}. Moreover, FEM2G still shows similar bias and RMSE to those of FEM2, which implies that fixing $p(d;\bm{x})$ gives less improvement when the deductible is not exogenous to the frequency. It is also notable that even with incomplete frequency data, \rev{FDM2} still yields \rev{approximately unbiased} estimates of the parameters \rev{including $\rho_N$ (the biases in Table~\ref{tab:AppSimEndCase2} are within a few Monte Carlo standard errors of zero)} by successfully incorporating the existing endogeneity of the deductible for the frequency component. In Table \ref{tab:maecase2}, \rev{FDM1/FDM2} also show lower prediction error in both censored and truncated frequency\rev{, and the error of the frequency component of the premium is reduced by an order of magnitude (from about $0.38$ to $0.03$ claims per policy-year under censored reporting, and from about $0.19$ to $0.02$ under truncated reporting), with FDM2 providing the same level of prediction as FDM1 from complete data}.
-
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=\linewidth]{simcase2.pdf}
-    \caption{\rev{Estimates of the severity (upper panels) and frequency (lower panels) parameters in Case 2}}
-    \label{fig:simcase2}
-\end{figure}
-
-\begin{table}[!h]
-\renewcommand{\tabcolsep}{0.8mm}
-\renewcommand{\arraystretch}{1}
-\footnotesize
-\centering
-{\color{blue}
-\begin{tabular}[h]{ccccccc}
-\toprule
-\multirow{2}{*}{Frequency} & \multicolumn{2}{c}{Censored} & \multicolumn{4}{c}{Truncated}\\
-\cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-7}
- & FEM1 & FDM1 & FEM1 & FEM2 & FDM1 & FDM2\\
-\midrule
-MAE & 0.8648 & 0.7699 & 0.5905 & 0.6072 & 0.5672 & 0.5670 \\
-MAE$_{\text{prem}}$ & 0.3769 & 0.0245 & 0.2050 & 0.1886 & 0.0174 & 0.0200 \\
-\hhline{=======}
-\end{tabular}
-\\
-\vspace{0.3cm}
-\begin{tabular}[h]{ccccccccc}
-\toprule
-\multirow{2}{*}{Severity} & \multicolumn{4}{c}{Censored} & \multicolumn{4}{c}{Truncated}\\
-\cmidrule(l{3pt}r{3pt}){2-5} \cmidrule(l{3pt}r{3pt}){6-9}
- & SEM1 & SEM2 & SDM1 & SDM2 & SEM1 & SEM3 & SDM1 & SDM3\\
-\midrule
-MAE & 3281.6 & 3281.6 & 3281.3 & 3281.4 & 3886.5 & 3886.7 & 3886.1 & 3885.9 \\
-MAE$_{\text{prem}}$ & 112.6 & 114.5 & 123.0 & 127.6 & 137.7 & 161.3 & 144.2 & 182.2 \\
-\hhline{=========}
-\end{tabular}
-}
-\caption{MAE of the frequency and severity models in Case 2}\label{tab:maecase2}
-\end{table}
-
-
-\FloatBarrier
-
-\subsection{Case 3 : $D_i$ is exogenous to $N$ and $(D, Y)$ is from a Gaussian copula with $\rho_Y=-0.5$}
-Figure \ref{fig:simcase3} shows that in case the exogeneity of deductible is assured only for the frequency, it is observed that usage of SEM2/SEM3 suffers from more biases in the estimated parameters as it fails to capture possible endogeneity of the deductible with incomplete data\rev{; the biases are large (about $+0.6$ to $+0.7$ for the intercept of $\bm{\beta}_Y$ and about $+1.4$ for $\alpha$, Table~\ref{tab:AppSimExoCase3}), because the losses that are censored or truncated by the deductible are not a random subset of the losses when the deductible is informative about the loss size}. It is also notable that even with incomplete severity data, \rev{SDM2/SDM3} still yield \rev{approximately unbiased} estimates of the parameters \rev{(Table~\ref{tab:AppSimEndCase3})} by successfully incorporating the existing endogeneity of the deductible for the severity component. \rev{Note that in this case FEM2 and FEM2G are also biased, although $D\perp N$ (Table~\ref{tab:AppSimExoCase3}), because the retention probability $p(d;\bm{x})$ used by the truncated marginal frequency models is computed under the exogeneity assumption, i.e., from the marginal rather than the conditional distribution of $Y$ given $D$ (and, for FEM2, from the biased marginal severity model SEM3); this illustrates the indirect channel through which the endogeneity of the deductible with respect to the severity contaminates the frequency model under truncated reporting, and FDM2, which evaluates $p(d;\bm{x})$ with SDM3, is free of it.} In Table \ref{tab:maecase3}, \rev{SDMs} provide lower prediction errors than SEMs and \rev{SDM2/SDM3} show improved prediction \rev{at a similar level to SDM1; the error of the severity component of the premium drops from above $1{,}300$ under SEM1--3 to between about $100$ and $200$ under SDM1--3, and the frequency premium error of FDM2 is about one fifth of that of FEM2}.
-
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=1\linewidth]{simcase3.pdf}
-    \caption{\rev{Estimates of the severity (upper panels) and frequency (lower panels) parameters in Case 3}}
-    \label{fig:simcase3}
-\end{figure}
-
-\begin{table}[!h]
-\renewcommand{\tabcolsep}{0.8mm}
-\renewcommand{\arraystretch}{1}
-\footnotesize
-\centering
-{\color{blue}
-\begin{tabular}[h]{ccccccc}
-\toprule
-\multirow{2}{*}{Frequency} & \multicolumn{2}{c}{Censored} & \multicolumn{4}{c}{Truncated}\\
-\cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-7}
- & FEM1 & FDM1 & FEM1 & FEM2 & FDM1 & FDM2\\
-\midrule
-MAE & 0.8660 & 0.8659 & 0.5626 & 0.5668 & 0.5468 & 0.5466 \\
-MAE$_{\text{prem}}$ & 0.0230 & 0.0263 & 0.0771 & 0.1057 & 0.0157 & 0.0199 \\
-\hhline{=======}
-\end{tabular}
-\\
-\vspace{0.3cm}
-\begin{tabular}[h]{ccccccccc}
-\toprule
-\multirow{2}{*}{Severity} & \multicolumn{4}{c}{Censored} & \multicolumn{4}{c}{Truncated}\\
-\cmidrule(l{3pt}r{3pt}){2-5} \cmidrule(l{3pt}r{3pt}){6-9}
- & SEM1 & SEM2 & SDM1 & SDM2 & SEM1 & SEM3 & SDM1 & SDM3\\
-\midrule
-MAE & 2987.1 & 3011.0 & 2787.3 & 2787.1 & 4173.4 & 4369.7 & 4242.2 & 4239.9 \\
-MAE$_{\text{prem}}$ & 1404.4 & 1367.3 & 105.9 & 116.2 & 1648.9 & 1458.3 & 162.5 & 210.4 \\
-\hhline{=========}
-\end{tabular}
-}
-\caption{MAE of the frequency and severity models in Case 3}\label{tab:maecase3}
-\end{table}
-
-
-\FloatBarrier
-
-\subsection{Case 4 : Both $(D,N),(D, Y)$ from Gaussian copulas with $\rho_N=-0.6,  \rho_Y=-0.4$}
-
-Figure \ref{fig:simcase4} shows that in case the exogeneity of deductible is not assured, it is observed that usage of FEM2 and SEM2/SEM3 severely suffers from biases in the estimated parameters as they fail to capture possible endogeneity of the deductible with incomplete data. \rev{In this case even SEM1, which uses the complete ground-up losses, is biased (Table~\ref{tab:AppSimExoCase4}). The reason is that the units of the severity likelihood are the claims: since $N$ and $D$ are dependent, policy-years with a small deductible contribute more claims, and since $Y$ and $D$ are dependent, their losses are larger, so that the pooled distribution of the ground-up losses over the claims is not the marginal distribution of $Y$ given $\bm{x}$ assumed by SEM1. The joint severity models condition on the deductible and are therefore not affected by this size-biased sampling of the claims.}
-It is also notable that even with incomplete  data, \rev{FDM2 and SDM2/SDM3} still yield \rev{approximately unbiased} estimates of the parameters \rev{(Table~\ref{tab:AppSimEndCase4})} by successfully incorporating the existing endogeneity of the deductible for both the frequency and severity components. In Table \ref{tab:maecase4}, one can observe that \rev{FDM/SDMs} show lower prediction error than FEM/SEMs and the gap of MAE between \rev{FDM1/SDM1} and \rev{FDM2/SDM2/SDM3} decreases providing comparable level of error with complete data. \rev{Table~\ref{tab:bylevel4} shows what the biases of the marginal models mean for ratemaking. Since the marginal models ignore the deductible, their premium components are too low for the policies with the lowest deductible and far too high for the policies with high deductibles: under censored reporting the frequency component is underestimated by about $42\%$ at the deductible of $500$ and overestimated by about $20\%$ to $440\%$ at the higher levels by FEM1, and the severity component by SEM1/SEM2 shows errors between $-18\%$ and $+680\%$; under truncated reporting the frequency errors of FEM1/FEM2 are even larger (above $+2{,}000\%$ at the highest level, where only a small fraction of the losses exceeds the deductible). The joint models, which price each deductible level with its own conditional distribution, are within about $3\%$ at every level for the frequency and within about $1\%$ for the severity, under complete and incomplete data alike.}
-
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=1\linewidth]{simcase4.pdf}
-    \caption{\rev{Estimates of the severity (upper panels) and frequency (lower panels) parameters in Case 4}}
-    \label{fig:simcase4}
-\end{figure}
-
-\begin{table}[!h]
-\renewcommand{\tabcolsep}{0.8mm}
-\renewcommand{\arraystretch}{1}
-\footnotesize
-\centering
-{\color{blue}
-\begin{tabular}[h]{ccccccc}
-\toprule
-\multirow{2}{*}{Frequency} & \multicolumn{2}{c}{Censored} & \multicolumn{4}{c}{Truncated}\\
-\cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-7}
- & FEM1 & FDM1 & FEM1 & FEM2 & FDM1 & FDM2\\
-\midrule
-MAE & 0.8659 & 0.7267 & 0.6429 & 0.6616 & 0.5668 & 0.5668 \\
-MAE$_{\text{prem}}$ & 0.4523 & 0.0245 & 0.3240 & 0.3142 & 0.0184 & 0.0212 \\
-\hhline{=======}
-\end{tabular}
-\\
-\vspace{0.3cm}
-\begin{tabular}[h]{ccccccccc}
-\toprule
-\multirow{2}{*}{Severity} & \multicolumn{4}{c}{Censored} & \multicolumn{4}{c}{Truncated}\\
-\cmidrule(l{3pt}r{3pt}){2-5} \cmidrule(l{3pt}r{3pt}){6-9}
- & SEM1 & SEM2 & SDM1 & SDM2 & SEM1 & SEM3 & SDM1 & SDM3\\
-\midrule
-MAE & 4046.7 & 4061.4 & 3957.2 & 3957.0 & 4576.1 & 4649.6 & 4605.6 & 4603.8 \\
-MAE$_{\text{prem}}$ & 1097.4 & 1090.1 & 149.8 & 154.3 & 949.2 & 888.0 & 172.9 & 205.6 \\
-\hhline{=========}
-\end{tabular}
-}
-\caption{MAE of the frequency and severity models in Case 4}\label{tab:maecase4}
-\end{table}
-
-
-\begin{table}[!ht]
-\footnotesize
-\centering
-{\color{blue}
-\begin{tabular}{llrrrrr}
-\toprule
- & & \multicolumn{5}{c}{Deductible level} \\
-\cmidrule(lr){3-7}
- & Model &    500 &  1,000 &  2,500 &  5,000 & 10,000 \\
-\midrule
-\multirow{2}{*}{Frequency, censored} & FEM1 & -41.9 & +21.8 & +79.7 & +166.5 & +440.4 \\
- & FDM1 & +0.1 & +0.0 & 0.0 & -0.1 & -0.1 \\
-\midrule
-\multirow{4}{*}{Frequency, truncated} & FEM1 & -45.4 & +25.5 & +128.7 & +389.5 & +2155.1 \\
- & FEM2 & -36.0 & +46.2 & +168.1 & +482.4 & +2658.3 \\
- & FDM1 & +0.1 & +0.1 & +0.1 & +0.1 & +0.4 \\
- & FDM2 & +0.1 & +0.1 & +0.3 & +0.5 & +1.7 \\
-\midrule
-\multirow{4}{*}{Severity, censored} & SEM1 & -18.2 & +32.9 & +89.2 & +201.8 & +672.5 \\
- & SEM2 & -17.5 & +34.5 & +92.1 & +206.8 & +683.1 \\
- & SDM1 & 0.0 & -0.1 & -0.1 & +0.0 & +0.5 \\
- & SDM2 & -0.1 & +0.0 & +0.2 & +0.4 & +1.5 \\
-\midrule
-\multirow{4}{*}{Severity, truncated} & SEM1 & -13.4 & +28.2 & +45.7 & +55.3 & +63.1 \\
- & SEM3 & -10.5 & +34.8 & +54.1 & +64.4 & +72.2 \\
- & SDM1 & 0.0 & -0.1 & -0.1 & -0.1 & +0.0 \\
- & SDM3 & -0.1 & +0.1 & +0.1 & +0.1 & +0.2 \\
-\hhline{=======}
-\end{tabular}
-}
-\caption{Relative error (in \%) of the estimated frequency and severity components of the pure premium by deductible level in Case 4: the average over the policy-years (frequency) or claims (severity) at each level of the difference between the estimated and the true component, divided by the average true component at that level, averaged over the replications}\label{tab:bylevel4}
-\end{table}
-
-
-\rev{Table~\ref{tab:simcoverage} uses Cases 1 and 4 to check the standard errors of the sequential estimator of $\boldsymbol{\theta}_k, \ k=1,2,3$. For every replication the stage-wise naive standard errors (using $\bm{H}_{kk}^{-1}$), the stage-wise sandwich standard errors (using $\bm{H}_{kk}^{-1}\bm{J}_{kk}\bm{H}_{kk}^{-\top}$) and the Godambe sandwich standard errors (using $[\bm{H}^{-1}\bm{J}\bm{H}^{-\top}]_{kk}$) of Section 2.3 are computed and compared with the Monte Carlo standard deviation of the estimates; the table also reports the empirical coverage of the nominal 95\% confidence intervals. For SDM3 the three standard errors practically coincide, i.e., the uncertainty of the deductible model estimated at the first stage is immaterial for the severity model. For the truncated frequency models, which depend on the severity model through $p(d;\bm{x})$, the naive standard errors are too small: for FEM2 in Case 1 and for FDM2 in Case 4 the Godambe standard errors of the regression coefficients, of $r$ and of $\rho_N$ are larger than the naive ones by roughly 10--20\%, and the coverage of the naive intervals tends to fall below the nominal level while that of the sandwich intervals is close to 95\%. This is the finite-sample counterpart of the cross-derivative blocks $\bm{H}_{32}$ in Section 2.3, and it is the reason why all standard errors in Section~\ref{sec:empirical} are computed from the Godambe information matrix.}
-
-\begin{table}[!ht]
-\footnotesize
-\centering
-{\color{blue}
-\begin{tabular}{llccccccc}
-\toprule
-Model & Parameter & Emp. SD & \multicolumn{3}{c}{Mean s.e.} & \multicolumn{3}{c}{Coverage of 95\% interval} \\
-\cmidrule(lr){4-6} \cmidrule(lr){7-9}
- & & & Naive & Robust & Sandwich & Naive & Robust & Sandwich \\
-\midrule
-FEM2 (Case 1) & $\beta_{N,0}$ & 0.0504 & 0.0458 & 0.0457 & 0.0528 & 0.936 & 0.936 & 0.960 \\
- & $\beta_{N,1}$ & 0.0298 & 0.0276 & 0.0276 & 0.0309 & 0.928 & 0.930 & 0.960 \\
- & $\beta_{N,2}$ & 0.0604 & 0.0562 & 0.0561 & 0.0630 & 0.930 & 0.930 & 0.952 \\
- & $r$ & 0.0884 & 0.0839 & 0.0838 & 0.0838 & 0.948 & 0.946 & 0.946 \\
-\midrule
-SDM3 (Case 4) & $\beta_{Y,0}$ & 0.1162 & 0.1146 & 0.1145 & 0.1148 & 0.948 & 0.948 & 0.948 \\
- & $\beta_{Y,1}$ & 0.0248 & 0.0236 & 0.0236 & 0.0241 & 0.948 & 0.948 & 0.952 \\
- & $\beta_{Y,2}$ & 0.0524 & 0.0488 & 0.0488 & 0.0497 & 0.944 & 0.944 & 0.946 \\
- & $\alpha$ & 0.2267 & 0.2181 & 0.2179 & 0.2180 & 0.948 & 0.944 & 0.944 \\
- & $\rho_Y$ & 0.0343 & 0.0349 & 0.0348 & 0.0349 & 0.944 & 0.946 & 0.946 \\
-\midrule
-FDM2 (Case 4) & $\beta_{N,0}$ & 0.0479 & 0.0393 & 0.0393 & 0.0442 & 0.872 & 0.872 & 0.920 \\
- & $\beta_{N,1}$ & 0.0265 & 0.0235 & 0.0235 & 0.0263 & 0.912 & 0.910 & 0.954 \\
- & $\beta_{N,2}$ & 0.0560 & 0.0475 & 0.0474 & 0.0528 & 0.900 & 0.896 & 0.938 \\
- & $r$ & 0.0828 & 0.0764 & 0.0763 & 0.0844 & 0.922 & 0.920 & 0.952 \\
- & $\rho_N$ & 0.0251 & 0.0209 & 0.0209 & 0.0254 & 0.902 & 0.898 & 0.946 \\
-\hhline{=========}
-\end{tabular}
-}
-\caption{Monte Carlo standard deviation of the sequential estimates, mean estimated standard errors (naive: stage-wise Hessian $\bm{H}_{kk}^{-1}$; robust: stage-wise sandwich $\bm{H}_{kk}^{-1}\bm{J}_{kk}\bm{H}_{kk}^{-1}$; sandwich: Godambe information $\bm{H}^{-1}\bm{J}\bm{H}^{-\top}$ of Section 2.3) and empirical coverage of the nominal 95\% confidence intervals ($R=500$ replications); the dependence parameters are on the correlation scale (delta method)}\label{tab:simcoverage}
-\end{table}
-
-
-\FloatBarrier
-
-% \subsection{\rev{Cases 5 and 6 : violation of the conditional independence assumption}}
-
-% \rev{Cases 5 and 6 keep the dependence parameters of Case 4 and violate the assumption $N\perp Y\,|\,D$ in the two ways described above; the results are given in Tables~\ref{tab:AppSimExoCase5}--\ref{tab:AppSimEndCase6} and Figures~\ref{fig:simcase5}--\ref{fig:simcase6}. In Case 5, where a common latent propensity drives the deductible, the frequency and the severity, the pairs $(D,N)$ and $(D,Y)$ still follow the assumed copulas, and FDM1 remains approximately unbiased. The severity joint models, however, are fitted to claims that concentrate at the low-deductible end of each atom and show moderate biases: about $-0.04$ for the slopes of $\bm{\beta}_Y$, $-0.1$ to $-0.15$ for $\alpha$ and $-0.02$ to $-0.04$ for $\rho_Y$; FDM2 inherits a small bias through $p(d;\bm{x})$ (about $-0.05$ for $r$). These biases are an order of magnitude smaller than those of the marginal models (for example $+0.6$ to $+0.7$ for the intercept of $\bm{\beta}_Y$ and $+0.6$ to $+0.8$ for $\alpha$ under SEM1--3, and $+0.17$ for the intercept of $\bm{\beta}_N$ and $+0.18$ for $r$ under FEM2), and the prediction errors in Table~\ref{tab:maecase5} remain much lower under the joint models. In Case 6, where in addition the frequency and the severity are directly dependent given the deductible, the size-biased sampling of the claims operates within each deductible level, and the joint severity models become substantially biased even with complete data (about $+0.6$ for the intercept of $\bm{\beta}_Y$ and $+0.5$ for $\alpha$ under SDM1), although still less than the marginal models (about $+1.2$ and $+1.5$ under SEM1); the frequency models are more robust, with FDM1 approximately unbiased and FDM2 showing moderate biases (about $+0.04$ for the intercept of $\bm{\beta}_N$, $-0.07$ for $r$ and $+0.04$ for $\rho_N$). In both cases the estimated dependence parameters stay close to their true values, so that the endogeneity of the deductible is still correctly detected; what suffers is the severity regression. A direct frequency--severity dependence given the deductible would therefore have to be modeled explicitly, which, as discussed in Section~\ref{sec:condind}, is not straightforward under censored or truncated losses and is left for future research.}
-
-% \begin{figure}[h!]
-%     \centering
-%     \includegraphics[width=1\linewidth]{simcase5.pdf}
-%     \caption{\rev{Estimates of the severity (upper panels) and frequency (lower panels) parameters in Case 5}}
-%     \label{fig:simcase5}
-% \end{figure}
-
-% \begin{figure}[h!]
-%     \centering
-%     \includegraphics[width=1\linewidth]{simcase6.pdf}
-%     \caption{\rev{Estimates of the severity (upper panels) and frequency (lower panels) parameters in Case 6}}
-%     \label{fig:simcase6}
-% \end{figure}
-
-% \begin{table}[!h]
-% \renewcommand{\tabcolsep}{0.8mm}
-% \renewcommand{\arraystretch}{1}
-% \footnotesize
-% \centering
-% {\color{blue}
-% \begin{tabular}[h]{ccccccc}
-% \toprule
-% \multirow{2}{*}{Frequency} & \multicolumn{2}{c}{Censored} & \multicolumn{4}{c}{Truncated}\\
-% \cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-7}
-%  & FEM1 & FDM1 & FEM1 & FEM2 & FDM1 & FDM2\\
-% \midrule
-% MAE & 0.8645 & 0.7263 & 0.6578 & 0.6763 & 0.5776 & 0.5769 \\
-% \hhline{=======}
-% \end{tabular}
-% \\
-% \vspace{0.3cm}
-% \begin{tabular}[h]{ccccccccc}
-% \toprule
-% \multirow{2}{*}{Severity} & \multicolumn{4}{c}{Censored} & \multicolumn{4}{c}{Truncated}\\
-% \cmidrule(l{3pt}r{3pt}){2-5} \cmidrule(l{3pt}r{3pt}){6-9}
-%  & SEM1 & SEM2 & SDM1 & SDM2 & SEM1 & SEM3 & SDM1 & SDM3\\
-% \midrule
-% MAE & 4485.6 & 4498.8 & 4365.5 & 4366.1 & 5039.8 & 5122.6 & 5058.4 & 5062.2 \\
-% \hhline{=========}
-% \end{tabular}
-% }
-% \caption{MAE of the frequency and severity models in Case 5}\label{tab:maecase5}
-% \end{table}
-
-
-% \begin{table}[!h]
-% \renewcommand{\tabcolsep}{0.8mm}
-% \renewcommand{\arraystretch}{1}
-% \footnotesize
-% \centering
-% {\color{blue}
-% \begin{tabular}[h]{ccccccc}
-% \toprule
-% \multirow{2}{*}{Frequency} & \multicolumn{2}{c}{Censored} & \multicolumn{4}{c}{Truncated}\\
-% \cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-7}
-%  & FEM1 & FDM1 & FEM1 & FEM2 & FDM1 & FDM2\\
-% \midrule
-% MAE & 0.8644 & 0.7259 & 0.7132 & 0.7289 & 0.6237 & 0.6272 \\
-% \hhline{=======}
-% \end{tabular}
-% \\
-% \vspace{0.3cm}
-% \begin{tabular}[h]{ccccccccc}
-% \toprule
-% \multirow{2}{*}{Severity} & \multicolumn{4}{c}{Censored} & \multicolumn{4}{c}{Truncated}\\
-% \cmidrule(l{3pt}r{3pt}){2-5} \cmidrule(l{3pt}r{3pt}){6-9}
-%  & SEM1 & SEM2 & SDM1 & SDM2 & SEM1 & SEM3 & SDM1 & SDM3\\
-% \midrule
-% MAE & 5694.1 & 5701.9 & 5569.3 & 5565.4 & 6198.3 & 6222.9 & 6188.2 & 6147.3 \\
-% \hhline{=========}
-% \end{tabular}
-% }
-% \caption{MAE of the frequency and severity models in Case 6}\label{tab:maecase6}
-% \end{table}
-
-
-
-% \FloatBarrier
-
+Through the sequential maximum likelihood scheme as in the paragraphs following  \eqref{eq:jointloglik}, we estimated the parameters \rev{$\bm{\kappa}$, $\bm{\beta}_D$ of the ordinal deductible model, $\bm{\beta}_Y$, $\alpha$ (and $\rho_Y$) of the severity models SEM1--3 and SDM1--3, and $\bm{\beta}_N$, $r$ (and $\rho_N$) of the frequency models FEM1, FEM2, FEM2G and FDM1--2} under each case with the reporting scenarios\rev{; the joint models use the Gaussian copula, i.e., the copula family of the data-generating process. As in Section~\ref{sec:empirical}, FEM2 and FEM2G evaluate $p(d;\bm{x})$ with the severity models SEM3 and SEM1, respectively, and FDM2 with the joint severity model SDM3 and the fitted deductible model. Starting values are obtained from the data of the respective scenario (a log-linear regression for the severity, a Poisson regression for the frequency and $\rho=0$ for the copula); the true values are never used.} @@SIM_MAIN@@
 
 \section{Empirical Analysis}\label{sec:empirical}
 \subsection{Insurance Claim Dataset for Deductible, Frequency and Severity}
@@ -1178,10 +819,10 @@ where $I$ is the total number of observations in the out-of-sample validation se
 For the severity models, \rev{we assess the prediction of the individual claim amounts in the validation set. For each policy in the validation set, the predicted claim amount $\hat{Y}^*_i$ is the expected payment implied by the fitted severity model given the policy's deductible and rating variables, i.e., ${\rm E}[(Y-d_i)_+|D=d_i;\bm{x}_i]$ under censored reporting and ${\rm E}[Y-d_i|Y>d_i,D=d_i;\bm{x}_i]$ under truncated reporting, and the observed claim amounts in 2010 are censored or truncated by each policy's deductible in the same way as the training data.} RMSE of severity model can be written as
 $$
 \begin{aligned}
-\text{RMSE}&: \sqrt{\frac{1}{S}\sum_{i=1}^{S} (Y^*_{i}-\hat{Y}^*_i)^2}, \\
+\text{RMSE}&: \sqrt{\frac{1}{M}\sum_{i=1}^{M} (Y^*_{i}-\hat{Y}^*_i)^2}, \\
 \end{aligned}
 $$
-where $S$ is the total number of \rev{claim} observations under censored reporting and truncated reporting\rev{, and $Y^*_i$ and $\hat Y^*_i$ are measured on the logarithmic scale}.
+where $M$ is the total number of \rev{claim} observations under censored reporting and truncated reporting\rev{, and $Y^*_i$ and $\hat Y^*_i$ are measured on the logarithmic scale}.
 \authnote{Reviewer 2 (comment 7) raised three issues here that we could not resolve from the manuscript alone: (a) the text said ``we considered the policy's aggregate loss'' but the RMSE is claim-level; (b) ``After generating ground-up losses with the frequency $\hat N^*_i$'' suggested a simulation step that is not described; (c) the RMSEs in Table~\ref{tab:Sevoutofsample} (0.47--0.54) are far too small for dollar amounts with mean around \$19,000. We rewrote the paragraph assuming that (i) the RMSE is computed at the claim level from the model-implied expected payment, and (ii) $Y^*_i$ and $\hat Y^*_i$ are on the log scale. Please correct this description if the predictions were instead obtained by simulation (in which case the simulation algorithm, e.g., Algorithm 1 of Shi and Lee (2022), and the number of replications should be described), and state the actual scale of the RMSE (log-dollars, dollars in thousands, etc.). The row ``Log-likelihood'' in Table~\ref{tab:Sevoutofsample} should also be described (out-of-sample predictive log-likelihood of the 2010 claims?).}
 
 Table~\ref{tab:Sevoutofsample} provides RMSEs of severity from each model. For the ground-up loss prediction, both exogenous and endogenous models have similar performance \rev{under the} full\rev{ }reporting scenario. The joint copula models show better prediction under the censored scenario while the models with truncated data seem to suffer from the prediction. However, when we compare the actual payout of the insurers, the endogenous models under both censored (SCM2 and SDM2) and truncated (SCM3 and SDM3) scenarios outperform the exogenous models (SEM2 and SEM3, respectively) consistently in case ground-up loss amounts are not available so that SEM1/SCM1/SDM1 are not able to be used.
@@ -1419,6 +1060,373 @@ For model selection, we compare all the \rev{aforementioned} distributions excep
 
 
 \pagebreak
+
+\subsection*{\rev{Additional simulation results}}
+
+\rev{This part of the Appendix reports the results of the simulation study of Section~\ref{sec:simulation} that are not shown in the main text: the estimation of the individual parameters, the prediction errors of the frequency and severity components of the pure premium, the relative errors of these components by deductible level, and the coverage of the confidence intervals.}
+The estimation performance for parameter $\theta$ was assessed with the following measures:
+$$
+\begin{aligned}
+\text{Mean}&:= \overline{\hat{\theta}}=\frac{1}{500} \sum_{r=1}^{500} \hat{\theta}^{(r)}, \\
+\text{RMSE}&:= \sqrt{\frac{1}{500} \sum_{r=1}^{500} (\hat{\theta}^{(r)} - \theta)^2}, \\
+\text{Bias}&:= \overline{\hat{\theta}} - \theta, \\
+\text{Var}&:= \frac{1}{500} \sum_{r=1}^{500} (\hat{\theta}^{(r)} - \overline{\hat{\theta}} )^2,
+\end{aligned}
+$$
+where $\hat{\theta}^{(r)}$ is the estimated value of $\theta$ under the specified model using the $r${th} simulation sample. \rev{In the tables of the Appendix, the entry ``(s.e.)'' below each mean denotes the Monte Carlo standard error of the mean, $\sqrt{\text{Var}/500}$, so that a bias that is small relative to this Monte Carlo standard error is compatible with an unbiased estimator; note also that $\text{RMSE}^2=\text{Var}+\text{Bias}^2$. Since these are finite-sample Monte Carlo results for one particular design, we refer to an estimator whose bias is negligible relative to its RMSE as ``approximately unbiased'' in what follows, without claiming exact unbiasedness.} \\
+To assess the predictive performance of insurance claims with $\hat{\theta}^{(r)}$, the following mean absolute errors (MAE) of \rev{the frequency and severity components of the pure premium in} (\ref{eq:censoredpremium}), (\ref{eq:truncatedpremium}) are measured under each model,
+\begin{align*}
+    \text{Frequency}&:=\frac{1}{500}\sum_{r=1}^{500}\left(\frac{1}{5000}\sum_{s=1}^{5000}|N^{*(r)}_s -\hat{N}^{*(r)}_s|\right),\nonumber\\
+    \text{Severity}&:=
+        \frac{1}{500}\sum_{r=1}^{500}\left(\frac{1}{M^{(r)}}\sum_{\rev{t}=1}^{M^{(r)}}|Y^{*(r)}_{\rev{t}} -\hat{Y}^{*(r)}_{\rev{t}}|\right),\nonumber
+\end{align*}
+ where $M^{(r)}$ is the total number of \rev{claim} observations under censored reporting and truncated reporting in $r$th dataset and $\hat{N}^{*(r)}_s$ / $\hat{Y}^{*(r)}_{\rev{t}}$ are predicted values of claim frequency / severity in $r$th dataset, respectively\rev{, namely the conditional means of the observed frequency and severity given the deductible and the covariates under the fitted model: $\hat{\rm E}(N|D=d;\bm{x})$ and $\hat{\rm E}(\{Y-d\}_+|D=d;\bm{x})$ under censored reporting, and $\hat{\rm E}(N^*|D=d;\bm{x})=\hat p(d;\bm{x})\hat{\rm E}(N|D=d;\bm{x})$ and $\hat{\rm E}(Y-d|Y>d,D=d;\bm{x})$ under truncated reporting, where the marginal models evaluate ${\rm E}(N|D=d;\bm{x})$ and the distribution of $Y$ given $D=d$ without conditioning on the deductible. Because these MAEs are dominated by the irreducible variability of the claims (in particular of the heavy-tailed severities), we also report the error of the premium components themselves, which is what matters for ratemaking:}
+{\color{blue}
+\begin{align*}
+    \text{Frequency}_{\text{prem}}&:=\frac{1}{500}\sum_{r=1}^{500}\left(\frac{1}{5000}\sum_{s=1}^{5000}|m^{(r)}_s -\hat{m}^{(r)}_s|\right),\qquad
+    \text{Severity}_{\text{prem}}:=\frac{1}{500}\sum_{r=1}^{500}\left(\frac{1}{M^{(r)}}\sum_{t=1}^{M^{(r)}}|\mu^{(r)}_t -\hat{\mu}^{(r)}_t|\right),
+\end{align*}
+}
+\rev{where $m_s^{(r)}$ and $\mu_t^{(r)}$ are the true conditional means of the observed frequency and severity given $(D,\bm{x})$ under the data-generating process (the frequency and severity factors of \eqref{eq:censoredpremium} or \eqref{eq:truncatedpremium}, computed with the true parameters) and $\hat m_s^{(r)}$, $\hat\mu_t^{(r)}$ their estimates under the fitted model. The detailed estimation results (mean, Monte Carlo standard error, RMSE and bias of each parameter) are reported in Tables~\ref{tab:AppSimDed}--\ref{tab:AppSimEndCase4} in the Appendix, and are summarized graphically in Figures~\ref{fig:simcase1}--\ref{fig:simcase4}; the optimizer converged in all replications and for all models.}%with one exception (the deductible model in one replication of Case 6, whose line search terminated abnormally at estimates that are nevertheless regular), 
+
+\subsubsection*{Case 1 : $D_i$ is exogenous to $N, Y$}
+
+Figure \ref{fig:simcase1} \rev{and Tables~\ref{tab:AppSimExoCase1}--\ref{tab:AppSimEndCase1} show} that even in case the exogeneity of deductible is assured both for the frequency and severity, usage of either FEM2 or SEM2/SEM3 is less efficient in terms of the estimation performance so that the RMSE are larger than the ones from FEM1 and SEM1, respectively. As FEM2 depends on $p(d;\bm{x})$ from the severity models, FEM2G suffers less than FEM2. \rev{The joint models do not find spurious dependence: the estimates of $\rho_Y$ in SDM1--3 and of $\rho_N$ in FDM1--2 are centered at zero, their regression coefficients are approximately unbiased, and the price paid for estimating an unnecessary dependence parameter is small, with RMSEs close to those of the corresponding marginal models (Table~\ref{tab:AppSimEndCase1}). The ordinal deductible model itself is estimated with negligible bias in all cases (Table~\ref{tab:AppSimDed}).} Table \ref{tab:maecase1} shows that the predictions for the censored and truncated reporting scenarios exhibit comparable levels of estimation error \rev{under all models} when the deductible is exogenous\rev{; the while the premium errors of the joint models are larger than those of the marginal models, the actual errors of the joint models are comparable to or even smaller than those of the marginal models.}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\linewidth]{simcase1.pdf}
+    \caption{\rev{Estimates of the severity (upper panels) and frequency (lower panels) parameters in Case 1; the dashed line is the true value and the shaded boxes are the joint models}}
+    \label{fig:simcase1}
+\end{figure}
+
+\begin{table}[!h]
+\renewcommand{\tabcolsep}{0.8mm}
+\renewcommand{\arraystretch}{1}
+\footnotesize
+\centering
+{\color{blue}
+\begin{tabular}[h]{ccccccc}
+\toprule
+\multirow{2}{*}{Frequency} & \multicolumn{2}{c}{Censored} & \multicolumn{4}{c}{Truncated}\\
+\cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-7}
+ & FEM1 & FDM1 & FEM1 & FEM2 & FDM1 & FDM2\\
+\midrule
+MAE & 0.8652 & 0.8651 & 0.5619 & 0.5618 & 0.5618 & 0.5616 \\
+MAE$_{\text{prem}}$ & 0.0236 & 0.0265 & 0.0144 & 0.0166 & 0.0157 & 0.0191 \\
+\hhline{=======}
+\end{tabular}
+\\
+\vspace{0.3cm}
+\begin{tabular}[h]{ccccccccc}
+\toprule
+\multirow{2}{*}{Severity} & \multicolumn{4}{c}{Censored} & \multicolumn{4}{c}{Truncated}\\
+\cmidrule(l{3pt}r{3pt}){2-5} \cmidrule(l{3pt}r{3pt}){6-9}
+ & SEM1 & SEM2 & SDM1 & SDM2 & SEM1 & SEM3 & SDM1 & SDM3\\
+\midrule
+MAE & 3006.3 & 3006.6 & 3006.0 & 3006.2 & 4083.7 & 4083.6 & 4083.7 & 4082.9 \\
+MAE$_{\text{prem}}$ & 103.7 & 107.6 & 113.3 & 122.1 & 146.2 & 185.0 & 155.4 & 211.2 \\
+\hhline{=========}
+\end{tabular}
+}
+\caption{MAE of the frequency and severity models in Case 1}\label{tab:maecase1}
+\end{table}
+
+
+\FloatBarrier
+
+\subsubsection*{Case 2 : $D_i$ is exogenous to $Y$ and $(D, N)$ is from a Gaussian copula with $\rho_N=-0.5$}
+Figure \ref{fig:simcase2} shows that even in case the exogeneity of deductible is assured for the severity, usage of  SEM2/SEM3 is less efficient in terms of the estimation performance so that the RMSE are larger than the ones from SEM1.  It is further observed that usage of FEM2 suffers from biases in the estimated parameters as it fails to capture possible endogeneity of the deductible with incomplete data\rev{: the intercept of $\bm{\beta}_N$ is overestimated by about $0.18$ and $r$ by about $0.5$ (Table~\ref{tab:AppSimExoCase2}), i.e., the thinning of the claims by the endogenous deductible is wrongly attributed to the mean and the dispersion of $N$}. Moreover, FEM2G still shows similar bias and RMSE to those of FEM2, which implies that fixing $p(d;\bm{x})$ gives less improvement when the deductible is not exogenous to the frequency. It is also notable that even with incomplete frequency data, \rev{FDM2} still yields \rev{approximately unbiased} estimates of the parameters \rev{including $\rho_N$ (the biases in Table~\ref{tab:AppSimEndCase2} are within a few Monte Carlo standard errors of zero)} by successfully incorporating the existing endogeneity of the deductible for the frequency component. In Table \ref{tab:maecase2}, \rev{FDM1/FDM2} also show lower prediction error in both censored and truncated frequency\rev{, and the error of the frequency component of the premium is reduced by an order of magnitude (from about $0.38$ to $0.03$ claims per policy-year under censored reporting, and from about $0.19$ to $0.02$ under truncated reporting), with FDM2 providing the same level of prediction as FDM1 from complete data}.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\linewidth]{simcase2.pdf}
+    \caption{\rev{Estimates of the severity (upper panels) and frequency (lower panels) parameters in Case 2}}
+    \label{fig:simcase2}
+\end{figure}
+
+\begin{table}[!h]
+\renewcommand{\tabcolsep}{0.8mm}
+\renewcommand{\arraystretch}{1}
+\footnotesize
+\centering
+{\color{blue}
+\begin{tabular}[h]{ccccccc}
+\toprule
+\multirow{2}{*}{Frequency} & \multicolumn{2}{c}{Censored} & \multicolumn{4}{c}{Truncated}\\
+\cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-7}
+ & FEM1 & FDM1 & FEM1 & FEM2 & FDM1 & FDM2\\
+\midrule
+MAE & 0.8648 & 0.7699 & 0.5905 & 0.6072 & 0.5672 & 0.5670 \\
+MAE$_{\text{prem}}$ & 0.3769 & 0.0245 & 0.2050 & 0.1886 & 0.0174 & 0.0200 \\
+\hhline{=======}
+\end{tabular}
+\\
+\vspace{0.3cm}
+\begin{tabular}[h]{ccccccccc}
+\toprule
+\multirow{2}{*}{Severity} & \multicolumn{4}{c}{Censored} & \multicolumn{4}{c}{Truncated}\\
+\cmidrule(l{3pt}r{3pt}){2-5} \cmidrule(l{3pt}r{3pt}){6-9}
+ & SEM1 & SEM2 & SDM1 & SDM2 & SEM1 & SEM3 & SDM1 & SDM3\\
+\midrule
+MAE & 3281.6 & 3281.6 & 3281.3 & 3281.4 & 3886.5 & 3886.7 & 3886.1 & 3885.9 \\
+MAE$_{\text{prem}}$ & 112.6 & 114.5 & 123.0 & 127.6 & 137.7 & 161.3 & 144.2 & 182.2 \\
+\hhline{=========}
+\end{tabular}
+}
+\caption{MAE of the frequency and severity models in Case 2}\label{tab:maecase2}
+\end{table}
+
+
+\FloatBarrier
+
+\subsubsection*{Case 3 : $D_i$ is exogenous to $N$ and $(D, Y)$ is from a Gaussian copula with $\rho_Y=-0.5$}
+Figure \ref{fig:simcase3} shows that in case the exogeneity of deductible is assured only for the frequency, it is observed that usage of SEM2/SEM3 suffers from more biases in the estimated parameters as it fails to capture possible endogeneity of the deductible with incomplete data\rev{; the biases are large (about $+0.6$ to $+0.7$ for the intercept of $\bm{\beta}_Y$ and about $+1.4$ for $\alpha$, Table~\ref{tab:AppSimExoCase3}), because the losses that are censored or truncated by the deductible are not a random subset of the losses when the deductible is informative about the loss size}. It is also notable that even with incomplete severity data, \rev{SDM2/SDM3} still yield \rev{approximately unbiased} estimates of the parameters \rev{(Table~\ref{tab:AppSimEndCase3})} by successfully incorporating the existing endogeneity of the deductible for the severity component. \rev{Note that in this case FEM2 and FEM2G are also biased, although $D\perp N$ (Table~\ref{tab:AppSimExoCase3}), because the retention probability $p(d;\bm{x})$ used by the truncated marginal frequency models is computed under the exogeneity assumption, i.e., from the marginal rather than the conditional distribution of $Y$ given $D$ (and, for FEM2, from the biased marginal severity model SEM3); this illustrates the indirect channel through which the endogeneity of the deductible with respect to the severity contaminates the frequency model under truncated reporting, and FDM2, which evaluates $p(d;\bm{x})$ with SDM3, is free of it.} In Table \ref{tab:maecase3}, \rev{SDMs} provide lower prediction errors than SEMs and \rev{SDM2/SDM3} show improved prediction \rev{at a similar level to SDM1; the error of the severity component of the premium drops from above $1{,}300$ under SEM1--3 to between about $100$ and $200$ under SDM1--3, and the frequency premium error of FDM2 is about one fifth of that of FEM2}.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=1\linewidth]{simcase3.pdf}
+    \caption{\rev{Estimates of the severity (upper panels) and frequency (lower panels) parameters in Case 3}}
+    \label{fig:simcase3}
+\end{figure}
+
+\begin{table}[!h]
+\renewcommand{\tabcolsep}{0.8mm}
+\renewcommand{\arraystretch}{1}
+\footnotesize
+\centering
+{\color{blue}
+\begin{tabular}[h]{ccccccc}
+\toprule
+\multirow{2}{*}{Frequency} & \multicolumn{2}{c}{Censored} & \multicolumn{4}{c}{Truncated}\\
+\cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-7}
+ & FEM1 & FDM1 & FEM1 & FEM2 & FDM1 & FDM2\\
+\midrule
+MAE & 0.8660 & 0.8659 & 0.5626 & 0.5668 & 0.5468 & 0.5466 \\
+MAE$_{\text{prem}}$ & 0.0230 & 0.0263 & 0.0771 & 0.1057 & 0.0157 & 0.0199 \\
+\hhline{=======}
+\end{tabular}
+\\
+\vspace{0.3cm}
+\begin{tabular}[h]{ccccccccc}
+\toprule
+\multirow{2}{*}{Severity} & \multicolumn{4}{c}{Censored} & \multicolumn{4}{c}{Truncated}\\
+\cmidrule(l{3pt}r{3pt}){2-5} \cmidrule(l{3pt}r{3pt}){6-9}
+ & SEM1 & SEM2 & SDM1 & SDM2 & SEM1 & SEM3 & SDM1 & SDM3\\
+\midrule
+MAE & 2987.1 & 3011.0 & 2787.3 & 2787.1 & 4173.4 & 4369.7 & 4242.2 & 4239.9 \\
+MAE$_{\text{prem}}$ & 1404.4 & 1367.3 & 105.9 & 116.2 & 1648.9 & 1458.3 & 162.5 & 210.4 \\
+\hhline{=========}
+\end{tabular}
+}
+\caption{MAE of the frequency and severity models in Case 3}\label{tab:maecase3}
+\end{table}
+
+
+\FloatBarrier
+
+\subsubsection*{Case 4 : Both $(D,N),(D, Y)$ from Gaussian copulas with $\rho_N=-0.6,  \rho_Y=-0.4$}
+
+Figure \ref{fig:simcase4} shows that in case the exogeneity of deductible is not assured, it is observed that usage of FEM2 and SEM2/SEM3 severely suffers from biases in the estimated parameters as they fail to capture possible endogeneity of the deductible with incomplete data. \rev{In this case even SEM1, which uses the complete ground-up losses, is biased (Table~\ref{tab:AppSimExoCase4}). The reason is that the units of the severity likelihood are the claims: since $N$ and $D$ are dependent, policy-years with a small deductible contribute more claims, and since $Y$ and $D$ are dependent, their losses are larger, so that the pooled distribution of the ground-up losses over the claims is not the marginal distribution of $Y$ given $\bm{x}$ assumed by SEM1. The joint severity models condition on the deductible and are therefore not affected by this size-biased sampling of the claims.}
+It is also notable that even with incomplete  data, \rev{FDM2 and SDM2/SDM3} still yield \rev{approximately unbiased} estimates of the parameters \rev{(Table~\ref{tab:AppSimEndCase4})} by successfully incorporating the existing endogeneity of the deductible for both the frequency and severity components. In Table \ref{tab:maecase4}, one can observe that \rev{FDM/SDMs} show lower prediction error than FEM/SEMs and the gap of MAE between \rev{FDM1/SDM1} and \rev{FDM2/SDM2/SDM3} decreases providing comparable level of error with complete data. \rev{Table~\ref{tab:bylevel4} shows what the biases of the marginal models mean for ratemaking. Since the marginal models ignore the deductible, their premium components are too low for the policies with the lowest deductible and far too high for the policies with high deductibles: under censored reporting the frequency component is underestimated by about $42\%$ at the deductible of $500$ and overestimated by about $20\%$ to $440\%$ at the higher levels by FEM1, and the severity component by SEM1/SEM2 shows errors between $-18\%$ and $+680\%$; under truncated reporting the frequency errors of FEM1/FEM2 are even larger (above $+2{,}000\%$ at the highest level, where only a small fraction of the losses exceeds the deductible). The joint models, which price each deductible level with its own conditional distribution, are within about $3\%$ at every level for the frequency and within about $1\%$ for the severity, under complete and incomplete data alike.}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=1\linewidth]{simcase4.pdf}
+    \caption{\rev{Estimates of the severity (upper panels) and frequency (lower panels) parameters in Case 4}}
+    \label{fig:simcase4}
+\end{figure}
+
+\begin{table}[!h]
+\renewcommand{\tabcolsep}{0.8mm}
+\renewcommand{\arraystretch}{1}
+\footnotesize
+\centering
+{\color{blue}
+\begin{tabular}[h]{ccccccc}
+\toprule
+\multirow{2}{*}{Frequency} & \multicolumn{2}{c}{Censored} & \multicolumn{4}{c}{Truncated}\\
+\cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-7}
+ & FEM1 & FDM1 & FEM1 & FEM2 & FDM1 & FDM2\\
+\midrule
+MAE & 0.8659 & 0.7267 & 0.6429 & 0.6616 & 0.5668 & 0.5668 \\
+MAE$_{\text{prem}}$ & 0.4523 & 0.0245 & 0.3240 & 0.3142 & 0.0184 & 0.0212 \\
+\hhline{=======}
+\end{tabular}
+\\
+\vspace{0.3cm}
+\begin{tabular}[h]{ccccccccc}
+\toprule
+\multirow{2}{*}{Severity} & \multicolumn{4}{c}{Censored} & \multicolumn{4}{c}{Truncated}\\
+\cmidrule(l{3pt}r{3pt}){2-5} \cmidrule(l{3pt}r{3pt}){6-9}
+ & SEM1 & SEM2 & SDM1 & SDM2 & SEM1 & SEM3 & SDM1 & SDM3\\
+\midrule
+MAE & 4046.7 & 4061.4 & 3957.2 & 3957.0 & 4576.1 & 4649.6 & 4605.6 & 4603.8 \\
+MAE$_{\text{prem}}$ & 1097.4 & 1090.1 & 149.8 & 154.3 & 949.2 & 888.0 & 172.9 & 205.6 \\
+\hhline{=========}
+\end{tabular}
+}
+\caption{MAE of the frequency and severity models in Case 4}\label{tab:maecase4}
+\end{table}
+
+
+\begin{table}[!ht]
+\footnotesize
+\centering
+{\color{blue}
+\begin{tabular}{llrrrrr}
+\toprule
+ & & \multicolumn{5}{c}{Deductible level} \\
+\cmidrule(lr){3-7}
+ & Model &    500 &  1,000 &  2,500 &  5,000 & 10,000 \\
+\midrule
+\multirow{2}{*}{Frequency, censored} & FEM1 & -41.9 & +21.8 & +79.7 & +166.5 & +440.4 \\
+ & FDM1 & +0.1 & +0.0 & 0.0 & -0.1 & -0.1 \\
+\midrule
+\multirow{4}{*}{Frequency, truncated} & FEM1 & -45.4 & +25.5 & +128.7 & +389.5 & +2155.1 \\
+ & FEM2 & -36.0 & +46.2 & +168.1 & +482.4 & +2658.3 \\
+ & FDM1 & +0.1 & +0.1 & +0.1 & +0.1 & +0.4 \\
+ & FDM2 & +0.1 & +0.1 & +0.3 & +0.5 & +1.7 \\
+\midrule
+\multirow{4}{*}{Severity, censored} & SEM1 & -18.2 & +32.9 & +89.2 & +201.8 & +672.5 \\
+ & SEM2 & -17.5 & +34.5 & +92.1 & +206.8 & +683.1 \\
+ & SDM1 & 0.0 & -0.1 & -0.1 & +0.0 & +0.5 \\
+ & SDM2 & -0.1 & +0.0 & +0.2 & +0.4 & +1.5 \\
+\midrule
+\multirow{4}{*}{Severity, truncated} & SEM1 & -13.4 & +28.2 & +45.7 & +55.3 & +63.1 \\
+ & SEM3 & -10.5 & +34.8 & +54.1 & +64.4 & +72.2 \\
+ & SDM1 & 0.0 & -0.1 & -0.1 & -0.1 & +0.0 \\
+ & SDM3 & -0.1 & +0.1 & +0.1 & +0.1 & +0.2 \\
+\hhline{=======}
+\end{tabular}
+}
+\caption{Relative error (in \%) of the estimated frequency and severity components of the pure premium by deductible level in Case 4: the average over the policy-years (frequency) or claims (severity) at each level of the difference between the estimated and the true component, divided by the average true component at that level, averaged over the replications}\label{tab:bylevel4}
+\end{table}
+
+
+\rev{Table~\ref{tab:simcoverage} uses Cases 1 and 4 to check the standard errors of the sequential estimator of $\boldsymbol{\theta}_k, \ k=1,2,3$. For every replication the stage-wise naive standard errors (using $\bm{H}_{kk}^{-1}$), the stage-wise sandwich standard errors (using $\bm{H}_{kk}^{-1}\bm{J}_{kk}\bm{H}_{kk}^{-\top}$) and the Godambe sandwich standard errors (using $[\bm{H}^{-1}\bm{J}\bm{H}^{-\top}]_{kk}$) of Section 2.3 are computed and compared with the Monte Carlo standard deviation of the estimates; the table also reports the empirical coverage of the nominal 95\% confidence intervals. For SDM3 the three standard errors practically coincide, i.e., the uncertainty of the deductible model estimated at the first stage is immaterial for the severity model. For the truncated frequency models, which depend on the severity model through $p(d;\bm{x})$, the naive standard errors are too small: for FEM2 in Case 1 and for FDM2 in Case 4 the Godambe standard errors of the regression coefficients, of $r$ and of $\rho_N$ are larger than the naive ones by roughly 10--20\%, and the coverage of the naive intervals tends to fall below the nominal level while that of the sandwich intervals is close to 95\%. This is the finite-sample counterpart of the cross-derivative blocks $\bm{H}_{32}$ in Section 2.3, and it is the reason why all standard errors in Section~\ref{sec:empirical} are computed from the Godambe information matrix.}
+
+\begin{table}[!ht]
+\footnotesize
+\centering
+{\color{blue}
+\begin{tabular}{llccccccc}
+\toprule
+Model & Parameter & Emp. SD & \multicolumn{3}{c}{Mean s.e.} & \multicolumn{3}{c}{Coverage of 95\% interval} \\
+\cmidrule(lr){4-6} \cmidrule(lr){7-9}
+ & & & Naive & Robust & Sandwich & Naive & Robust & Sandwich \\
+\midrule
+FEM2 (Case 1) & $\beta_{N,0}$ & 0.0504 & 0.0458 & 0.0457 & 0.0528 & 0.936 & 0.936 & 0.960 \\
+ & $\beta_{N,1}$ & 0.0298 & 0.0276 & 0.0276 & 0.0309 & 0.928 & 0.930 & 0.960 \\
+ & $\beta_{N,2}$ & 0.0604 & 0.0562 & 0.0561 & 0.0630 & 0.930 & 0.930 & 0.952 \\
+ & $r$ & 0.0884 & 0.0839 & 0.0838 & 0.0838 & 0.948 & 0.946 & 0.946 \\
+\midrule
+SDM3 (Case 4) & $\beta_{Y,0}$ & 0.1162 & 0.1146 & 0.1145 & 0.1148 & 0.948 & 0.948 & 0.948 \\
+ & $\beta_{Y,1}$ & 0.0248 & 0.0236 & 0.0236 & 0.0241 & 0.948 & 0.948 & 0.952 \\
+ & $\beta_{Y,2}$ & 0.0524 & 0.0488 & 0.0488 & 0.0497 & 0.944 & 0.944 & 0.946 \\
+ & $\alpha$ & 0.2267 & 0.2181 & 0.2179 & 0.2180 & 0.948 & 0.944 & 0.944 \\
+ & $\rho_Y$ & 0.0343 & 0.0349 & 0.0348 & 0.0349 & 0.944 & 0.946 & 0.946 \\
+\midrule
+FDM2 (Case 4) & $\beta_{N,0}$ & 0.0479 & 0.0393 & 0.0393 & 0.0442 & 0.872 & 0.872 & 0.920 \\
+ & $\beta_{N,1}$ & 0.0265 & 0.0235 & 0.0235 & 0.0263 & 0.912 & 0.910 & 0.954 \\
+ & $\beta_{N,2}$ & 0.0560 & 0.0475 & 0.0474 & 0.0528 & 0.900 & 0.896 & 0.938 \\
+ & $r$ & 0.0828 & 0.0764 & 0.0763 & 0.0844 & 0.922 & 0.920 & 0.952 \\
+ & $\rho_N$ & 0.0251 & 0.0209 & 0.0209 & 0.0254 & 0.902 & 0.898 & 0.946 \\
+\hhline{=========}
+\end{tabular}
+}
+\caption{Monte Carlo standard deviation of the sequential estimates, mean estimated standard errors (naive: stage-wise Hessian $\bm{H}_{kk}^{-1}$; robust: stage-wise sandwich $\bm{H}_{kk}^{-1}\bm{J}_{kk}\bm{H}_{kk}^{-1}$; sandwich: Godambe information $\bm{H}^{-1}\bm{J}\bm{H}^{-\top}$ of Section 2.3) and empirical coverage of the nominal 95\% confidence intervals ($R=500$ replications); the dependence parameters are on the correlation scale (delta method)}\label{tab:simcoverage}
+\end{table}
+
+
+\FloatBarrier
+
+% \subsubsection*{\rev{Cases 5 and 6 : violation of the conditional independence assumption}}
+
+% \rev{Cases 5 and 6 keep the dependence parameters of Case 4 and violate the assumption $N\perp Y\,|\,D$ in the two ways described above; the results are given in Tables~\ref{tab:AppSimExoCase5}--\ref{tab:AppSimEndCase6} and Figures~\ref{fig:simcase5}--\ref{fig:simcase6}. In Case 5, where a common latent propensity drives the deductible, the frequency and the severity, the pairs $(D,N)$ and $(D,Y)$ still follow the assumed copulas, and FDM1 remains approximately unbiased. The severity joint models, however, are fitted to claims that concentrate at the low-deductible end of each atom and show moderate biases: about $-0.04$ for the slopes of $\bm{\beta}_Y$, $-0.1$ to $-0.15$ for $\alpha$ and $-0.02$ to $-0.04$ for $\rho_Y$; FDM2 inherits a small bias through $p(d;\bm{x})$ (about $-0.05$ for $r$). These biases are an order of magnitude smaller than those of the marginal models (for example $+0.6$ to $+0.7$ for the intercept of $\bm{\beta}_Y$ and $+0.6$ to $+0.8$ for $\alpha$ under SEM1--3, and $+0.17$ for the intercept of $\bm{\beta}_N$ and $+0.18$ for $r$ under FEM2), and the prediction errors in Table~\ref{tab:maecase5} remain much lower under the joint models. In Case 6, where in addition the frequency and the severity are directly dependent given the deductible, the size-biased sampling of the claims operates within each deductible level, and the joint severity models become substantially biased even with complete data (about $+0.6$ for the intercept of $\bm{\beta}_Y$ and $+0.5$ for $\alpha$ under SDM1), although still less than the marginal models (about $+1.2$ and $+1.5$ under SEM1); the frequency models are more robust, with FDM1 approximately unbiased and FDM2 showing moderate biases (about $+0.04$ for the intercept of $\bm{\beta}_N$, $-0.07$ for $r$ and $+0.04$ for $\rho_N$). In both cases the estimated dependence parameters stay close to their true values, so that the endogeneity of the deductible is still correctly detected; what suffers is the severity regression. A direct frequency--severity dependence given the deductible would therefore have to be modeled explicitly, which, as discussed in Section~\ref{sec:condind}, is not straightforward under censored or truncated losses and is left for future research.}
+
+% \begin{figure}[h!]
+%     \centering
+%     \includegraphics[width=1\linewidth]{simcase5.pdf}
+%     \caption{\rev{Estimates of the severity (upper panels) and frequency (lower panels) parameters in Case 5}}
+%     \label{fig:simcase5}
+% \end{figure}
+
+% \begin{figure}[h!]
+%     \centering
+%     \includegraphics[width=1\linewidth]{simcase6.pdf}
+%     \caption{\rev{Estimates of the severity (upper panels) and frequency (lower panels) parameters in Case 6}}
+%     \label{fig:simcase6}
+% \end{figure}
+
+% \begin{table}[!h]
+% \renewcommand{\tabcolsep}{0.8mm}
+% \renewcommand{\arraystretch}{1}
+% \footnotesize
+% \centering
+% {\color{blue}
+% \begin{tabular}[h]{ccccccc}
+% \toprule
+% \multirow{2}{*}{Frequency} & \multicolumn{2}{c}{Censored} & \multicolumn{4}{c}{Truncated}\\
+% \cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-7}
+%  & FEM1 & FDM1 & FEM1 & FEM2 & FDM1 & FDM2\\
+% \midrule
+% MAE & 0.8645 & 0.7263 & 0.6578 & 0.6763 & 0.5776 & 0.5769 \\
+% \hhline{=======}
+% \end{tabular}
+% \\
+% \vspace{0.3cm}
+% \begin{tabular}[h]{ccccccccc}
+% \toprule
+% \multirow{2}{*}{Severity} & \multicolumn{4}{c}{Censored} & \multicolumn{4}{c}{Truncated}\\
+% \cmidrule(l{3pt}r{3pt}){2-5} \cmidrule(l{3pt}r{3pt}){6-9}
+%  & SEM1 & SEM2 & SDM1 & SDM2 & SEM1 & SEM3 & SDM1 & SDM3\\
+% \midrule
+% MAE & 4485.6 & 4498.8 & 4365.5 & 4366.1 & 5039.8 & 5122.6 & 5058.4 & 5062.2 \\
+% \hhline{=========}
+% \end{tabular}
+% }
+% \caption{MAE of the frequency and severity models in Case 5}\label{tab:maecase5}
+% \end{table}
+
+
+% \begin{table}[!h]
+% \renewcommand{\tabcolsep}{0.8mm}
+% \renewcommand{\arraystretch}{1}
+% \footnotesize
+% \centering
+% {\color{blue}
+% \begin{tabular}[h]{ccccccc}
+% \toprule
+% \multirow{2}{*}{Frequency} & \multicolumn{2}{c}{Censored} & \multicolumn{4}{c}{Truncated}\\
+% \cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-7}
+%  & FEM1 & FDM1 & FEM1 & FEM2 & FDM1 & FDM2\\
+% \midrule
+% MAE & 0.8644 & 0.7259 & 0.7132 & 0.7289 & 0.6237 & 0.6272 \\
+% \hhline{=======}
+% \end{tabular}
+% \\
+% \vspace{0.3cm}
+% \begin{tabular}[h]{ccccccccc}
+% \toprule
+% \multirow{2}{*}{Severity} & \multicolumn{4}{c}{Censored} & \multicolumn{4}{c}{Truncated}\\
+% \cmidrule(l{3pt}r{3pt}){2-5} \cmidrule(l{3pt}r{3pt}){6-9}
+%  & SEM1 & SEM2 & SDM1 & SDM2 & SEM1 & SEM3 & SDM1 & SDM3\\
+% \midrule
+% MAE & 5694.1 & 5701.9 & 5569.3 & 5565.4 & 6198.3 & 6222.9 & 6188.2 & 6147.3 \\
+% \hhline{=========}
+% \end{tabular}
+% }
+% \caption{MAE of the frequency and severity models in Case 6}\label{tab:maecase6}
+% \end{table}
+
+
+
+% \FloatBarrier
+
+@@SIM_APP_EXTRA@@
+
+\FloatBarrier
 
 \subsection*{Simulation results of deductible, Severity and Frequency}
 
