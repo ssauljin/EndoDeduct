@@ -129,7 +129,7 @@ Note that several studies have sought to address incomplete insurance claim data
 
 
 
-The remaining part of this article is organized as follows.  In Section 2, we firstly introduce the pair copulas setting to model the dependence among the frequency, severity, and (endogenous) deductible, which leads to modified likelihoods of the frequency and severity under different \rev{observation} scenarios \rev{of the insurance claims} to construct a joint model. In Section 3 we provide a comprehensive simulation study, which numerically shows that a naive use of marginal model could lead to biased estimates of the regression coefficients in case the deductible is endogenous.  An actual data analysis is conducted in Section 4 to assess the impacts of endogenous deductible when the marginal and joint models are used to analyze the claim frequency and severity, respectively. We conclude the article in Section 5.
+The remaining part of this article is organized as follows.  In Section 2, we firstly introduce the pair copulas setting to model the dependence among the frequency, severity, and (endogenous) deductible, which leads to modified likelihoods of the frequency and severity under different \rev{observation} scenarios \rev{of the insurance claims} to construct a joint model. In Section 3 we provide a comprehensive simulation study, which numerically shows that a naive use of marginal model could lead to biased estimates of the regression coefficients in case the deductible is endogenous\rev{, and that the resulting pure premium of the aggregate insured loss is severely distorted across the deductible levels}.  An actual data analysis is conducted in Section 4 to assess the impacts of endogenous deductible when the marginal and joint models are used to analyze the claim frequency and severity, respectively. We conclude the article in Section 5.
 
 \section{Proposed Framework}
 
@@ -473,7 +473,124 @@ Note that $\mathcal{PR}$ is Pareto distribution, a special case of the GB2 distr
 %In Case 5 the three positions $U^{N}_i$ and $U^{Y}_{i,j}$ are replaced by the single latent uniform $U^{D}_i$ that generates the level $D_i$ itself, i.e., $D_i=F_D^{-1}(U^{D}_i;\bm{x}_i)$: the pairs $(D_i,N_i)$ and $(D_i,Y_{i,j})$ still follow $C_{DN}$ and $C_{DY}$, and $N_i\perp Y_{i,j}\,|\,U^{D}_i$, but $N_i$ and $Y_{i,j}$ are dependent given the observed level $D_i$ through their common position inside the atom (policy-years with many claims tend to sit at the end of the atom with the smaller latent deductible and larger losses). In Case 6, in addition, the latent normal variable of each $Y_{i,j}$ has correlation $\rho_{NY}=0.3$ with the residual of the latent normal variable of $N_i$ given the deductible, which induces a positive dependence between the frequency and the severity given the deductible. Cases 5 and 6 thus assess the sensitivity of the joint models to two forms of violation of the conditional independence assumption.
 \rev{The dependence parameters are $\rho_N=-0.5$ in Case 2, $\rho_Y=-0.5$ in Case 3, and $(\rho_N,\rho_Y)=(-0.6,-0.4)$ in Case 4; they are the parameters of the Gaussian copulas between the latent uniforms and the claims, and because of the ties in the ordinal deductible the Kendall's $\tau$ between the observed level and the claims is attenuated (for example, in Case 4 the average Kendall's $\tau$ between $D_i$ and $N_i$ is about $-0.28$ and that between $D_i$ and $Y_{i,j}$ about $-0.15$, compared with $2\arcsin(\rho)/\pi=-0.41$ and $-0.26$ on the latent scale).}
 
-Through the sequential maximum likelihood scheme as in the paragraphs following  \eqref{eq:jointloglik}, we estimated the parameters \rev{$\bm{\kappa}$, $\bm{\beta}_D$ of the ordinal deductible model, $\bm{\beta}_Y$, $\alpha$ (and $\rho_Y$) of the severity models SEM1--3 and SDM1--3, and $\bm{\beta}_N$, $r$ (and $\rho_N$) of the frequency models FEM1, FEM2, FEM2G and FDM1--2} under each case with the reporting scenarios\rev{; the joint models use the Gaussian copula, i.e., the copula family of the data-generating process. As in Section~\ref{sec:empirical}, FEM2 and FEM2G evaluate $p(d;\bm{x})$ with the severity models SEM3 and SEM1, respectively, and FDM2 with the joint severity model SDM3 and the fitted deductible model. Starting values are obtained from the data of the respective scenario (a log-linear regression for the severity, a Poisson regression for the frequency and $\rho=0$ for the copula); the true values are never used.} @@SIM_MAIN@@
+Through the sequential maximum likelihood scheme as in the paragraphs following  \eqref{eq:jointloglik}, we estimated the parameters \rev{$\bm{\kappa}$, $\bm{\beta}_D$ of the ordinal deductible model, $\bm{\beta}_Y$, $\alpha$ (and $\rho_Y$) of the severity models SEM1--3 and SDM1--3, and $\bm{\beta}_N$, $r$ (and $\rho_N$) of the frequency models FEM1, FEM2, FEM2G and FDM1--2} under each case with the reporting scenarios\rev{; the joint models use the Gaussian copula, i.e., the copula family of the data-generating process. As in Section~\ref{sec:empirical}, FEM2 and FEM2G evaluate $p(d;\bm{x})$ with the severity models SEM3 and SEM1, respectively, and FDM2 with the joint severity model SDM3 and the fitted deductible model. Starting values are obtained from the data of the respective scenario (a log-linear regression for the severity, a Poisson regression for the frequency and $\rho=0$ for the copula); the true values are never used.} \rev{The estimation results of the individual parameters and the prediction errors of the frequency and severity components are reported in the Appendix (``Additional simulation results''): in short, the marginal models fitted to incomplete data are biased whenever the deductible is endogenous to the corresponding component (and, under truncated reporting, also when it is endogenous only to the severity, through $p(d;\bm{x})$), whereas the joint models are approximately unbiased under all three reporting scenarios. In the remainder of this section we focus on the quantity on which the premium is based, the aggregate insured loss $S=Y^*_1+\cdots+Y^*_{N^*}$ of Section 2.1, and ask how much ignoring the endogeneity of the deductible distorts its pure premium.}
+
+\subsection{\rev{Performance measures for the aggregate insured loss}}\label{sec:simSmeasure}
+
+\rev{For the $i$th policy-year ($i=1,\ldots,m$, $m=5000$) of the $r$th simulated dataset ($r=1,\ldots,R$), the true pure premium is
+$$
+\pi^{(r)}_i={\rm E}(S|D=d_i;\bm{x}_i)={\rm E}(N|D=d_i;\bm{x}_i)\times{\rm E}(\{Y-d_i\}_+|D=d_i;\bm{x}_i),
+$$
+computed with the true parameters, which by \eqref{eq:censoredpremium}--\eqref{eq:truncatedpremium} equals ${\rm E}(N^*|D=d_i;\bm{x}_i)\times{\rm E}(Y^*|D=d_i;\bm{x}_i)$ under both censored and truncated reporting. Its estimate $\hat\pi^{(r)}_i$ is obtained by plugging a fitted frequency model and a fitted severity model into the same expression. We consider six ratemaking schemes, which mirror those of the empirical analysis in Section~\ref{sec:outofsample}: under the exogeneity assumption, FEM1$\times$SEM1 (full data), FEM1$\times$SEM2 (censored data) and FEM2$\times$SEM3 (truncated data), and under endogeneity, FDM1$\times$SDM1, FDM1$\times$SDM2 and FDM2$\times$SDM3. In the truncated schemes the frequency factor is $\hat{\rm E}(N^*|D=d;\bm{x})=\hat p(d;\bm{x})\,\hat{\rm E}(N|D=d;\bm{x})$ with $\hat p(d;\bm{x})$ from the severity model of the same scheme, so that the premium is evaluated as in \eqref{eq:truncatedpremium}; the marginal models evaluate both factors without conditioning the distributions of $N$ and $Y$ on the deductible. The accuracy of a scheme is measured by the mean absolute error (MAE), the mean relative error (MRE) and the mean squared relative error (MSRE) of the premium,
+\begin{align*}
+\text{MAE}&:=\frac{1}{R}\sum_{r=1}^{R}\frac{1}{m}\sum_{i=1}^{m}\left|\hat\pi^{(r)}_i-\pi^{(r)}_i\right|,\qquad
+\text{MRE}:=\frac{1}{R}\sum_{r=1}^{R}\frac{1}{m}\sum_{i=1}^{m}\frac{\hat\pi^{(r)}_i-\pi^{(r)}_i}{\pi^{(r)}_i},\\
+\text{MSRE}&:=\frac{1}{R}\sum_{r=1}^{R}\frac{1}{m}\sum_{i=1}^{m}\left(\frac{\hat\pi^{(r)}_i-\pi^{(r)}_i}{\pi^{(r)}_i}\right)^2.
+\end{align*}
+The MAE measures the error in monetary units and is dominated by the policy-years with large premiums, i.e., with low deductibles; the MRE measures a systematic over- or underpricing in relative terms; and the MSRE combines the bias and the variability of the relative error. Since the error of a model that ignores the endogeneity of the deductible depends on the deductible itself, the three measures are also computed separately for each deductible level $d_k$, by replacing the average over $i=1,\ldots,m$ with the average over $\{i:d_i=d_k\}$. We compare the estimated premium with the true premium rather than with the realised aggregate loss, because the latter is dominated by the irreducible variability of the heavy-tailed losses; the MAE against the realised aggregate loss is reported in Table~\ref{tab:AppSimSobs} of the Appendix, together with the MAE and MSRE of the individual components $N$, $Y$, $N^*$ and $Y^*$ (Table~\ref{tab:AppSimComponents}).}
+
+\subsection{\rev{Results}}\label{sec:simSresults}
+
+\begin{table}[!ht]
+\footnotesize
+\centering
+{\color{blue}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llrrrrrr}
+\toprule
+ & & \multicolumn{3}{c}{Exogenous deductible} & \multicolumn{3}{c}{Endogenous deductible} \\
+\cmidrule(lr){3-5} \cmidrule(lr){6-8}
+ & & Full & Censored & Truncated & Full & Censored & Truncated \\
+ & & FEM1$\times$SEM1 & FEM1$\times$SEM2 & FEM2$\times$SEM3 & FDM1$\times$SDM1 & FDM1$\times$SDM2 & FDM2$\times$SDM3 \\
+\midrule
+\multirow{3}{*}{Case 1} & MAE & 93.3 & 94.2 & 100.6 & 103.5 & 110.9 & 119.3 \\
+ & MRE (\%) & +0.1 & +0.1 & +0.3 & +0.0 & -0.1 & +0.1 \\
+ & MSRE & 0.005 & 0.005 & 0.006 & 0.006 & 0.007 & 0.010 \\
+\midrule
+\multirow{3}{*}{Case 2} & MAE & 936.6 & 937.2 & 913.2 & 113.7 & 114.4 & 123.5 \\
+ & MRE (\%) & +69.9 & +69.9 & +100.7 & +1.0 & +0.9 & +0.9 \\
+ & MSRE & 3.859 & 3.856 & 5.669 & 0.009 & 0.010 & 0.012 \\
+\midrule
+\multirow{3}{*}{Case 3} & MAE & 1,098.1 & 1,069.2 & 1,123.7 & 108.5 & 118.0 & 137.4 \\
+ & MRE (\%) & +520.4 & +432.6 & +520.4 & +0.5 & +0.9 & +1.7 \\
+ & MSRE & 490 & 251 & 349 & 0.008 & 0.013 & 0.023 \\
+\midrule
+\multirow{3}{*}{Case 4} & MAE & 2,296.6 & 2,298.7 & 2,349.6 & 153.1 & 153.5 & 168.5 \\
+ & MRE (\%) & +3,401.9 & +3,186.0 & +3,804.3 & -1.2 & -0.7 & -1.3 \\
+ & MSRE & 113,062 & 81,289 & 97,254 & 0.013 & 0.015 & 0.019 \\
+\hhline{========}
+\end{tabular}
+}
+}
+\caption{MAE, MRE and MSRE of the estimated pure premium ${\rm E}(S|D=d;\bm{x})$ of the aggregate insured loss $S=Y^*_1+\cdots+Y^*_{N^*}$ under the exogenous (marginal) and endogenous (joint) ratemaking schemes in Cases 1--4, averaged over the $R=51$ replications. Each scheme combines the frequency and severity models indicated in the header, fitted to the full, censored or truncated data.}\label{tab:simS}
+\end{table}
+
+\rev{Table~\ref{tab:simS} summarizes the results. When the deductible is exogenous (Case 1), all six schemes price the aggregate insured loss accurately: the MRE is within $\pm 0.3\%$ and the MSRE does not exceed $0.01$. The joint schemes have a slightly larger MAE (about $104$ to $119$ against $93$ to $101$, compared with an average true premium of about $2{,}000$), which is the price for estimating dependence parameters that are zero, and the truncated data lead to the largest errors among the marginal and among the joint schemes. As soon as the deductible is endogenous to either component, the picture changes completely. The marginal schemes overprice the portfolio on average by about $70\%$ to $100\%$ in Case 2, where only the frequency depends on the deductible, by about $430\%$ to $520\%$ in Case 3, where only the severity does, and by more than $3{,}000\%$ in Case 4, and their MAE is about eight to fifteen times that of the joint schemes. The joint schemes, in contrast, keep the MRE within about $\pm 2\%$ and the MSRE below $0.025$ in all cases, under complete and incomplete data alike; the incompleteness of the data costs them some efficiency (for example, the MAE rises from $153$ under FDM1$\times$SDM1 to $169$ under FDM2$\times$SDM3 in Case 4), but it does not cause a bias. For the marginal schemes, on the other hand, incomplete data aggravate the error: FEM2$\times$SEM3 has the largest MRE in Cases 2 and 4 (and the same MRE as FEM1$\times$SEM1 in Case 3), because the truncated frequency model inherits the bias of the marginal severity model through $p(d;\bm{x})$.}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=\linewidth]{simS_bylevel.pdf}
+    \caption{\rev{Ratio of the estimated to the true pure premium of the aggregate insured loss, $1+\text{MRE}$, by deductible level (log scale) under the six ratemaking schemes of Table~\ref{tab:simS}; the dotted line indicates a correct premium.}}
+    \label{fig:simSbylevel}
+\end{figure}
+
+\begin{table}[!ht]
+\footnotesize
+\centering
+{\color{blue}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llrrrrrrrrrr}
+\toprule
+ & & \multicolumn{5}{c}{MAE by deductible level} & \multicolumn{5}{c}{MSRE by deductible level} \\
+\cmidrule(lr){3-7} \cmidrule(lr){8-12}
+ & Scheme & 500 & 1,000 & 2,500 & 5,000 & 10,000 & 500 & 1,000 & 2,500 & 5,000 & 10,000 \\
+\midrule
+\multirow{7}{*}{Case 1} & True premium & 2,106.8 & 2,429.9 & 2,124.3 & 1,614.1 & 1,052.7 & \multicolumn{5}{c}{} \\
+\cmidrule(lr){2-12}
+ & Exo. full & 85.9 & 102.5 & 104.0 & 98.8 & 86.6 & 0.003 & 0.003 & 0.005 & 0.007 & 0.014 \\
+ & Exo. censored & 85.6 & 103.2 & 105.9 & 101.1 & 90.7 & 0.003 & 0.003 & 0.005 & 0.008 & 0.014 \\
+ & Exo. truncated & 91.1 & 109.6 & 112.6 & 109.6 & 99.5 & 0.004 & 0.004 & 0.006 & 0.009 & 0.018 \\
+ & Endo. full & 98.5 & 102.9 & 110.5 & 112.0 & 108.7 & 0.004 & 0.004 & 0.006 & 0.010 & 0.022 \\
+ & Endo. censored & 109.4 & 105.9 & 114.8 & 116.2 & 115.9 & 0.005 & 0.004 & 0.006 & 0.011 & 0.026 \\
+ & Endo. truncated & 111.7 & 113.1 & 123.0 & 132.2 & 147.9 & 0.005 & 0.005 & 0.008 & 0.015 & 0.041 \\
+\midrule
+\multirow{7}{*}{Case 2} & True premium & 3,482.2 & 2,297.2 & 1,495.6 & 859.9 & 333.9 & \multicolumn{5}{c}{} \\
+\cmidrule(lr){2-12}
+ & Exo. full & 1,353.0 & 421.2 & 646.8 & 756.4 & 704.3 & 0.121 & 0.431 & 1.819 & 5.932 & 29 \\
+ & Exo. censored & 1,352.8 & 419.1 & 648.7 & 760.1 & 708.8 & 0.122 & 0.427 & 1.806 & 5.921 & 29 \\
+ & Exo. truncated & 961.4 & 662.8 & 1,023.8 & 1,060.6 & 904.5 & 0.056 & 0.798 & 2.981 & 9.032 & 41 \\
+ & Endo. full & 155.2 & 105.2 & 84.1 & 61.4 & 36.8 & 0.004 & 0.005 & 0.009 & 0.016 & 0.035 \\
+ & Endo. censored & 155.8 & 104.8 & 85.4 & 63.2 & 38.1 & 0.004 & 0.005 & 0.009 & 0.017 & 0.037 \\
+ & Endo. truncated & 166.9 & 109.0 & 93.8 & 74.6 & 48.4 & 0.004 & 0.006 & 0.010 & 0.021 & 0.053 \\
+\midrule
+\multirow{7}{*}{Case 3} & True premium & 3,583.5 & 2,157.5 & 1,197.7 & 480.8 & 85.1 & \multicolumn{5}{c}{} \\
+\cmidrule(lr){2-12}
+ & Exo. full & 1,450.3 & 492.5 & 943.4 & 1,130.6 & 945.5 & 0.121 & 0.501 & 6.224 & 85 & 4,749 \\
+ & Exo. censored & 1,334.6 & 559.2 & 1,040.2 & 1,157.9 & 877.1 & 0.099 & 0.612 & 6.555 & 71 & 2,405 \\
+ & Exo. truncated & 1,265.9 & 645.8 & 1,217.3 & 1,377.2 & 1,087.3 & 0.085 & 0.756 & 8.224 & 93 & 3,339 \\
+ & Endo. full & 163.8 & 96.0 & 68.3 & 37.3 & 10.5 & 0.003 & 0.004 & 0.007 & 0.015 & 0.035 \\
+ & Endo. censored & 171.6 & 107.7 & 83.4 & 48.8 & 13.8 & 0.004 & 0.005 & 0.011 & 0.025 & 0.060 \\
+ & Endo. truncated & 198.9 & 121.1 & 98.4 & 63.8 & 19.9 & 0.005 & 0.006 & 0.015 & 0.044 & 0.131 \\
+\midrule
+\multirow{7}{*}{Case 4} & True premium & 5,846.9 & 2,169.8 & 952.2 & 343.2 & 46.8 & \multicolumn{5}{c}{} \\
+\cmidrule(lr){2-12}
+ & Exo. full & 3,149.3 & 1,213.7 & 1,926.2 & 1,983.5 & 1,474.3 & 0.211 & 15 & 265 & 6,315 & 1,110,272 \\
+ & Exo. censored & 3,130.0 & 1,225.0 & 1,960.5 & 2,011.6 & 1,484.2 & 0.211 & 15 & 246 & 5,464 & 798,692 \\
+ & Exo. truncated & 2,625.1 & 1,733.1 & 2,549.7 & 2,537.8 & 1,888.0 & 0.134 & 21 & 325 & 7,078 & 953,425 \\
+ & Endo. full & 259.5 & 110.1 & 62.2 & 31.6 & 6.7 & 0.003 & 0.007 & 0.013 & 0.026 & 0.058 \\
+ & Endo. censored & 257.5 & 113.3 & 65.2 & 33.5 & 7.3 & 0.004 & 0.007 & 0.014 & 0.029 & 0.068 \\
+ & Endo. truncated & 286.4 & 117.5 & 68.5 & 38.9 & 8.9 & 0.004 & 0.008 & 0.017 & 0.038 & 0.098 \\
+\hhline{============}
+\end{tabular}
+}
+}
+\caption{MAE and MSRE of the estimated pure premium ${\rm E}(S|D=d;\bm{x})$ by deductible level in Cases 1--4: the averages over the policy-years at each level, averaged over the replications. ``True premium'' is the average true pure premium at each level. The frequency and severity models of each scheme are those of Table~\ref{tab:simS}.}\label{tab:simSbylevel}
+\end{table}
+
+\rev{Figure~\ref{fig:simSbylevel} and Table~\ref{tab:simSbylevel} show that these averages conceal a systematic pattern across the deductible levels. Because the marginal models price every deductible level with the same distribution of $N$ and $Y$, they underprice the policy-years with the lowest deductible, which are the riskiest when the dependence is negative, and overprice those with high deductibles. In Case 2 the MRE of FEM1$\times$SEM1 ranges from $-34\%$ at the deductible of $500$ to $+432\%$ at $10{,}000$; in Case 3 from $-34\%$ to about $+4{,}300\%$; and in Case 4 from $-45\%$ to about $+29{,}000\%$, i.e., the estimated premium for the highest deductible is about $300$ times the true premium of about $47$. The MSRE grows accordingly, from about $0.2$ at the lowest level to more than $10^5$ at the highest level in Case 4. In monetary terms (MAE), the error of the marginal schemes is large at every level, since the underpricing of the low-deductible policies with large premiums and the overpricing of the high-deductible policies with small premiums are both substantial. The joint schemes are accurate at every level: their MRE at a given level is within about $\pm 5\%$ in all cases (Figure~\ref{fig:simSbylevel}), and their MSRE remains below $0.15$ even at the highest deductible, where the premium is smallest and the relative error is most sensitive. From the ratemaking perspective, a marginal model would therefore produce a premium schedule whose discount for a higher deductible is far too small, so that the low-risk policyholders who choose high deductibles subsidize the high-risk policyholders who choose low ones, which would reinforce the adverse selection that makes the deductible endogenous in the first place. The proposed joint models remove this distortion even when the losses below the deductible are censored or not reported at all.}
+
+
+\FloatBarrier
 
 \section{Empirical Analysis}\label{sec:empirical}
 \subsection{Insurance Claim Dataset for Deductible, Frequency and Severity}
@@ -1064,7 +1181,7 @@ For model selection, we compare all the \rev{aforementioned} distributions excep
 \subsection*{\rev{Additional simulation results}}
 
 \rev{This part of the Appendix reports the results of the simulation study of Section~\ref{sec:simulation} that are not shown in the main text: the estimation of the individual parameters, the prediction errors of the frequency and severity components of the pure premium, the relative errors of these components by deductible level, and the coverage of the confidence intervals.}
-The estimation performance for parameter $\theta$ was assessed with the following measures:
+\rev{In the simulation study of Section~\ref{sec:simulation},} the estimation performance for parameter $\theta$ was assessed with the following measures:
 $$
 \begin{aligned}
 \text{Mean}&:= \overline{\hat{\theta}}=\frac{1}{500} \sum_{r=1}^{500} \hat{\theta}^{(r)}, \\
@@ -1083,8 +1200,8 @@ To assess the predictive performance of insurance claims with $\hat{\theta}^{(r)
  where $M^{(r)}$ is the total number of \rev{claim} observations under censored reporting and truncated reporting in $r$th dataset and $\hat{N}^{*(r)}_s$ / $\hat{Y}^{*(r)}_{\rev{t}}$ are predicted values of claim frequency / severity in $r$th dataset, respectively\rev{, namely the conditional means of the observed frequency and severity given the deductible and the covariates under the fitted model: $\hat{\rm E}(N|D=d;\bm{x})$ and $\hat{\rm E}(\{Y-d\}_+|D=d;\bm{x})$ under censored reporting, and $\hat{\rm E}(N^*|D=d;\bm{x})=\hat p(d;\bm{x})\hat{\rm E}(N|D=d;\bm{x})$ and $\hat{\rm E}(Y-d|Y>d,D=d;\bm{x})$ under truncated reporting, where the marginal models evaluate ${\rm E}(N|D=d;\bm{x})$ and the distribution of $Y$ given $D=d$ without conditioning on the deductible. Because these MAEs are dominated by the irreducible variability of the claims (in particular of the heavy-tailed severities), we also report the error of the premium components themselves, which is what matters for ratemaking:}
 {\color{blue}
 \begin{align*}
-    \text{Frequency}_{\text{prem}}&:=\frac{1}{500}\sum_{r=1}^{500}\left(\frac{1}{5000}\sum_{s=1}^{5000}|m^{(r)}_s -\hat{m}^{(r)}_s|\right),\qquad
-    \text{Severity}_{\text{prem}}:=\frac{1}{500}\sum_{r=1}^{500}\left(\frac{1}{M^{(r)}}\sum_{t=1}^{M^{(r)}}|\mu^{(r)}_t -\hat{\mu}^{(r)}_t|\right),
+    \text{Frequency}_{\text{prem}}&:=\frac{1}{500}\sum_{r=1}^{500}\left(\frac{1}{5000}\sum_{s=1}^{5000}|m^{(r)}_s -\hat{m}^{(r)}_s|\right),\\
+    \text{Severity}_{\text{prem}}&:=\frac{1}{500}\sum_{r=1}^{500}\left(\frac{1}{M^{(r)}}\sum_{t=1}^{M^{(r)}}|\mu^{(r)}_t -\hat{\mu}^{(r)}_t|\right),
 \end{align*}
 }
 \rev{where $m_s^{(r)}$ and $\mu_t^{(r)}$ are the true conditional means of the observed frequency and severity given $(D,\bm{x})$ under the data-generating process (the frequency and severity factors of \eqref{eq:censoredpremium} or \eqref{eq:truncatedpremium}, computed with the true parameters) and $\hat m_s^{(r)}$, $\hat\mu_t^{(r)}$ their estimates under the fitted model. The detailed estimation results (mean, Monte Carlo standard error, RMSE and bias of each parameter) are reported in Tables~\ref{tab:AppSimDed}--\ref{tab:AppSimEndCase4} in the Appendix, and are summarized graphically in Figures~\ref{fig:simcase1}--\ref{fig:simcase4}; the optimizer converged in all replications and for all models.}%with one exception (the deductible model in one replication of Case 6, whose line search terminated abnormally at estimates that are nevertheless regular), 
@@ -1424,7 +1541,172 @@ FDM2 (Case 4) & $\beta_{N,0}$ & 0.0479 & 0.0393 & 0.0393 & 0.0442 & 0.872 & 0.87
 
 % \FloatBarrier
 
-@@SIM_APP_EXTRA@@
+\rev{Tables~\ref{tab:bylevel1}--\ref{tab:bylevel3} extend Table~\ref{tab:bylevel4} to Cases 1--3. Table~\ref{tab:AppSimComponents} compares the models in terms of the MAE and MSRE of the estimated conditional means of the ground-up frequency and severity, ${\rm E}(N|D=d;\bm{x})$ and ${\rm E}(Y|D=d;\bm{x})$, and of the insurer's number and amount of payments, ${\rm E}(N^*|D=d;\bm{x})$ and ${\rm E}(Y^*|D=d;\bm{x})$, all evaluated for every policy-year at its own deductible and rating variables, so that they are the components of the premium analysed in Section~\ref{sec:simSresults}. The marginal models are accurate for a component only when the deductible is exogenous to it: for example, FEM1 estimates ${\rm E}(N|D=d;\bm{x})$ well in Cases 1 and 3 (MSRE of $0.001$) but not in Cases 2 and 4 (MSRE of about $3.7$ and $28$), and the marginal severity models estimate ${\rm E}(Y|D=d;\bm{x})$ well only in Cases 1 and 2. Under truncated reporting the indirect channel through $p(d;\bm{x})$ is clearly visible: in Case 3, where $D\perp N$, the MSRE of ${\rm E}(N^*|D=d;\bm{x})$ under FEM1, FEM2G and FEM2 exceeds $100$ although the estimated ${\rm E}(N|D=d;\bm{x})$ itself is accurate. The joint models estimate all four components with an MSRE of at most about $0.016$ in every case. Table~\ref{tab:AppSimSobs} reports the MAE of the estimated pure premium against the realised aggregate insured loss; it is dominated by the variability of $S$, but it still ranks the joint schemes first whenever the deductible is endogenous.}
+
+\begin{table}[!ht]
+\footnotesize
+\centering
+{\color{blue}
+\begin{tabular}{llrrrrr}
+\toprule
+ & & \multicolumn{5}{c}{Deductible level} \\
+\cmidrule(lr){3-7}
+ & Model &    500 &  1,000 &  2,500 &  5,000 & 10,000 \\
+\midrule
+\multirow{2}{*}{Frequency, censored} & FEM1 & -0.2 & -0.1 & -0.1 & -0.1 & 0.0 \\
+ & FDM1 & -0.3 & -0.1 & 0.0 & +0.0 & +0.1 \\
+\midrule
+\multirow{4}{*}{Frequency, truncated} & FEM1 & -0.3 & -0.2 & 0.0 & +0.2 & +0.8 \\
+ & FEM2 & -0.6 & -0.3 & +0.1 & +0.4 & +1.0 \\
+ & FDM1 & -0.3 & -0.2 & -0.1 & -0.1 & +0.1 \\
+ & FDM2 & -0.3 & -0.5 & -0.4 & -0.4 & -0.3 \\
+\midrule
+\multirow{4}{*}{Severity, censored} & SEM1 & +0.3 & +0.4 & +0.9 & +1.3 & +1.9 \\
+ & SEM2 & +0.3 & +0.5 & +0.9 & +1.4 & +2.0 \\
+ & SDM1 & +0.8 & +0.5 & +0.6 & +0.8 & +0.9 \\
+ & SDM2 & +1.2 & +0.4 & +0.4 & +0.4 & +0.1 \\
+\midrule
+\multirow{4}{*}{Severity, truncated} & SEM1 & +0.4 & +0.5 & +0.8 & +0.9 & +1.1 \\
+ & SEM3 & +0.8 & +0.8 & +0.8 & +0.9 & +0.7 \\
+ & SDM1 & +0.7 & +0.5 & +0.6 & +0.7 & +0.7 \\
+ & SDM3 & +0.9 & +0.7 & +0.7 & +0.8 & +0.8 \\
+\hhline{=======}
+\end{tabular}
+}
+\caption{Relative error (in \%) of the estimated frequency and severity components of the pure premium by deductible level in Case 1: the average over the policy-years (frequency) or claims (severity) at each level of the difference between the estimated and the true component, divided by the average true component at that level, averaged over the replications}\label{tab:bylevel1}
+\end{table}
+
+\begin{table}[!ht]
+\footnotesize
+\centering
+{\color{blue}
+\begin{tabular}{llrrrrr}
+\toprule
+ & & \multicolumn{5}{c}{Deductible level} \\
+\cmidrule(lr){3-7}
+ & Model &    500 &  1,000 &  2,500 &  5,000 & 10,000 \\
+\midrule
+\multirow{2}{*}{Frequency, censored} & FEM1 & -37.3 & +14.5 & +55.7 & +111.7 & +262.3 \\
+ & FDM1 & +0.3 & +0.2 & +0.1 & 0.0 & -0.1 \\
+\midrule
+\multirow{4}{*}{Frequency, truncated} & FEM1 & -37.6 & +12.0 & +48.5 & +95.5 & +221.6 \\
+ & FEM2 & -26.0 & +32.7 & +75.8 & +131.7 & +282.0 \\
+ & FDM1 & +0.2 & +0.3 & +0.4 & +0.6 & +1.3 \\
+ & FDM2 & +0.2 & +0.3 & +0.3 & +0.4 & +1.3 \\
+\midrule
+\multirow{4}{*}{Severity, censored} & SEM1 & +0.3 & +0.3 & +0.4 & +0.5 & +0.7 \\
+ & SEM2 & +0.3 & +0.4 & +0.6 & +0.8 & +1.1 \\
+ & SDM1 & +0.1 & +0.4 & +0.7 & +1.1 & +2.0 \\
+ & SDM2 & +0.2 & +0.4 & +0.7 & +1.0 & +1.9 \\
+\midrule
+\multirow{4}{*}{Severity, truncated} & SEM1 & +0.2 & +0.2 & +0.3 & +0.2 & +0.1 \\
+ & SEM3 & +0.3 & +0.4 & +0.5 & +0.5 & +0.5 \\
+ & SDM1 & +0.1 & +0.3 & +0.4 & +0.4 & +0.4 \\
+ & SDM3 & +0.2 & +0.5 & +0.6 & +0.7 & +0.8 \\
+\hhline{=======}
+\end{tabular}
+}
+\caption{Relative error (in \%) of the estimated frequency and severity components of the pure premium by deductible level in Case 2: the average over the policy-years (frequency) or claims (severity) at each level of the difference between the estimated and the true component, divided by the average true component at that level, averaged over the replications}\label{tab:bylevel2}
+\end{table}
+
+\begin{table}[!ht]
+\footnotesize
+\centering
+{\color{blue}
+\begin{tabular}{llrrrrr}
+\toprule
+ & & \multicolumn{5}{c}{Deductible level} \\
+\cmidrule(lr){3-7}
+ & Model &    500 &  1,000 &  2,500 &  5,000 & 10,000 \\
+\midrule
+\multirow{2}{*}{Frequency, censored} & FEM1 & +0.7 & +0.6 & +0.5 & +0.5 & +0.5 \\
+ & FDM1 & +0.9 & +0.6 & +0.4 & +0.3 & +0.2 \\
+\midrule
+\multirow{4}{*}{Frequency, truncated} & FEM1 & -11.8 & -1.8 & +27.4 & +112.7 & +584.1 \\
+ & FEM2 & -17.0 & -5.1 & +33.6 & +142.5 & +737.5 \\
+ & FDM1 & +1.0 & +0.7 & +0.4 & -0.3 & -1.1 \\
+ & FDM2 & +1.2 & +0.1 & -0.2 & -0.6 & +0.1 \\
+\midrule
+\multirow{4}{*}{Severity, censored} & SEM1 & -40.8 & +12.7 & +77.0 & +234.8 & +1117.2 \\
+ & SEM2 & -37.6 & +19.0 & +85.5 & +240.5 & +1036.8 \\
+ & SDM1 & -0.2 & -0.3 & -0.6 & -1.5 & -1.8 \\
+ & SDM2 & -0.3 & -0.2 & -0.5 & -1.2 & -0.9 \\
+\midrule
+\multirow{4}{*}{Severity, truncated} & SEM1 & -32.6 & +17.6 & +45.5 & +67.4 & +90.1 \\
+ & SEM3 & -21.1 & +36.5 & +61.2 & +74.7 & +81.8 \\
+ & SDM1 & -0.3 & -0.4 & -0.6 & -0.9 & -0.8 \\
+ & SDM3 & -0.8 & -0.1 & -0.3 & -0.5 & -0.4 \\
+\hhline{=======}
+\end{tabular}
+}
+\caption{Relative error (in \%) of the estimated frequency and severity components of the pure premium by deductible level in Case 3: the average over the policy-years (frequency) or claims (severity) at each level of the difference between the estimated and the true component, divided by the average true component at that level, averaged over the replications}\label{tab:bylevel3}
+\end{table}
+
+\begin{table}[!ht]
+\footnotesize
+\centering
+{\color{blue}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llrrrrrrrr}
+\toprule
+Component & Model & \multicolumn{2}{c}{Case 1} & \multicolumn{2}{c}{Case 2} & \multicolumn{2}{c}{Case 3} & \multicolumn{2}{c}{Case 4} \\
+\cmidrule(lr){3-4} \cmidrule(lr){5-6} \cmidrule(lr){7-8} \cmidrule(lr){9-10}
+ & & MAE & MSRE & MAE & MSRE & MAE & MSRE & MAE & MSRE \\
+\midrule
+\multirow{5}{*}{$N$ (ground-up frequency)} & FEM1 & 0.0219 & 0.001 & 0.3770 & 3.704 & 0.0225 & 0.001 & 0.4514 & 28 \\
+ & FEM2G & 0.0239 & 0.002 & 0.3987 & 5.537 & 0.0317 & 0.003 & 0.4681 & 41 \\
+ & FEM2 & 0.0288 & 0.002 & 0.3988 & 5.577 & 0.0907 & 0.013 & 0.4643 & 43 \\
+ & FDM1 & 0.0247 & 0.002 & 0.0255 & 0.003 & 0.0253 & 0.002 & 0.0228 & 0.003 \\
+ & FDM2 & 0.0480 & 0.007 & 0.0368 & 0.009 & 0.0466 & 0.007 & 0.0302 & 0.008 \\
+\midrule
+\multirow{6}{*}{$Y$ (ground-up severity)} & SEM1 & 103.0 & 0.002 & 96.5 & 0.001 & 1,545.9 & 0.866 & 1,394.7 & 0.793 \\
+ & SEM2 & 106.1 & 0.002 & 98.4 & 0.001 & 1,565.2 & 0.991 & 1,404.7 & 0.802 \\
+ & SEM3 & 137.1 & 0.003 & 122.1 & 0.002 & 1,676.1 & 1.424 & 1,451.5 & 0.840 \\
+ & SDM1 & 112.1 & 0.002 & 118.6 & 0.002 & 98.2 & 0.001 & 118.8 & 0.002 \\
+ & SDM2 & 128.3 & 0.002 & 125.3 & 0.002 & 115.6 & 0.002 & 119.8 & 0.002 \\
+ & SDM3 & 214.4 & 0.007 & 196.0 & 0.006 & 157.0 & 0.005 & 145.4 & 0.004 \\
+\midrule
+\multirow{5}{*}{$N^*$ (truncated)} & FEM1 & 0.0130 & 0.002 & 0.2048 & 3.772 & 0.0759 & 105 & 0.3240 & 51,659 \\
+ & FEM2G & 0.0143 & 0.002 & 0.1884 & 5.617 & 0.0803 & 112 & 0.3098 & 79,409 \\
+ & FEM2 & 0.0150 & 0.003 & 0.1884 & 5.544 & 0.1047 & 122 & 0.3142 & 48,093 \\
+ & FDM1 & 0.0144 & 0.003 & 0.0176 & 0.005 & 0.0152 & 0.005 & 0.0171 & 0.009 \\
+ & FDM2 & 0.0172 & 0.005 & 0.0197 & 0.007 & 0.0209 & 0.016 & 0.0202 & 0.013 \\
+\midrule
+\multirow{4}{*}{$Y^*$ (censored)} & SEM1 & 93.3 & 0.004 & 86.9 & 0.004 & 1,223.2 & 486 & 1,007.7 & 43 \\
+ & SEM2 & 96.1 & 0.004 & 88.5 & 0.004 & 1,184.7 & 248 & 1,007.6 & 39 \\
+ & SDM1 & 98.8 & 0.005 & 99.1 & 0.005 & 87.6 & 0.006 & 101.5 & 0.010 \\
+ & SDM2 & 109.9 & 0.006 & 102.5 & 0.006 & 100.1 & 0.011 & 102.0 & 0.011 \\
+\midrule
+\multirow{4}{*}{$Y^*$ (truncated)} & SEM1 & 169.0 & 0.002 & 152.5 & 0.002 & 1,806.6 & 0.320 & 1,372.6 & 0.184 \\
+ & SEM3 & 202.7 & 0.003 & 177.9 & 0.002 & 1,596.2 & 0.276 & 1,401.6 & 0.191 \\
+ & SDM1 & 175.9 & 0.002 & 160.5 & 0.002 & 118.9 & 0.001 & 145.1 & 0.002 \\
+ & SDM3 & 232.4 & 0.004 & 214.6 & 0.003 & 173.5 & 0.003 & 170.5 & 0.003 \\
+\hhline{==========}
+\end{tabular}
+}
+}
+\caption{MAE and MSRE of the estimated conditional means of the ground-up frequency ${\rm E}(N|D=d;\bm{x})$ and severity ${\rm E}(Y|D=d;\bm{x})$, of the number of payments under truncated reporting ${\rm E}(N^*|D=d;\bm{x})=p(d;\bm{x}){\rm E}(N|D=d;\bm{x})$ (under censored reporting $N^*=N$), and of the payment per claim under censored reporting ${\rm E}(Y^*|D=d;\bm{x})={\rm E}((Y-d)_+|D=d;\bm{x})$ and truncated reporting ${\rm E}(Y^*|D=d;\bm{x})={\rm E}(Y-d|Y>d,D=d;\bm{x})$, evaluated for every policy-year and averaged over the replications. The truncated frequency models use $p(d;\bm{x})$ from SEM1 (FEM1, FEM2G), SEM3 (FEM2), SDM1 (FDM1) and SDM3 (FDM2).}\label{tab:AppSimComponents}
+\end{table}
+
+\begin{table}[!ht]
+\footnotesize
+\centering
+{\color{blue}
+\begin{tabular}{lrrrrrr}
+\toprule
+ & \multicolumn{3}{c}{Exogenous deductible} & \multicolumn{3}{c}{Endogenous deductible} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7}
+ & Full & Censored & Truncated & Full & Censored & Truncated \\
+\midrule
+Case 1 & 2,870.4 & 2,870.5 & 2,871.5 & 2,870.2 & 2,870.1 & 2,869.7 \\
+Case 2 & 2,987.8 & 2,988.4 & 3,166.0 & 2,965.0 & 2,965.3 & 2,964.7 \\
+Case 3 & 3,066.6 & 3,103.5 & 3,185.2 & 3,013.3 & 3,013.6 & 3,012.0 \\
+Case 4 & 3,978.1 & 3,985.2 & 4,235.4 & 3,559.5 & 3,559.6 & 3,558.2 \\
+\hhline{=======}
+\end{tabular}
+}
+\caption{Mean absolute difference between the realised aggregate insured loss $S$ of a policy-year and its estimated pure premium ${\rm E}(S|D=d;\bm{x})$ (averaged over the replications); unlike Table~\ref{tab:simS}, this measure contains the irreducible variability of $S$.}\label{tab:AppSimSobs}
+\end{table}
 
 \FloatBarrier
 

@@ -1,0 +1,32 @@
+\begin{table}[!ht]
+\footnotesize
+\centering
+{\color{blue}
+\begin{tabular}{llrrrrr}
+\toprule
+ & & \multicolumn{5}{c}{Deductible level} \\
+\cmidrule(lr){3-7}
+ & Model &    500 &  1,000 &  2,500 &  5,000 & 10,000 \\
+\midrule
+\multirow{2}{*}{Frequency, censored} & FEM1 & +0.7 & +0.6 & +0.5 & +0.5 & +0.5 \\
+ & FDM1 & +0.9 & +0.6 & +0.4 & +0.3 & +0.2 \\
+\midrule
+\multirow{4}{*}{Frequency, truncated} & FEM1 & -11.8 & -1.8 & +27.4 & +112.7 & +584.1 \\
+ & FEM2 & -17.0 & -5.1 & +33.6 & +142.5 & +737.5 \\
+ & FDM1 & +1.0 & +0.7 & +0.4 & -0.3 & -1.1 \\
+ & FDM2 & +1.2 & +0.1 & -0.2 & -0.6 & +0.1 \\
+\midrule
+\multirow{4}{*}{Severity, censored} & SEM1 & -40.8 & +12.7 & +77.0 & +234.8 & +1117.2 \\
+ & SEM2 & -37.6 & +19.0 & +85.5 & +240.5 & +1036.8 \\
+ & SDM1 & -0.2 & -0.3 & -0.6 & -1.5 & -1.8 \\
+ & SDM2 & -0.3 & -0.2 & -0.5 & -1.2 & -0.9 \\
+\midrule
+\multirow{4}{*}{Severity, truncated} & SEM1 & -32.6 & +17.6 & +45.5 & +67.4 & +90.1 \\
+ & SEM3 & -21.1 & +36.5 & +61.2 & +74.7 & +81.8 \\
+ & SDM1 & -0.3 & -0.4 & -0.6 & -0.9 & -0.8 \\
+ & SDM3 & -0.8 & -0.1 & -0.3 & -0.5 & -0.4 \\
+\hhline{=======}
+\end{tabular}
+}
+\caption{Relative error (in \%) of the estimated frequency and severity components of the pure premium by deductible level in Case 3: the average over the policy-years (frequency) or claims (severity) at each level of the difference between the estimated and the true component, divided by the average true component at that level, averaged over the replications}\label{tab:bylevel3}
+\end{table}

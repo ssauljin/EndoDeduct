@@ -237,7 +237,7 @@ if (length(aggS) && length(casesS)) {
   body <- c()
   for (cs in casesS) {
     body <- c(body,
-      sprintf("\\multirow{3}{*}{Case %d} & MAE & %s \\\\", cs, paste(fmt_mae(sapply(sch, function(s) mS(cs, paste0("S.", s, ".mae"))))), collapse = " & ")),
+      sprintf("\\multirow{3}{*}{Case %d} & MAE & %s \\\\", cs, paste(fmt_mae(sapply(sch, function(s) mS(cs, paste0("S.", s, ".mae")))), collapse = " & ")),
       sprintf(" & MRE (\\%%) & %s \\\\", paste(fmt_mre(sapply(sch, function(s) mS(cs, paste0("S.", s, ".mre")))), collapse = " & ")),
       sprintf(" & MSRE & %s \\\\", paste(fmt_msre(sapply(sch, function(s) mS(cs, paste0("S.", s, ".msre")))), collapse = " & ")),
       if (cs != tail(casesS, 1)) "\\midrule")
@@ -306,7 +306,7 @@ if (length(aggS) && length(casesS)) {
   ## (5) Appendix: realised-loss MAE, mean |S_i - estimated premium|
   writeLines(c("\\begin{table}[!ht]", "\\footnotesize", "\\centering", "{\\color{blue}", "\\begin{tabular}{lrrrrrr}", "\\toprule", " & \\multicolumn{3}{c}{Exogenous deductible} & \\multicolumn{3}{c}{Endogenous deductible} \\\\",
                "\\cmidrule(lr){2-4} \\cmidrule(lr){5-7}", " & Full & Censored & Truncated & Full & Censored & Truncated \\\\", "\\midrule",
-               sapply(casesS, function(cs) sprintf("Case %d & %s \\\\", cs, paste(fmt_mae(sapply(sch, function(s) mS(cs, paste0("S.", s, ".mae_obs"))))), collapse = " & "))),
+               sapply(casesS, function(cs) sprintf("Case %d & %s \\\\", cs, paste(fmt_mae(sapply(sch, function(s) mS(cs, paste0("S.", s, ".mae_obs")))), collapse = " & "))),
                "\\hhline{=======}", "\\end{tabular}", "}",
                "\\caption{Mean absolute difference between the realised aggregate insured loss $S$ of a policy-year and its estimated pure premium ${\\rm E}(S|D=d;\\bm{x})$ (averaged over the replications); unlike Table~\\ref{tab:simS}, this measure contains the irreducible variability of $S$.}\\label{tab:AppSimSobs}",
                "\\end{table}"), file.path(texdir, "tab_app_S_obs.tex"))
