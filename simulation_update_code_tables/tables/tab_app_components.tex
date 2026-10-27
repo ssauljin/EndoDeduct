@@ -1,0 +1,45 @@
+\begin{table}[!ht]
+\footnotesize
+\centering
+{\color{blue}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llrrrrrrrr}
+\toprule
+Component & Model & \multicolumn{2}{c}{Case 1} & \multicolumn{2}{c}{Case 2} & \multicolumn{2}{c}{Case 3} & \multicolumn{2}{c}{Case 4} \\
+\cmidrule(lr){3-4} \cmidrule(lr){5-6} \cmidrule(lr){7-8} \cmidrule(lr){9-10}
+ & & MAE & MSRE & MAE & MSRE & MAE & MSRE & MAE & MSRE \\
+\midrule
+\multirow{5}{*}{$N$ (ground-up frequency)} & FEM1 & 0.0219 & 0.001 & 0.3770 & 3.704 & 0.0225 & 0.001 & 0.4514 & 28 \\
+ & FEM2G & 0.0239 & 0.002 & 0.3987 & 5.537 & 0.0317 & 0.003 & 0.4681 & 41 \\
+ & FEM2 & 0.0288 & 0.002 & 0.3988 & 5.577 & 0.0907 & 0.013 & 0.4643 & 43 \\
+ & FDM1 & 0.0247 & 0.002 & 0.0255 & 0.003 & 0.0253 & 0.002 & 0.0228 & 0.003 \\
+ & FDM2 & 0.0480 & 0.007 & 0.0368 & 0.009 & 0.0466 & 0.007 & 0.0302 & 0.008 \\
+\midrule
+\multirow{6}{*}{$Y$ (ground-up severity)} & SEM1 & 103.0 & 0.002 & 96.5 & 0.001 & 1,545.9 & 0.866 & 1,394.7 & 0.793 \\
+ & SEM2 & 106.1 & 0.002 & 98.4 & 0.001 & 1,565.2 & 0.991 & 1,404.7 & 0.802 \\
+ & SEM3 & 137.1 & 0.003 & 122.1 & 0.002 & 1,676.1 & 1.424 & 1,451.5 & 0.840 \\
+ & SDM1 & 112.1 & 0.002 & 118.6 & 0.002 & 98.2 & 0.001 & 118.8 & 0.002 \\
+ & SDM2 & 128.3 & 0.002 & 125.3 & 0.002 & 115.6 & 0.002 & 119.8 & 0.002 \\
+ & SDM3 & 214.4 & 0.007 & 196.0 & 0.006 & 157.0 & 0.005 & 145.4 & 0.004 \\
+\midrule
+\multirow{5}{*}{$N^*$ (truncated)} & FEM1 & 0.0130 & 0.002 & 0.2048 & 3.772 & 0.0759 & 105 & 0.3240 & 51,659 \\
+ & FEM2G & 0.0143 & 0.002 & 0.1884 & 5.617 & 0.0803 & 112 & 0.3098 & 79,409 \\
+ & FEM2 & 0.0150 & 0.003 & 0.1884 & 5.544 & 0.1047 & 122 & 0.3142 & 48,093 \\
+ & FDM1 & 0.0144 & 0.003 & 0.0176 & 0.005 & 0.0152 & 0.005 & 0.0171 & 0.009 \\
+ & FDM2 & 0.0172 & 0.005 & 0.0197 & 0.007 & 0.0209 & 0.016 & 0.0202 & 0.013 \\
+\midrule
+\multirow{4}{*}{$Y^*$ (censored)} & SEM1 & 93.3 & 0.004 & 86.9 & 0.004 & 1,223.2 & 486 & 1,007.7 & 43 \\
+ & SEM2 & 96.1 & 0.004 & 88.5 & 0.004 & 1,184.7 & 248 & 1,007.6 & 39 \\
+ & SDM1 & 98.8 & 0.005 & 99.1 & 0.005 & 87.6 & 0.006 & 101.5 & 0.010 \\
+ & SDM2 & 109.9 & 0.006 & 102.5 & 0.006 & 100.1 & 0.011 & 102.0 & 0.011 \\
+\midrule
+\multirow{4}{*}{$Y^*$ (truncated)} & SEM1 & 169.0 & 0.002 & 152.5 & 0.002 & 1,806.6 & 0.320 & 1,372.6 & 0.184 \\
+ & SEM3 & 202.7 & 0.003 & 177.9 & 0.002 & 1,596.2 & 0.276 & 1,401.6 & 0.191 \\
+ & SDM1 & 175.9 & 0.002 & 160.5 & 0.002 & 118.9 & 0.001 & 145.1 & 0.002 \\
+ & SDM3 & 232.4 & 0.004 & 214.6 & 0.003 & 173.5 & 0.003 & 170.5 & 0.003 \\
+\hhline{==========}
+\end{tabular}
+}
+}
+\caption{MAE and MSRE of the estimated conditional means of the ground-up frequency ${\rm E}(N|D=d;\bm{x})$ and severity ${\rm E}(Y|D=d;\bm{x})$, of the number of payments under truncated reporting ${\rm E}(N^*|D=d;\bm{x})=p(d;\bm{x}){\rm E}(N|D=d;\bm{x})$ (under censored reporting $N^*=N$), and of the payment per claim under censored reporting ${\rm E}(Y^*|D=d;\bm{x})={\rm E}((Y-d)_+|D=d;\bm{x})$ and truncated reporting ${\rm E}(Y^*|D=d;\bm{x})={\rm E}(Y-d|Y>d,D=d;\bm{x})$, evaluated for every policy-year and averaged over the replications. The truncated frequency models use $p(d;\bm{x})$ from SEM1 (FEM1, FEM2G), SEM3 (FEM2), SDM1 (FDM1) and SDM3 (FDM2).}\label{tab:AppSimComponents}
+\end{table}

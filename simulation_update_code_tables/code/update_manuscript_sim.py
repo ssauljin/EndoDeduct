@@ -47,7 +47,7 @@ assert old in main; main = main.replace(old, new)
 old = "relaxing it under incomplete data is an interesting direction for future research.}"
 new = old + (" \\rev{When the deductible is discrete, the assumption has to be read as conditional independence given the observed "
              "deductible level. If the level were only a coarsening of a continuous latent propensity $U^D$ that also drives the claims, "
-             "then $N^*\\perp Y^*\\,|\\,U^D$ would not imply $N^*\\perp Y^*\\,|\\,D$, because the frequency and the severity would remain "
+             "then $N\\perp Y\\,|\\,U^D$ would not imply $N\\perp Y\\,|\\,D$, because the frequency and the severity would remain "
              "dependent through their common position inside the interval of $U^D$ that corresponds to the observed level. The sensitivity "
              "of the joint models to violations of the assumption, including this one, is examined in Cases 5 and 6 of the simulation study "
              "in Section~\\ref{sec:simulation}.}")

@@ -1,0 +1,52 @@
+\begin{table}[!ht]
+\footnotesize
+\centering
+{\color{blue}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llrrrrrrrrrr}
+\toprule
+ & & \multicolumn{5}{c}{MAE by deductible level} & \multicolumn{5}{c}{MSRE by deductible level} \\
+\cmidrule(lr){3-7} \cmidrule(lr){8-12}
+ & Scheme & 500 & 1,000 & 2,500 & 5,000 & 10,000 & 500 & 1,000 & 2,500 & 5,000 & 10,000 \\
+\midrule
+\multirow{7}{*}{Case 1} & True premium & 2,106.8 & 2,429.9 & 2,124.3 & 1,614.1 & 1,052.7 & \multicolumn{5}{c}{} \\
+\cmidrule(lr){2-12}
+ & Exo. full & 85.9 & 102.5 & 104.0 & 98.8 & 86.6 & 0.003 & 0.003 & 0.005 & 0.007 & 0.014 \\
+ & Exo. censored & 85.6 & 103.2 & 105.9 & 101.1 & 90.7 & 0.003 & 0.003 & 0.005 & 0.008 & 0.014 \\
+ & Exo. truncated & 91.1 & 109.6 & 112.6 & 109.6 & 99.5 & 0.004 & 0.004 & 0.006 & 0.009 & 0.018 \\
+ & Endo. full & 98.5 & 102.9 & 110.5 & 112.0 & 108.7 & 0.004 & 0.004 & 0.006 & 0.010 & 0.022 \\
+ & Endo. censored & 109.4 & 105.9 & 114.8 & 116.2 & 115.9 & 0.005 & 0.004 & 0.006 & 0.011 & 0.026 \\
+ & Endo. truncated & 111.7 & 113.1 & 123.0 & 132.2 & 147.9 & 0.005 & 0.005 & 0.008 & 0.015 & 0.041 \\
+\midrule
+\multirow{7}{*}{Case 2} & True premium & 3,482.2 & 2,297.2 & 1,495.6 & 859.9 & 333.9 & \multicolumn{5}{c}{} \\
+\cmidrule(lr){2-12}
+ & Exo. full & 1,353.0 & 421.2 & 646.8 & 756.4 & 704.3 & 0.121 & 0.431 & 1.819 & 5.932 & 29 \\
+ & Exo. censored & 1,352.8 & 419.1 & 648.7 & 760.1 & 708.8 & 0.122 & 0.427 & 1.806 & 5.921 & 29 \\
+ & Exo. truncated & 961.4 & 662.8 & 1,023.8 & 1,060.6 & 904.5 & 0.056 & 0.798 & 2.981 & 9.032 & 41 \\
+ & Endo. full & 155.2 & 105.2 & 84.1 & 61.4 & 36.8 & 0.004 & 0.005 & 0.009 & 0.016 & 0.035 \\
+ & Endo. censored & 155.8 & 104.8 & 85.4 & 63.2 & 38.1 & 0.004 & 0.005 & 0.009 & 0.017 & 0.037 \\
+ & Endo. truncated & 166.9 & 109.0 & 93.8 & 74.6 & 48.4 & 0.004 & 0.006 & 0.010 & 0.021 & 0.053 \\
+\midrule
+\multirow{7}{*}{Case 3} & True premium & 3,583.5 & 2,157.5 & 1,197.7 & 480.8 & 85.1 & \multicolumn{5}{c}{} \\
+\cmidrule(lr){2-12}
+ & Exo. full & 1,450.3 & 492.5 & 943.4 & 1,130.6 & 945.5 & 0.121 & 0.501 & 6.224 & 85 & 4,749 \\
+ & Exo. censored & 1,334.6 & 559.2 & 1,040.2 & 1,157.9 & 877.1 & 0.099 & 0.612 & 6.555 & 71 & 2,405 \\
+ & Exo. truncated & 1,265.9 & 645.8 & 1,217.3 & 1,377.2 & 1,087.3 & 0.085 & 0.756 & 8.224 & 93 & 3,339 \\
+ & Endo. full & 163.8 & 96.0 & 68.3 & 37.3 & 10.5 & 0.003 & 0.004 & 0.007 & 0.015 & 0.035 \\
+ & Endo. censored & 171.6 & 107.7 & 83.4 & 48.8 & 13.8 & 0.004 & 0.005 & 0.011 & 0.025 & 0.060 \\
+ & Endo. truncated & 198.9 & 121.1 & 98.4 & 63.8 & 19.9 & 0.005 & 0.006 & 0.015 & 0.044 & 0.131 \\
+\midrule
+\multirow{7}{*}{Case 4} & True premium & 5,846.9 & 2,169.8 & 952.2 & 343.2 & 46.8 & \multicolumn{5}{c}{} \\
+\cmidrule(lr){2-12}
+ & Exo. full & 3,149.3 & 1,213.7 & 1,926.2 & 1,983.5 & 1,474.3 & 0.211 & 15 & 265 & 6,315 & 1,110,272 \\
+ & Exo. censored & 3,130.0 & 1,225.0 & 1,960.5 & 2,011.6 & 1,484.2 & 0.211 & 15 & 246 & 5,464 & 798,692 \\
+ & Exo. truncated & 2,625.1 & 1,733.1 & 2,549.7 & 2,537.8 & 1,888.0 & 0.134 & 21 & 325 & 7,078 & 953,425 \\
+ & Endo. full & 259.5 & 110.1 & 62.2 & 31.6 & 6.7 & 0.003 & 0.007 & 0.013 & 0.026 & 0.058 \\
+ & Endo. censored & 257.5 & 113.3 & 65.2 & 33.5 & 7.3 & 0.004 & 0.007 & 0.014 & 0.029 & 0.068 \\
+ & Endo. truncated & 286.4 & 117.5 & 68.5 & 38.9 & 8.9 & 0.004 & 0.008 & 0.017 & 0.038 & 0.098 \\
+\hhline{============}
+\end{tabular}
+}
+}
+\caption{MAE and MSRE of the estimated pure premium ${\rm E}(S|D=d;\bm{x})$ by deductible level in Cases 1--4: the averages over the policy-years at each level, averaged over the replications. ``True premium'' is the average true pure premium at each level. The frequency and severity models of each scheme are those of Table~\ref{tab:simS}.}\label{tab:simSbylevel}
+\end{table}

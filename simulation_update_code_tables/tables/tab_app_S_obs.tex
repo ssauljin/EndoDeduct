@@ -1,0 +1,19 @@
+\begin{table}[!ht]
+\footnotesize
+\centering
+{\color{blue}
+\begin{tabular}{lrrrrrr}
+\toprule
+ & \multicolumn{3}{c}{Exogenous deductible} & \multicolumn{3}{c}{Endogenous deductible} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7}
+ & Full & Censored & Truncated & Full & Censored & Truncated \\
+\midrule
+Case 1 & 2,870.4 & 2,870.5 & 2,871.5 & 2,870.2 & 2,870.1 & 2,869.7 \\
+Case 2 & 2,987.8 & 2,988.4 & 3,166.0 & 2,965.0 & 2,965.3 & 2,964.7 \\
+Case 3 & 3,066.6 & 3,103.5 & 3,185.2 & 3,013.3 & 3,013.6 & 3,012.0 \\
+Case 4 & 3,978.1 & 3,985.2 & 4,235.4 & 3,559.5 & 3,559.6 & 3,558.2 \\
+\hhline{=======}
+\end{tabular}
+}
+\caption{Mean absolute difference between the realised aggregate insured loss $S$ of a policy-year and its estimated pure premium ${\rm E}(S|D=d;\bm{x})$ (averaged over the replications); unlike Table~\ref{tab:simS}, this measure contains the irreducible variability of $S$.}\label{tab:AppSimSobs}
+\end{table}
