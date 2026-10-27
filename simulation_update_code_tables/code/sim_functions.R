@@ -238,6 +238,84 @@ predict_all <- function(sim, ds, f, des = design) {
   out
 }
 
+## ---- aggregate insured loss and its components (notation of the revised manuscript) ----------------
+##  In the revised manuscript N, Y denote the ground-up frequency / severity (N*, Y* in the comments above) and
+##  N*, Y* the number and amounts of the insurer's payments, so that the aggregate insured loss of a policy-year is
+##  S = Y*_1 + ... + Y*_{N*} and its pure premium is
+##      pi(d, x) = E(S | D = d, x) = E(N | d, x) E((Y - d)+ | d, x) = E(N* | d, x) E(Y* | d, x)   (either scenario).
+##  Ratemaking schemes (frequency model x severity model):
+##      exogenous  full FEM1 x SEM1,  censored FEM1 x SEM2,  truncated FEM2 x SEM3 (p(d;x) from SEM3)
+##      endogenous full FDM1 x SDM1,  censored FDM1 x SDM2,  truncated FDM2 x SDM3 (p(d;x) from SDM3)
+##  Under truncated reporting E(N*|d,x) E(Y*|d,x) = p E(N|d,x) E(Y-d|Y>d,d,x) = E(N|d,x) E((Y-d)+|d,x), so every
+##  scheme is evaluated as E(N|d,x) x E((Y-d)+|d,x) with its own frequency and severity model.
+S_schemes <- list(EXO_full = c("FEM1", "SEM1"), EXO_cen = c("FEM1", "SEM2"), EXO_tru = c("FEM2", "SEM3"),
+                  END_full = c("FDM1", "SDM1"), END_cen = c("FDM1", "SDM2"), END_tru = c("FDM2", "SDM3"))
+## E[Y | D = d, x] of the ground-up loss: Gauss-Legendre quadrature of the Pareto quantile against the
+## (copula-weighted) standard normal density on z in (-9, 11)
+cond_gu_sev <- function(beta, alpha, rho, X, up, um) {
+  lam <- drop(exp(X %*% beta)); n <- length(lam)
+  L <- 20; z <- -9 + L * (GL64$x + 1) / 2; W <- GL64$w * L / 2
+  Q <- pnorm(z, lower.tail = FALSE)^(-1 / alpha) - 1                     # Pareto quantile with unit scale
+  dens <- matrix(dnorm(z), n, length(z), byrow = TRUE)
+  if (rho != 0) {
+    s <- sqrt(1 - rho^2); zp <- qnorm(clamp01(up)); zm <- qnorm(clamp01(um))
+    dens <- dens * (pnorm((zp - rho * matrix(z, n, length(z), byrow = TRUE)) / s) -
+                    pnorm((zm - rho * matrix(z, n, length(z), byrow = TRUE)) / s)) / (up - um)
+  }
+  lam * drop(dens %*% (Q * W))
+}
+## error measures of an estimated conditional mean 'est' against the true one 'tru' (both per policy-year):
+##   MAE = mean |est - tru|,  MRE = mean (est - tru) / tru,  MSRE = mean ((est - tru) / tru)^2, overall and by level
+err_measures <- function(est, tru, lev, prefix) {
+  re <- (est - tru) / tru; lv <- factor(lev, levels = 1:K_ded); out <- list()
+  out[[paste0(prefix, ".mae")]]  <- mean(abs(est - tru)); out[[paste0(prefix, ".mae.bylev")]]  <- tapply(abs(est - tru), lv, mean)
+  out[[paste0(prefix, ".mre")]]  <- mean(re);             out[[paste0(prefix, ".mre.bylev")]]  <- tapply(re, lv, mean)
+  out[[paste0(prefix, ".msre")]] <- mean(re^2);           out[[paste0(prefix, ".msre.bylev")]] <- tapply(re^2, lv, mean)
+  out
+}
+##  f: fitted models as returned by fit_models (dependence parameters on the Kendall's tau scale)
+##  Returns, with every conditional mean evaluated per policy-year at (d_i, x_i):
+##   S.<scheme>.{mae, mre, msre}[.bylev]  pure premium E(S|d,x) against the true premium
+##   S.<scheme>.mae_obs                    mean |S_i - estimated premium| (S_i: realised aggregate payment)
+##   N.<m>, Y.<m>                          ground-up frequency E(N|d,x) and severity E(Y|d,x)
+##   Nstar_tru.<m>                         number of payments under truncation E(N*|d,x) = p(d;x) E(N|d,x)
+##                                         (under censoring N* = N)
+##   Ystar_cen.<m>, Ystar_tru.<m>          payment per claim E((Y-d)+|d,x) and per payment E(Y-d|Y>d,d,x)
+predict_aggregate <- function(sim, ds, f, des = design) {
+  rho <- des$cases[[as.character(sim$case)]]
+  pol <- ds$pol; k <- ncol(pol$X)
+  atoms <- function(thD) list(up = D_disc_cdf(thD, XD(pol$X, "disc"), pol$dlev), um = D_disc_cdf(thD, XD(pol$X, "disc"), pol$dlev - 1))
+  a0 <- atoms(c(des$kappa, des$beta_D)); a <- atoms(f$D$par)
+  rho_of <- function(th) if (length(th) > k + 1) tau2rho(th[k + 2]) else 0
+  ## true conditional means
+  sev0 <- cond_sev(des$beta_Y, des$alpha, rho[["rho_Y"]], pol$X, pol$d, a0$up, a0$um)
+  true <- list(N = cond_freq(des$beta_N, des$r, rho[["rho_N"]], pol$X, a0$up, a0$um),
+               Y = cond_gu_sev(des$beta_Y, des$alpha, rho[["rho_Y"]], pol$X, a0$up, a0$um),
+               p = sev0$p, Ystar_cen = sev0$Ecens, Ystar_tru = sev0$Etrunc)
+  true$Nstar_tru <- true$N * true$p; true$S <- true$N * true$Ystar_cen
+  ## fitted models
+  sev <- lapply(setNames(nm = c("SEM1", "SEM2", "SEM3", "SDM1", "SDM2", "SDM3")), function(m) {
+    th <- f[[m]]$par; r <- c(cond_sev(th[1:k], th[k + 1], rho_of(th), pol$X, pol$d, a$up, a$um),
+                             list(EY = cond_gu_sev(th[1:k], th[k + 1], rho_of(th), pol$X, a$up, a$um))) })
+  frq <- lapply(setNames(nm = c("FEM1", "FEM2G", "FEM2", "FDM1", "FDM2")), function(m) {
+    th <- f[[m]]$par; cond_freq(th[1:k], th[k + 1], rho_of(th), pol$X, a$up, a$um) })
+  p_of <- c(FEM1 = "SEM1", FEM2G = "SEM1", FEM2 = "SEM3", FDM1 = "SDM1", FDM2 = "SDM3")   # retention prob. used with each frequency model
+  S_obs <- numeric(sim$n); agg <- rowsum(ds$clm$y, ds$clm$unit); S_obs[as.integer(rownames(agg))] <- agg[, 1]   # realised S_i
+  lev <- pol$dlev; out <- list()
+  for (s in names(S_schemes)) {
+    est <- frq[[S_schemes[[s]][1]]] * sev[[S_schemes[[s]][2]]]$Ecens
+    out <- c(out, err_measures(est, true$S, lev, paste0("S.", s)))
+    out[[paste0("S.", s, ".mae_obs")]] <- mean(abs(S_obs - est))
+  }
+  for (m in names(frq)) out <- c(out, err_measures(frq[[m]], true$N, lev, paste0("N.", m)),
+                                 err_measures(frq[[m]] * sev[[p_of[[m]]]]$p, true$Nstar_tru, lev, paste0("Nstar_tru.", m)))
+  for (m in names(sev)) out <- c(out, err_measures(sev[[m]]$EY, true$Y, lev, paste0("Y.", m)),
+                                 if (m != "SEM3" && m != "SDM3") err_measures(sev[[m]]$Ecens, true$Ystar_cen, lev, paste0("Ystar_cen.", m)),
+                                 if (m != "SEM2" && m != "SDM2") err_measures(sev[[m]]$Etrunc, true$Ystar_tru, lev, paste0("Ystar_tru.", m)))
+  out$S_true_mean <- tapply(true$S, factor(lev, levels = 1:K_ded), mean); out$S_obs_mean <- mean(S_obs)
+  out
+}
+
 ## ---- one replication ----------------------------------------------------------------------
 ##  sandwich: names of the models whose Godambe s.e. (naive / robust / sandwich) are stored, for coverage studies
 ##            ("FEM2" is cheap; "SDM3" and "FDM2" roughly double the cost of a replication)
@@ -255,7 +333,7 @@ run_replication <- function(case, rep, outdir = "results", sandwich = character(
               loglik = sapply(f, `[[`, "loglik"), convergence = sapply(f, `[[`, "convergence"),
               n_claims = length(ds$clm$y), n_pos = length(ds$pos$y), lev_prop = prop.table(table(factor(sim$lev, levels = 1:K_ded))),
               kendall = c(D_N = cor(sim$lev, sim$Nstar, method = "kendall"), D_Y = cor(sim$clm$lev, sim$clm$Ystar, method = "kendall")),
-              metrics = predict_all(sim, ds, f), time_fit = attr(f, "time"))
+              metrics = predict_all(sim, ds, f), metrics_S = predict_aggregate(sim, ds, f), time_fit = attr(f, "time"))
   if (length(sandwich)) {
     chains <- list(FEM2 = list(f$SEM3, f$FEM2), SDM3 = list(f$D, f$SDM3), FDM2 = list(f$D, f$SDM3, f$FDM2))
     res$se <- lapply(chains[sandwich], function(ch) { t <- last_stage_table(sandwich_se(ch, verbose = FALSE))

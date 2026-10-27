@@ -188,7 +188,7 @@ bylev_table <- function(cs) {
     sprintf("\\caption{Relative error (in \\%%) of the estimated frequency and severity components of the pure premium by deductible level in Case %d: the average over the policy-years (frequency) or claims (severity) at each level of the difference between the estimated and the true component, divided by the average true component at that level, averaged over the replications}\\label{tab:bylevel%d}", cs, cs),
     "\\end{table}")
 }
-if (4 %in% cases) writeLines(bylev_table(4), file.path(texdir, "tab_bylevel_case4.tex"))
+for (cs in intersect(cases, 1:4)) writeLines(bylev_table(cs), file.path(texdir, sprintf("tab_bylevel_case%d.tex", cs)))
 
 ## ---- figures: box plots of the estimates by model, one panel per parameter ---------------------------------
 pdf_boxes <- function(cs) {
@@ -209,6 +209,109 @@ pdf_boxes <- function(cs) {
 }
 for (cs in cases) pdf_boxes(cs)
 
+## ---- aggregate insured loss S = Y*_1 + ... + Y*_{N*} (notation of the revised manuscript) -------------------------
+##  metrics_S of every replication: from the replication files (runs with predict_aggregate) or from
+##  <results_dir>/aggregate_metrics.rds (written by add_aggregate_metrics.R for the earlier runs)
+aggS <- lapply(Filter(function(r) !is.null(r$metrics_S), res), function(r) list(case = r$case, rep = r$rep, metrics_S = r$metrics_S))
+agg_file <- file.path(resdir, "aggregate_metrics.rds")
+if (file.exists(agg_file)) {
+  old <- Filter(function(a) !any(sapply(aggS, function(b) b$case == a$case && b$rep == a$rep)), readRDS(agg_file))
+  aggS <- c(aggS, old)
+}
+casesS <- intersect(cases, 1:4)                                             # Cases 1-4 are reported in the manuscript
+if (length(aggS) && length(casesS)) {
+  RS <- sapply(casesS, function(cs) sum(sapply(aggS, `[[`, "case") == cs)); names(RS) <- casesS
+  mS  <- function(cs, key) mean(sapply(aggS[sapply(aggS, `[[`, "case") == cs], function(a) a$metrics_S[[key]]))
+  mSl <- function(cs, key) { M <- sapply(aggS[sapply(aggS, `[[`, "case") == cs], function(a) { v <- a$metrics_S[[key]]
+                               out <- rep(NA_real_, K_ded); out[as.integer(names(v))] <- v; out }); rowMeans(M, na.rm = TRUE) }
+  fmt_mae  <- function(x, dig = 1) formatC(x, format = "f", digits = dig, big.mark = ",")
+  fmt_mre  <- function(x) formatC(100 * x, format = "f", digits = 1, big.mark = ",", flag = "+")
+  fmt_msre <- function(x) ifelse(x < 10, formatC(x, format = "f", digits = 3), formatC(x, format = "f", digits = 0, big.mark = ","))
+  sch  <- names(S_schemes)
+  sch_lab <- sapply(S_schemes, paste, collapse = "$\\times$")
+  head6 <- c(" & & \\multicolumn{3}{c}{Exogenous deductible} & \\multicolumn{3}{c}{Endogenous deductible} \\\\",
+             "\\cmidrule(lr){3-5} \\cmidrule(lr){6-8}",
+             " & & Full & Censored & Truncated & Full & Censored & Truncated \\\\",
+             sprintf(" & & %s \\\\", paste(sch_lab, collapse = " & ")), "\\midrule")
+  ## (1) overall MAE / MRE / MSRE of the pure premium E(S|D=d;x), Cases 1-4
+  body <- c()
+  for (cs in casesS) {
+    body <- c(body,
+      sprintf("\\multirow{3}{*}{Case %d} & MAE & %s \\\\", cs, paste(fmt_mae(sapply(sch, function(s) mS(cs, paste0("S.", s, ".mae"))))), collapse = " & ")),
+      sprintf(" & MRE (\\%%) & %s \\\\", paste(fmt_mre(sapply(sch, function(s) mS(cs, paste0("S.", s, ".mre")))), collapse = " & ")),
+      sprintf(" & MSRE & %s \\\\", paste(fmt_msre(sapply(sch, function(s) mS(cs, paste0("S.", s, ".msre")))), collapse = " & ")),
+      if (cs != tail(casesS, 1)) "\\midrule")
+  }
+  writeLines(c("\\begin{table}[!ht]", "\\footnotesize", "\\centering", "{\\color{blue}", "\\resizebox{\\textwidth}{!}{%",
+               "\\begin{tabular}{llrrrrrr}", "\\toprule", head6, body, "\\hhline{========}", "\\end{tabular}", "}", "}",
+               sprintf("\\caption{MAE, MRE and MSRE of the estimated pure premium ${\\rm E}(S|D=d;\\bm{x})$ of the aggregate insured loss $S=Y^*_1+\\cdots+Y^*_{N^*}$ under the exogenous (marginal) and endogenous (joint) ratemaking schemes in Cases 1--4, averaged over the $R=%d$ replications. Each scheme combines the frequency and severity models indicated in the header, fitted to the full, censored or truncated data.}\\label{tab:simS}", min(RS)),
+               "\\end{table}"), file.path(texdir, "tab_S_overall.tex"))
+  ## (2) MAE and MSRE of E(S|D=d;x) by deductible level, Cases 1-4
+  lv <- format(design$levels, big.mark = ",", trim = TRUE)
+  body <- c()
+  for (cs in casesS) {
+    tm <- mSl(cs, "S_true_mean")
+    body <- c(body, sprintf("\\multirow{7}{*}{Case %d} & True premium & %s & \\multicolumn{5}{c}{} \\\\", cs, paste(fmt_mae(tm), collapse = " & ")), "\\cmidrule(lr){2-12}")
+    for (s in sch) body <- c(body, sprintf(" & %s %s & %s & %s \\\\", if (grepl("^EXO", s)) "Exo." else "Endo.",
+                                           switch(sub("^[A-Z]+_", "", s), full = "full", cen = "censored", tru = "truncated"),
+                                           paste(fmt_mae(mSl(cs, paste0("S.", s, ".mae.bylev"))), collapse = " & "),
+                                           paste(fmt_msre(mSl(cs, paste0("S.", s, ".msre.bylev"))), collapse = " & ")))
+    if (cs != tail(casesS, 1)) body <- c(body, "\\midrule")
+  }
+  writeLines(c("\\begin{table}[!ht]", "\\footnotesize", "\\centering", "{\\color{blue}", "\\resizebox{\\textwidth}{!}{%",
+               "\\begin{tabular}{llrrrrrrrrrr}", "\\toprule",
+               " & & \\multicolumn{5}{c}{MAE by deductible level} & \\multicolumn{5}{c}{MSRE by deductible level} \\\\",
+               "\\cmidrule(lr){3-7} \\cmidrule(lr){8-12}", sprintf(" & Scheme & %s & %s \\\\", paste(lv, collapse = " & "), paste(lv, collapse = " & ")),
+               "\\midrule", body, "\\hhline{============}", "\\end{tabular}", "}", "}",
+               "\\caption{MAE and MSRE of the estimated pure premium ${\\rm E}(S|D=d;\\bm{x})$ by deductible level in Cases 1--4: the averages over the policy-years at each level, averaged over the replications. ``True premium'' is the average true pure premium at each level. The frequency and severity models of each scheme are those of Table~\\ref{tab:simS}.}\\label{tab:simSbylevel}",
+               "\\end{table}"), file.path(texdir, "tab_S_bylevel.tex"))
+  ## (3) figure: mean ratio of the estimated to the true premium, 1 + MRE, by deductible level (log scale)
+  pdf(file.path(texdir, "simS_bylevel.pdf"), width = 10, height = 3.2)
+  par(mfrow = c(1, length(casesS)), mar = c(4, 3.6, 2, 0.5), mgp = c(2.2, 0.7, 0), cex.axis = 0.8)
+  cols <- c(EXO_full = "grey55", EXO_cen = "darkorange", EXO_tru = "firebrick", END_full = "grey20", END_cen = "steelblue", END_tru = "navy")
+  ltys <- ifelse(grepl("^EXO", sch), 2, 1); names(ltys) <- sch
+  ratio <- lapply(casesS, function(cs) sapply(sch, function(s) 1 + mSl(cs, paste0("S.", s, ".mre.bylev"))))
+  yl <- range(unlist(ratio), 1, na.rm = TRUE)
+  for (i in seq_along(casesS)) {
+    matplot(1:K_ded, ratio[[i]], type = "b", log = "y", pch = 19, cex = 0.6, col = cols[sch], lty = ltys, ylim = yl, xaxt = "n",
+            xlab = "Deductible", ylab = if (i == 1) "Estimated / true premium" else "", main = sprintf("Case %d", casesS[i]))
+    axis(1, at = 1:K_ded, labels = lv); abline(h = 1, col = "red", lty = 3)
+    if (i == 1) legend("topleft", legend = c("Exo. full", "Exo. censored", "Exo. truncated", "Endo. full", "Endo. censored", "Endo. truncated"),
+                       col = cols[sch], lty = ltys, pch = 19, cex = 0.62, bty = "n")
+  }
+  dev.off()
+  ## (4) Appendix: MAE and MSRE of the components N, Y (ground-up) and N*, Y* (insurer's payments), Cases 1-4
+  comp <- list(list(key = "N", lab = "$N$ (ground-up frequency)", models = c("FEM1", "FEM2G", "FEM2", "FDM1", "FDM2"), dig = 4),
+               list(key = "Y", lab = "$Y$ (ground-up severity)", models = c("SEM1", "SEM2", "SEM3", "SDM1", "SDM2", "SDM3"), dig = 1),
+               list(key = "Nstar_tru", lab = "$N^*$ (truncated)", models = c("FEM1", "FEM2G", "FEM2", "FDM1", "FDM2"), dig = 4),
+               list(key = "Ystar_cen", lab = "$Y^*$ (censored)", models = c("SEM1", "SEM2", "SDM1", "SDM2"), dig = 1),
+               list(key = "Ystar_tru", lab = "$Y^*$ (truncated)", models = c("SEM1", "SEM3", "SDM1", "SDM3"), dig = 1))
+  nc <- length(casesS); body <- c()
+  for (g in seq_along(comp)) {
+    cg <- comp[[g]]
+    for (j in seq_along(cg$models)) {
+      m <- cg$models[j]; key <- paste(cg$key, m, sep = ".")
+      vals <- unlist(lapply(casesS, function(cs) c(fmt_mae(mS(cs, paste0(key, ".mae")), cg$dig), fmt_msre(mS(cs, paste0(key, ".msre"))))))
+      body <- c(body, sprintf("%s & %s & %s \\\\", if (j == 1) sprintf("\\multirow{%d}{*}{%s}", length(cg$models), cg$lab) else "", m, paste(vals, collapse = " & ")))
+    }
+    body <- c(body, if (g < length(comp)) "\\midrule" else paste0("\\hhline{", strrep("=", 2 + 2 * nc), "}"))
+  }
+  writeLines(c("\\begin{table}[!ht]", "\\footnotesize", "\\centering", "{\\color{blue}", "\\resizebox{\\textwidth}{!}{%",
+               sprintf("\\begin{tabular}{ll%s}", strrep("rr", nc)), "\\toprule",
+               sprintf("Component & Model & %s \\\\", paste(sprintf("\\multicolumn{2}{c}{Case %d}", casesS), collapse = " & ")),
+               paste(sprintf("\\cmidrule(lr){%d-%d}", 1 + 2 * seq_len(nc), 2 + 2 * seq_len(nc)), collapse = " "),
+               sprintf(" & & %s \\\\", paste(rep("MAE & MSRE", nc), collapse = " & ")), "\\midrule", body, "\\end{tabular}", "}", "}",
+               "\\caption{MAE and MSRE of the estimated conditional means of the ground-up frequency ${\\rm E}(N|D=d;\\bm{x})$ and severity ${\\rm E}(Y|D=d;\\bm{x})$, of the number of payments under truncated reporting ${\\rm E}(N^*|D=d;\\bm{x})=p(d;\\bm{x}){\\rm E}(N|D=d;\\bm{x})$ (under censored reporting $N^*=N$), and of the payment per claim under censored reporting ${\\rm E}(Y^*|D=d;\\bm{x})={\\rm E}((Y-d)_+|D=d;\\bm{x})$ and truncated reporting ${\\rm E}(Y^*|D=d;\\bm{x})={\\rm E}(Y-d|Y>d,D=d;\\bm{x})$, evaluated for every policy-year and averaged over the replications. The truncated frequency models use $p(d;\\bm{x})$ from SEM1 (FEM1, FEM2G), SEM3 (FEM2), SDM1 (FDM1) and SDM3 (FDM2).}\\label{tab:AppSimComponents}",
+               "\\end{table}"), file.path(texdir, "tab_app_components.tex"))
+  ## (5) Appendix: realised-loss MAE, mean |S_i - estimated premium|
+  writeLines(c("\\begin{table}[!ht]", "\\footnotesize", "\\centering", "{\\color{blue}", "\\begin{tabular}{lrrrrrr}", "\\toprule", " & \\multicolumn{3}{c}{Exogenous deductible} & \\multicolumn{3}{c}{Endogenous deductible} \\\\",
+               "\\cmidrule(lr){2-4} \\cmidrule(lr){5-7}", " & Full & Censored & Truncated & Full & Censored & Truncated \\\\", "\\midrule",
+               sapply(casesS, function(cs) sprintf("Case %d & %s \\\\", cs, paste(fmt_mae(sapply(sch, function(s) mS(cs, paste0("S.", s, ".mae_obs"))))), collapse = " & "))),
+               "\\hhline{=======}", "\\end{tabular}", "}",
+               "\\caption{Mean absolute difference between the realised aggregate insured loss $S$ of a policy-year and its estimated pure premium ${\\rm E}(S|D=d;\\bm{x})$ (averaged over the replications); unlike Table~\\ref{tab:simS}, this measure contains the irreducible variability of $S$.}\\label{tab:AppSimSobs}",
+               "\\end{table}"), file.path(texdir, "tab_app_S_obs.tex"))
+}
+
 ## ---- key numbers for the text ----------------------------------------------------------------------------
 sink(file.path(texdir, "key_numbers.txt"))
 cat("replications per case:\n"); print(R)
@@ -227,5 +330,13 @@ for (cs in cases) { cat(sprintf("\n==== Case %d ====\n", cs))
   print(round(t(sapply(keys, function(k) rowMeans(sapply(res[sapply(res, `[[`, "case") == cs], function(r) { v <- r$metrics[[k]]; out <- rep(NA_real_, K_ded); out[as.integer(names(v))] <- v; out }), na.rm = TRUE))), 4))
 }
 if (nrow(cov)) { cat("\ncoverage:\n"); print(cov, digits = 4) }
+if (length(aggS)) for (cs in casesS) {
+  cat(sprintf("\n==== aggregate insured loss S, Case %d (R = %d) ====\n", cs, RS[as.character(cs)]))
+  print(round(sapply(sch, function(s) c(mae = mS(cs, paste0("S.", s, ".mae")), mre = mS(cs, paste0("S.", s, ".mre")),
+                                        msre = mS(cs, paste0("S.", s, ".msre")), mae_obs = mS(cs, paste0("S.", s, ".mae_obs")))), 4))
+  cat("by level (true premium, then MAE / MRE / MSRE of each scheme):\n"); print(round(mSl(cs, "S_true_mean"), 2))
+  for (s in sch) { cat(s, "\n"); print(round(rbind(mae = mSl(cs, paste0("S.", s, ".mae.bylev")), mre = mSl(cs, paste0("S.", s, ".mre.bylev")),
+                                                   msre = mSl(cs, paste0("S.", s, ".msre.bylev"))), 4)) }
+}
 sink()
 cat("written to", texdir, "\n")
