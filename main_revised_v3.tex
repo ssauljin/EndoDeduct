@@ -135,23 +135,23 @@ The remaining part of this article is organized as follows.  In Section 2, we fi
 
 \subsection{Insurance Ratemaking with the Frequency, Severity and Deductible}
 
-For an insurance contract, let $N^{*}$ denote the number of loss events, and $Y^{*}_{j}$, $j=1,\ldots,N^{*}$, denote the amount of ground-up losses for the $j$th loss event. 
+For an insurance contract, let $N$ denote the number of loss events, and $Y_{j}$, $j=1,\ldots,N$, denote the amount of ground-up losses for the $j$th loss event. 
 %Let $S^{*}_i$ be the aggregated losses over the policy year, which can be expressed as:
 %\begin{align*}
-%	S^{*}_i = Y^{*}_{i1} + \cdots + Y^{*}_{iN^{*}_i}
+%	S^{*}_i = Y_{i1} + \cdots + Y_{iN_i}
 %\end{align*}
 Assume that the insurance contract has a per-occurrence deductible $D$ and risk classification variables $\bm{x}$. The insured loss which the premium is based on can be expressed as:
 \begin{align*}
-	S = Y_{1} + \cdots + Y_{N}
+	S = Y^*_{1} + \cdots + Y^*_{N^*}
 \end{align*}
-where $N$ is the number of reported claims, and $Y_{j}$, $j=1,\ldots,N$, is the insured loss for the $j$th claim. Given the deductible $D=d$, we consider the \rev{following three observation scenarios, which describe what the insurer records depending on how the losses below the deductible are handled}:
+where $N^*$ is the number of reported claims, and $Y^*_{j}$, $j=1,\ldots,N^*$, is the insured loss for the $j$th claim. \rev{Throughout the article, the unstarred letters $(N,Y)$ refer to the ground-up loss process, which is not affected by the deductible, whereas the starred letters $(N^*,Y^*)$ refer to the claims recorded and paid by the insurer, which are obtained from $(N,Y)$ through the observation scenarios below; hence $S$ is the aggregate insured loss, i.e., the sum of the insurer's payments.} Given the deductible $D=d$, we consider the \rev{following three observation scenarios, which describe what the insurer records depending on how the losses below the deductible are handled}:
 \begin{itemize}
         \item \rev{Full reporting (every loss event and its ground-up amount are observed)}
         \begin{align*}
        	\left\{
        	\begin{array}{l}
-       	N = N^{*} \\
-		Y_{j}  = \rev{Y^{*}_{j}}
+       	N^* = N \\
+		Y^*_{j}  = \rev{Y_{j}}
        	\end{array}
         \right.
        \end{align*}
@@ -159,8 +159,8 @@ where $N$ is the number of reported claims, and $Y_{j}$, $j=1,\ldots,N$, is the 
        \begin{align*}
        	\left\{
        	\begin{array}{l}
-       	N = N^{*} \\
-		Y_{j}  = (Y^{*}_{j}-d)_{+} = \max\{0,Y^{*}_{j}-d\}
+       	N^* = N \\
+		Y^*_{j}  = (Y_{j}-d)_{+} = \max\{0,Y_{j}-d\}
        	\end{array}
         \right.
        \end{align*}
@@ -168,8 +168,8 @@ where $N$ is the number of reported claims, and $Y_{j}$, $j=1,\ldots,N$, is the 
 	       \begin{align*}
 	       		\left\{
 	       		\begin{array}{l}
-		N = I(Y^{*}_{1}>d) + \cdots \rev{+} I(Y^{*}_{N^{*}}>d) \\
-		Y_{j}  = Y^{*}_{j}-d|Y^{*}_{j} >d
+		N^* = I(Y_{1}>d) + \cdots \rev{+} I(Y_{N}>d) \\
+		Y^*_{j}  = Y_{j}-d|Y_{j} >d
 		\end{array}
 		\right.
 	\end{align*}
@@ -179,42 +179,42 @@ where $N$ is the number of reported claims, and $Y_{j}$, $j=1,\ldots,N$, is the 
 For a contract with classification $\bm{x}$, the pure premium given deductible $D=d$ is expressed as:
 \begin{align*}
 	{\rm Premium} &= {\rm E}(S|D=d;\bm{x})\\
-    & = {\rm E}(N|D=d;\bm{x}) \times {\rm E}(Y|D=d;\bm{x}).
+    & = {\rm E}(N^*|D=d;\bm{x}) \times {\rm E}(Y^*|D=d;\bm{x}).
 \end{align*}
-The premium is based on two assumptions: (1) Given deductible $D$, frequency $N$ and individual severity $\{Y_j\}$ are independent; (2) Given deductible $D$, individual severity $\{Y_j\}$ are identical and independent copies of $Y$. 
+The premium is based on two assumptions: (1) Given deductible $D$, frequency $N^*$ and individual severity $\{Y^*_j\}$ are independent; (2) Given deductible $D$, individual severity $\{Y^*_j\}$ are identical and independent copies of $Y^*$. 
 
 \subsection{Joint Distribution of Frequency, Severity and Deductible}
 
-\rev{Following \citet{shi2022copula}, the joint model is specified for the deductible and the ground-up quantities $(D,N^*,Y^*)$, since the endogeneity of the deductible concerns the dependence between the deductible and the policyholder's underlying risk; the observed quantities $(N, Y)$ are then obtained from $(N^*,Y^*)$ through the observation scenarios of Section 2.1. The joint density of $(D,N^*,Y^*)$ can be decomposed as}
+\rev{Following \citet{shi2022copula}, the joint model is specified for the deductible and the ground-up quantities $(D,N,Y)$, since the endogeneity of the deductible concerns the dependence between the deductible and the policyholder's underlying risk; the observed quantities $(N^*, Y^*)$ are then obtained from $(N,Y)$ through the observation scenarios of Section 2.1. The joint density of $(D,N,Y)$ can be decomposed as}
 {\color{blue}
 \begin{align*}
-   f_{DN^*Y^*}(d,n,y;\bm{x}) &= f_{D}(d;\bm{x})\cdot f_{N^*|D}(n|d;\bm{x})\cdot \prod_{j=1}^{n}f_{Y^*|DN^*}(y_j|d,n;\bm{x})\\
-   & =f_D(d;\bm{x})\cdot f_{N^*}(n;\bm{x})\cdot \prod_{j=1}^{n}f_{Y^*}(y_j;\bm{x})\cdot\frac{f_{DN^*}(d,n;\bm{x})}{f_D(d;\bm{x})f_{N^*}(n;\bm{x})}\cdot \prod_{j=1}^{n}\frac{f_{DY^*}(d,y_j;\bm{x})}{f_D(d;\bm{x})f_{Y^*}(y_j;\bm{x})} \\
-   & \hspace{0.4cm}\cdot \prod_{j=1}^{n}\frac{f_{N^*Y^*|D}(n,y_j|d;\bm{x})}{f_{N^*|D}(n|d;\bm{x})f_{Y^*|D}(y_j|d;\bm{x})},
+   f_{DNY}(d,n,y;\bm{x}) &= f_{D}(d;\bm{x})\cdot f_{N|D}(n|d;\bm{x})\cdot \prod_{j=1}^{n}f_{Y|DN}(y_j|d,n;\bm{x})\\
+   & =f_D(d;\bm{x})\cdot f_{N}(n;\bm{x})\cdot \prod_{j=1}^{n}f_{Y}(y_j;\bm{x})\cdot\frac{f_{DN}(d,n;\bm{x})}{f_D(d;\bm{x})f_{N}(n;\bm{x})}\cdot \prod_{j=1}^{n}\frac{f_{DY}(d,y_j;\bm{x})}{f_D(d;\bm{x})f_{Y}(y_j;\bm{x})} \\
+   & \hspace{0.4cm}\cdot \prod_{j=1}^{n}\frac{f_{NY|D}(n,y_j|d;\bm{x})}{f_{N|D}(n|d;\bm{x})f_{Y|D}(y_j|d;\bm{x})},
 \end{align*}
 }
-\rev{where the last factor captures the dependence between the frequency and the severity conditional on the deductible. Throughout this article we assume that $N^*$ and $Y^*_j$ are conditionally independent given $D$ and $\bm{x}$, that is,
-$f_{N^*Y^*|D}(n,y_j|d;\bm{x})=f_{N^*|D}(n|d;\bm{x})\cdot f_{Y^*|D}(y_j|d;\bm{x})$, which corresponds to Special Case II of \citet{shi2022copula}. Under this assumption, the joint density of $(D,N^*,Y^*)$ reduces to}
+\rev{where the last factor captures the dependence between the frequency and the severity conditional on the deductible. Throughout this article we assume that $N$ and $Y_j$ are conditionally independent given $D$ and $\bm{x}$, that is,
+$f_{NY|D}(n,y_j|d;\bm{x})=f_{N|D}(n|d;\bm{x})\cdot f_{Y|D}(y_j|d;\bm{x})$, which corresponds to Special Case II of \citet{shi2022copula}. Under this assumption, the joint density of $(D,N,Y)$ reduces to}
 {\color{blue}
 \begin{align*}
-   f_{DN^*Y^*}(d,n,y;\bm{x}) &= f_{D}(d;\bm{x})\cdot f_{N^*|D}(n|d;\bm{x})\cdot \prod_{j=1}^{n}f_{Y^*|D}(y_j|d;\bm{x})\\
-   & =f_D(d;\bm{x})\cdot f_{N^*}(n;\bm{x})\cdot \prod_{j=1}^{n}f_{Y^*}(y_j;\bm{x})\cdot\frac{f_{DN^*}(d,n;\bm{x})}{f_D(d;\bm{x})f_{N^*}(n;\bm{x})}\cdot \prod_{j=1}^{n}\frac{f_{DY^*}(d,y_j;\bm{x})}{f_D(d;\bm{x})f_{Y^*}(y_j;\bm{x})},
+   f_{DNY}(d,n,y;\bm{x}) &= f_{D}(d;\bm{x})\cdot f_{N|D}(n|d;\bm{x})\cdot \prod_{j=1}^{n}f_{Y|D}(y_j|d;\bm{x})\\
+   & =f_D(d;\bm{x})\cdot f_{N}(n;\bm{x})\cdot \prod_{j=1}^{n}f_{Y}(y_j;\bm{x})\cdot\frac{f_{DN}(d,n;\bm{x})}{f_D(d;\bm{x})f_{N}(n;\bm{x})}\cdot \prod_{j=1}^{n}\frac{f_{DY}(d,y_j;\bm{x})}{f_D(d;\bm{x})f_{Y}(y_j;\bm{x})},
 \end{align*}
 }
-\rev{so that the dependence structure is fully described by the two pairs $(D,N^*)$ and $(D,Y^*)$.}
+\rev{so that the dependence structure is fully described by the two pairs $(D,N)$ and $(D,Y)$.}
 
-We adopt a copula to model the pair \rev{$(D,N^*)$} as:
+We adopt a copula to model the pair \rev{$(D,N)$} as:
 \begin{equation} \label{eq:FreqCopula}
-	F_{DN^*}(d,n;\bm{x}) = C_{DN}(F_D(d;\bm{x}),F_{N^*}(n;\bm{x})).
+	F_{DN}(d,n;\bm{x}) = C_{DN}(F_D(d;\bm{x}),F_{N}(n;\bm{x})).
 \end{equation}
 
-Similarly, we adopt a copula to model the pair \rev{$(D,Y^*)$} as:
+Similarly, we adopt a copula to model the pair \rev{$(D,Y)$} as:
 \begin{equation}  \label{eq:SevCopula}
-	F_{DY^*}(d,y;\bm{x}) = C_{DY}(F_D(d;\bm{x}),F_{Y^*}(y;\bm{x})).
+	F_{DY}(d,y;\bm{x}) = C_{DY}(F_D(d;\bm{x}),F_{Y}(y;\bm{x})).
 \end{equation}
-\rev{For notational simplicity, we write $C_{DN}$ and $C_{DY}$ for the copulas of the pairs $(D,N^*)$ and $(D,Y^*)$, respectively, and we denote their dependence parameters by $\rho_N$ and $\rho_Y$ (or by Kendall's $\tau_N$ and $\tau_Y$).}
+\rev{We write $C_{DN}$ and $C_{DY}$ for the copulas of the pairs $(D,N)$ and $(D,Y)$, respectively, and we denote their dependence parameters by $\rho_N$ and $\rho_Y$ (or by Kendall's $\tau_N$ and $\tau_Y$).}
 
-In both of the above two cases, one needs to evaluate functions \rev{$f_{N^*|D}(n|d;\bm{x})$, $F_{Y^*|D}(y|d;\bm{x})$ and $f_{Y^*|D}(y|d;\bm{x})$}. We discuss these two cases below. For a bivariate copula $C(u_1,u_2)$, we use the following notation:
+In both of the above two cases, one needs to evaluate functions \rev{$f_{N|D}(n|d;\bm{x})$, $F_{Y|D}(y|d;\bm{x})$ and $f_{Y|D}(y|d;\bm{x})$}. We discuss these two cases below. For a bivariate copula $C(u_1,u_2)$, we use the following notation:
 \begin{align*}
 	c(u_1,u_2)& = \frac{\partial^2}{\partial u_1\partial u_2} C(u_1,u_2) \\
 	h^{(1)}(u_1,u_2)& = \frac{\partial}{\partial u_1} C(u_1,u_2) \\
@@ -224,8 +224,8 @@ In both of the above two cases, one needs to evaluate functions \rev{$f_{N^*|D}(
 Here the deductible $D$ can be a discrete or continuous variable. When $D$ is continuous, we have:
 {\color{blue}
 \begin{align} \label{eq:FCM}
-	&f_{N^*|D}(n|d;\bm{x}) = h^{(1)}_{DN}(F_D(d;\bm{x}),F_{N^*}(n;\bm{x})) - h^{(1)}_{DN}(F_D(d;\bm{x}),F_{N^*}(n-1;\bm{x})),\\
-	\label{eq:SCM} &f_{Y^*|D}(y|d;\bm{x}) =  f_{Y^*}(y;\bm{x})\, c_{DY}(F_D(d;\bm{x}),F_{Y^*}(y;\bm{x})), \qquad F_{Y^*|D}(y|d;\bm{x}) = h^{(1)}_{DY}(F_D(d;\bm{x}),F_{Y^*}(y;\bm{x})).
+	&f_{N|D}(n|d;\bm{x}) = h^{(1)}_{DN}(F_D(d;\bm{x}),F_{N}(n;\bm{x})) - h^{(1)}_{DN}(F_D(d;\bm{x}),F_{N}(n-1;\bm{x})),\\
+	\label{eq:SCM} &f_{Y|D}(y|d;\bm{x}) =  f_{Y}(y;\bm{x})\, c_{DY}(F_D(d;\bm{x}),F_{Y}(y;\bm{x})), \qquad F_{Y|D}(y|d;\bm{x}) = h^{(1)}_{DY}(F_D(d;\bm{x}),F_{Y}(y;\bm{x})).
 \end{align}
 }
 
@@ -233,23 +233,23 @@ When $D$ is discrete, \rev{with $F_D(d-1;\bm{x})$ denoting the value of the dist
 {\color{blue}
 \begin{equation} \label{eq:FDM}
 \begin{aligned}
-	f_{N^*|D}(n|d;\bm{x}) & = \left(C_{DN}(F_D(d;\bm{x}),F_{N^*}(n;\bm{x})) - C_{DN}(F_D(d-1;\bm{x}),F_{N^*}(n;\bm{x}))\right. \\
-	& \hspace{0.6cm}\left.-C_{DN}(F_D(d;\bm{x}),F_{N^*}(n-1;\bm{x})) + C_{DN}(F_D(d-1;\bm{x}),F_{N^*}(n-1;\bm{x}))\right)/f_D(d;\bm{x}),
+	f_{N|D}(n|d;\bm{x}) & = \left(C_{DN}(F_D(d;\bm{x}),F_{N}(n;\bm{x})) - C_{DN}(F_D(d-1;\bm{x}),F_{N}(n;\bm{x}))\right. \\
+	& \hspace{0.6cm}\left.-C_{DN}(F_D(d;\bm{x}),F_{N}(n-1;\bm{x})) + C_{DN}(F_D(d-1;\bm{x}),F_{N}(n-1;\bm{x}))\right)/f_D(d;\bm{x}),
 \end{aligned}
 \end{equation}
 \vspace{-13pt}
 \begin{equation} \label{eq:SDM}
 \begin{aligned}
-	f_{Y^*|D}(y|d;\bm{x}) &= \frac{f_{Y^*}(y;\bm{x})}{f_{D}(d;\bm{x})}\left(h^{(2)}_{DY}(F_D(d;\bm{x}),F_{Y^*}(y;\bm{x})) - h^{(2)}_{DY}(F_D(d-1;\bm{x}),F_{Y^*}(y;\bm{x}))\right),\\
-	F_{Y^*|D}(y|d;\bm{x}) &= \frac{C_{DY}(F_D(d;\bm{x}),F_{Y^*}(y;\bm{x})) - C_{DY}(F_D(d-1;\bm{x}),F_{Y^*}(y;\bm{x}))}{f_{D}(d;\bm{x})}.
+	f_{Y|D}(y|d;\bm{x}) &= \frac{f_{Y}(y;\bm{x})}{f_{D}(d;\bm{x})}\left(h^{(2)}_{DY}(F_D(d;\bm{x}),F_{Y}(y;\bm{x})) - h^{(2)}_{DY}(F_D(d-1;\bm{x}),F_{Y}(y;\bm{x}))\right),\\
+	F_{Y|D}(y|d;\bm{x}) &= \frac{C_{DY}(F_D(d;\bm{x}),F_{Y}(y;\bm{x})) - C_{DY}(F_D(d-1;\bm{x}),F_{Y}(y;\bm{x}))}{f_{D}(d;\bm{x})}.
 \end{aligned}
 \end{equation}
 }
-\rev{Note that when $C_{DN}$ (resp.\ $C_{DY}$) is the independence copula, \eqref{eq:FCM}--\eqref{eq:SDM} reduce to $f_{N^*|D}=f_{N^*}$ (resp.\ $f_{Y^*|D}=f_{Y^*}$ and $F_{Y^*|D}=F_{Y^*}$), which is the exogenous deductible case.}
+\rev{Note that when $C_{DN}$ (resp.\ $C_{DY}$) is the independence copula, \eqref{eq:FCM}--\eqref{eq:SDM} reduce to $f_{N|D}=f_{N}$ (resp.\ $f_{Y|D}=f_{Y}$ and $F_{Y|D}=F_{Y}$), which is the exogenous deductible case.}
 
 \subsubsection*{\rev{Remark on the conditional independence assumption}}\label{sec:condind}
 
-\rev{The conditional independence between $N^*$ and $Y^*$ given $(D,\bm{x})$ plays two roles in our framework. First, it is the assumption underlying the classical frequency--severity decomposition of the pure premium, ${\rm E}(S|D=d;\bm{x})={\rm E}(N|D=d;\bm{x})\times{\rm E}(Y|D=d;\bm{x})$ in Section 2.1, which is the basis of the ratemaking practice that we aim to improve upon by allowing for an endogenous deductible. Second, and more importantly for this article, it is what makes the likelihood tractable under incomplete data. Under truncated reporting, the observed number of claims $N$ is a thinned version of $N^*$ in which each loss event is retained with probability $p(d;\bm{x})=\Pr(Y^*>d|D=d;\bm{x})$, and the observed severities are the retained ground-up losses shifted by $d$; the resulting likelihood in Section 2.3 has a closed form precisely because, given $D$, the retention of a loss event does not depend on $N^*$ or on the other losses. If $N^*$ and $Y^*$ were dependent given $D$, the retention probability would depend on $N^*$, and the retained losses would carry information on the unobserved losses below the deductible, so that the likelihood of the observed data would require integrating the joint distribution of $(N^*,Y^*_1,\ldots,Y^*_{N^*})$ over the unobserved losses. Moreover, the losses below the deductible, which are never observed under truncation, are exactly the observations that would inform the frequency--severity dependence in the lower tail, so that the frequency--severity copula would be weakly identified from truncated data. We therefore regard the conditional independence assumption as a pragmatic simplification that trades a possible residual frequency--severity dependence for a closed-form treatment of censoring and truncation. We note that \citet{shi2022copula} reported a non-negligible residual dependence between the frequency and the severity in the LGPIF data after conditioning on the deductible; hence, the empirical results in Section~\ref{sec:empirical} should be interpreted under this simplification, and relaxing it under incomplete data is an interesting direction for future research.} %\rev{When the deductible is discrete, the assumption has to be read as conditional independence given the observed deductible level. If the level were only a coarsening of a continuous latent propensity $U^D$ that also drives the claims, then $N^*\perp Y^*\,|\,U^D$ would not imply $N^*\perp Y^*\,|\,D$, because the frequency and the severity would remain dependent through their common position inside the interval of $U^D$ that corresponds to the observed level. The sensitivity of the joint models to violations of the assumption, including this one, is examined in Cases 5 and 6 of the simulation study in Section~\ref{sec:simulation}.}
+\rev{The conditional independence between $N$ and $Y$ given $(D,\bm{x})$ plays two roles in our framework. First, it is the assumption underlying the classical frequency--severity decomposition of the pure premium, ${\rm E}(S|D=d;\bm{x})={\rm E}(N^*|D=d;\bm{x})\times{\rm E}(Y^*|D=d;\bm{x})$ in Section 2.1, which is the basis of the ratemaking practice that we aim to improve upon by allowing for an endogenous deductible. Second, and more importantly for this article, it is what makes the likelihood tractable under incomplete data. Under truncated reporting, the observed number of claims $N^*$ is a thinned version of $N$ in which each loss event is retained with probability $p(d;\bm{x})=\Pr(Y>d|D=d;\bm{x})$, and the observed severities are the retained ground-up losses shifted by $d$; the resulting likelihood in Section 2.3 has a closed form precisely because, given $D$, the retention of a loss event does not depend on $N$ or on the other losses. If $N$ and $Y$ were dependent given $D$, the retention probability would depend on $N$, and the retained losses would carry information on the unobserved losses below the deductible, so that the likelihood of the observed data would require integrating the joint distribution of $(N,Y_1,\ldots,Y_{N})$ over the unobserved losses. Moreover, the losses below the deductible, which are never observed under truncation, are exactly the observations that would inform the frequency--severity dependence in the lower tail, so that the frequency--severity copula would be weakly identified from truncated data. We therefore regard the conditional independence assumption as a pragmatic simplification that trades a possible residual frequency--severity dependence for a closed-form treatment of censoring and truncation. We note that \citet{shi2022copula} reported a non-negligible residual dependence between the frequency and the severity in the LGPIF data after conditioning on the deductible; hence, the empirical results in Section~\ref{sec:empirical} should be interpreted under this simplification, and relaxing it under incomplete data is an interesting direction for future research.} %\rev{When the deductible is discrete, the assumption has to be read as conditional independence given the observed deductible level. If the level were only a coarsening of a continuous latent propensity $U^D$ that also drives the claims, then $N\perp Y\,|\,U^D$ would not imply $N\perp Y\,|\,D$, because the frequency and the severity would remain dependent through their common position inside the interval of $U^D$ that corresponds to the observed level. The sensitivity of the joint models to violations of the assumption, including this one, is examined in Cases 5 and 6 of the simulation study in Section~\ref{sec:simulation}.}
 
 \subsection{Data Likelihood}
 
@@ -289,8 +289,8 @@ Depending on the \rev{observation scenario}, the likelihood can be expressed by 
         \begin{align} \label{eq:fr}
        	\left\{
        	\begin{array}{l}
-       	g(n_i|d_i;\bm{x}_i) = f_{N^{*}|D}(n_i|d_i;\bm{x}_i), \\
-	g(y_{ij}|d_i;\bm{x}_i) = f_{Y^{*}|D}(\rev{y_{ij}}|d_i;\bm{x}_i).
+       	g(n_i|d_i;\bm{x}_i) = f_{N|D}(n_i|d_i;\bm{x}_i), \\
+	g(y_{ij}|d_i;\bm{x}_i) = f_{Y|D}(\rev{y_{ij}}|d_i;\bm{x}_i).
        	\end{array}
         \right.
        \end{align}
@@ -298,27 +298,27 @@ Depending on the \rev{observation scenario}, the likelihood can be expressed by 
        \begin{align} \label{eq:urc}
        	\left\{
        	\begin{array}{l}
-       	g(n_i|d_i;\bm{x}_i) = f_{N^{*}|D}(n_i|d_i;\bm{x}_i), \\
+       	g(n_i|d_i;\bm{x}_i) = f_{N|D}(n_i|d_i;\bm{x}_i), \\
 	g(y_{ij}|d_i;\bm{x}_i)  = \left\{
 	\begin{array}{ll}
-		F_{Y^{*}|D}(d_i|d_i;\bm{x}_i) & y_{ij} = 0, \\
-		f_{Y^{*}|D}(y_{ij}+d_i|d_i;\bm{x}_i) & y_{ij} > 0.
+		F_{Y|D}(d_i|d_i;\bm{x}_i) & y_{ij} = 0, \\
+		f_{Y|D}(y_{ij}+d_i|d_i;\bm{x}_i) & y_{ij} > 0.
 	\end{array}
 	\right.
        	\end{array}
         \right.
        \end{align}
 	\item \rev{Truncated reporting}\\
-    Note \rev{that, under the conditional independence between $N^*$ and $Y^*$ given $D$,} $N|(N^{*}=k,D=d) \sim Binomial (k,p(d;\bm{x}))$, where
+    Note \rev{that, under the conditional independence between $N$ and $Y$ given $D$,} $N^*|(N=k,D=d) \sim Binomial (k,p(d;\bm{x}))$, where
 \begin{align*}
-	p(d;\bm{x}) = {\rm Pr}(Y^{*}>d|N^{*}=k,D=d;\bm{x}) = {\rm Pr}(Y^{*}>d|D=d;\bm{x}) = 1-F_{Y^{*}|D}(d|d;\bm{x})\rev{,}
+	p(d;\bm{x}) = {\rm Pr}(Y>d|N=k,D=d;\bm{x}) = {\rm Pr}(Y>d|D=d;\bm{x}) = 1-F_{Y|D}(d|d;\bm{x})\rev{,}
 \end{align*}
-\rev{and $F_{Y^{*}|D}$ is given in \eqref{eq:SCM} or \eqref{eq:SDM}.} So we have:
+\rev{and $F_{Y|D}$ is given in \eqref{eq:SCM} or \eqref{eq:SDM}.} So we have:
 	       \begin{align} \label{eq:urt}
 	       		\left\{
 	       		\begin{array}{l}
-		g(n_i|d_i;\bm{x}_i) = \sum_{k:k\ge n_i} \cfrac{k!}{n_i!(k-n_i)!} p(d_i;\bm{x}_i)^{n_i} (1-p(d_i;\bm{x}_i))^{k-n_i} f_{N^{*}|D}(k|d_i;\bm{x}_i), \\
-	g(y_{ij}|d_i;\bm{x}_i)  = \cfrac{f_{Y^{*}|D}(y_{ij}+d_i|d_i;\bm{x}_i) }{1-F_{Y^{*}|D}(d_i|d_i;\bm{x}_i)}.
+		g(n_i|d_i;\bm{x}_i) = \sum_{k:k\ge n_i} \cfrac{k!}{n_i!(k-n_i)!} p(d_i;\bm{x}_i)^{n_i} (1-p(d_i;\bm{x}_i))^{k-n_i} f_{N|D}(k|d_i;\bm{x}_i), \\
+	g(y_{ij}|d_i;\bm{x}_i)  = \cfrac{f_{Y|D}(y_{ij}+d_i|d_i;\bm{x}_i) }{1-F_{Y|D}(d_i|d_i;\bm{x}_i)}.
 		\end{array}
 		\right.
 	\end{align}
@@ -326,7 +326,7 @@ Depending on the \rev{observation scenario}, the likelihood can be expressed by 
 
 %\subsubsection{Some Details}
 
-%In both of the above two cases, one needs to evaluate functions $f_{N^{*}|D}(n|d_i;\bm{x})$, $F_{Y^{*}|D}(y|d;\bm{x})$, and $f_{Y^{*}|D}(y|;\bm{x})$. We discuss two cases below. For a bivariate copula $C(u_1,u_2)$, we use notations:
+%In both of the above two cases, one needs to evaluate functions $f_{N|D}(n|d_i;\bm{x})$, $F_{Y|D}(y|d;\bm{x})$, and $f_{Y|D}(y|;\bm{x})$. We discuss two cases below. For a bivariate copula $C(u_1,u_2)$, we use notations:
 %\begin{align*}
 	%c(u_1,u_2)& = \frac{\partial^2}{\partial u_1\partial u_2} C(u_1,u_2) \\
 	%h^{(1)}(u_1,u_2)& = \frac{\partial}{\partial u_1} C(u_1,u_2) \\
@@ -335,17 +335,17 @@ Depending on the \rev{observation scenario}, the likelihood can be expressed by 
 
 %When $D$ is continuous:
 %\begin{align*}
-	%f_{N^{*}|D}(n|d;\bm{x}) &= h^{(1)}_{DN^{*}}(F_D(d|\bm{x}),F_{N^{*}}(n|\bm{x})) - h^{(1)}_{DN^{*}}(F_D(d|\bm{x}),F_{N^{*}}(n-1|\bm{x})) \\
-	%F_{Y^{*}|D}(y|d;\bm{x}) &= h^{(1)}_{DY^{*}}(F_D(d|\bm{x}),F_{Y^{*}}(y|\bm{x}))\\
-	%f_{Y^{*}|D}(y|d;\bm{x}) &= f_{Y^{*}}(y|\bm{x}) c_{DY^{*}}(F_D(d|\bm{x}),F_{Y^{*}}(y|\bm{x}))
+	%f_{N|D}(n|d;\bm{x}) &= h^{(1)}_{DN}(F_D(d|\bm{x}),F_{N}(n|\bm{x})) - h^{(1)}_{DN}(F_D(d|\bm{x}),F_{N}(n-1|\bm{x})) \\
+	%F_{Y|D}(y|d;\bm{x}) &= h^{(1)}_{DY}(F_D(d|\bm{x}),F_{Y}(y|\bm{x}))\\
+	%f_{Y|D}(y|d;\bm{x}) &= f_{Y}(y|\bm{x}) c_{DY}(F_D(d|\bm{x}),F_{Y}(y|\bm{x}))
 %\end{align*}
 
 %When $D$ is discrete:
 %\begin{align*}
-	%f_{N^{*}|D}(n|d;\bm{x}) & = (C_{DN^{*}}(F_D(d|\bm{x}),F_{N^{*}}(n|\bm{x})) - C_{DN^{*}}(F_D(d-1|\bm{x}),F_{N^{*}}(n|\bm{x})) \\
-	%& ~~~~-C_{DN^{*}}(F_D(d|\bm{x}),F_{N^{*}}(n-1|\bm{x})) + C_{DN^{*}}(F_D(d-1|\bm{x}),F_{N^{*}}(n-1|\bm{x})))/f_{D}(d|\bm{x})\\
-	%F_{Y^{*}|D}(y|d;\bm{x}) &= \frac{C_{DY^{*}}(F_D(d|\bm{x}),F_{Y^{*}}(y|\bm{x}))-C_{DY^{*}}(F_D(d-1|\bm{x}),F_{Y^{*}}(y|\bm{x}))}{f_D(d|\bm{x})}\\
-	%f_{Y^{*}|D}(y|;\bm{x}) &=f_{Y}(y|\bm{x})\left(h^{(2)}_{DY^{*}}(F_D(d|\bm{x}),F_{Y^{*}}(y|\bm{x})) - h^{(2)}_{DY^{*}}(F_D(d-1|\bm{x}),F_{Y^{*}}(y|\bm{x}))\right)/f_{D}(d|\bm{x})
+	%f_{N|D}(n|d;\bm{x}) & = (C_{DN}(F_D(d|\bm{x}),F_{N}(n|\bm{x})) - C_{DN}(F_D(d-1|\bm{x}),F_{N}(n|\bm{x})) \\
+	%& ~~~~-C_{DN}(F_D(d|\bm{x}),F_{N}(n-1|\bm{x})) + C_{DN}(F_D(d-1|\bm{x}),F_{N}(n-1|\bm{x})))/f_{D}(d|\bm{x})\\
+	%F_{Y|D}(y|d;\bm{x}) &= \frac{C_{DY}(F_D(d|\bm{x}),F_{Y}(y|\bm{x}))-C_{DY}(F_D(d-1|\bm{x}),F_{Y}(y|\bm{x}))}{f_D(d|\bm{x})}\\
+	%f_{Y|D}(y|;\bm{x}) &=f_{Y}(y|\bm{x})\left(h^{(2)}_{DY}(F_D(d|\bm{x}),F_{Y}(y|\bm{x})) - h^{(2)}_{DY}(F_D(d-1|\bm{x}),F_{Y}(y|\bm{x}))\right)/f_{D}(d|\bm{x})
 %\end{align*}
 
 %\section{Deductible's Exogeneity/Endogeneity in Insurance Dataset}
@@ -354,9 +354,9 @@ Depending on the \rev{observation scenario}, the likelihood can be expressed by 
 
 \subsubsection{Severity models with deductible}
 
-For the severity component, we postulate \rev{that the ground-up loss follows a} GB2 distribution\rev{, $Y^*|\bm{x} \sim \mathcal{GB}2(\mu=\bm{x}\beta_{Y}, \sigma, \alpha_1, \alpha_2)$\footnote{Definition of GB2 distribution is given in Appendix.}, so that $F_{Y^*}$ and $f_{Y^*}$ in \eqref{eq:SevCopula}, \eqref{eq:SCM} and \eqref{eq:SDM} are the distribution and density functions of this GB2 distribution. Note that the GB2 distribution is postulated for the ground-up loss $Y^*$ in all severity models; under censored and truncated reporting, the distribution of the observed response $Y$ is derived from that of $Y^*$ through \eqref{eq:urc} and \eqref{eq:urt}, and is not GB2 itself. The severity models considered in this article, summarized in the upper panel of Table~\ref{tab:modelsummary}, differ in two respects: (i) the observation scenario, which determines the response variable and the likelihood component $g(y_{ij}|d_i;\bm{x}_i)$ among \eqref{eq:fr}--\eqref{eq:urt}, and (ii) the treatment of the deductible, which determines $f_{Y^*|D}$ and $F_{Y^*|D}$. Under the exogeneity assumption, $C_{DY}$ is the independence copula so that $f_{Y^*|D}=f_{Y^*}$, and we call the resulting models the marginal severity models (SEM1, SEM2 and SEM3 for the full, censored and truncated reporting scenarios, respectively). Under endogeneity, $C_{DY}$ is a non-trivial copula and $f_{Y^*|D}$ is given by \eqref{eq:SCM} when the deductible is continuous (joint severity models SCM1, SCM2 and SCM3) or by \eqref{eq:SDM} when the deductible is discrete (joint severity models SDM1, SDM2 and SDM3).}
+For the severity component, we postulate \rev{that the ground-up loss follows a} GB2 distribution\rev{, $Y|\bm{x} \sim \mathcal{GB}2(\mu=\bm{x}\beta_{Y}, \sigma, \alpha_1, \alpha_2)$\footnote{Definition of GB2 distribution is given in Appendix.}, so that $F_{Y}$ and $f_{Y}$ in \eqref{eq:SevCopula}, \eqref{eq:SCM} and \eqref{eq:SDM} are the distribution and density functions of this GB2 distribution. Note that the GB2 distribution is postulated for the ground-up loss $Y$ in all severity models; under censored and truncated reporting, the distribution of the observed response $Y^*$ is derived from that of $Y$ through \eqref{eq:urc} and \eqref{eq:urt}, and is not GB2 itself. The severity models considered in this article, summarized in the upper panel of Table~\ref{tab:modelsummary}, differ in two respects: (i) the observation scenario, which determines the response variable and the likelihood component $g(y_{ij}|d_i;\bm{x}_i)$ among \eqref{eq:fr}--\eqref{eq:urt}, and (ii) the treatment of the deductible, which determines $f_{Y|D}$ and $F_{Y|D}$. Under the exogeneity assumption, $C_{DY}$ is the independence copula so that $f_{Y|D}=f_{Y}$, and we call the resulting models the marginal severity models (SEM1, SEM2 and SEM3 for the full, censored and truncated reporting scenarios, respectively). Under endogeneity, $C_{DY}$ is a non-trivial copula and $f_{Y|D}$ is given by \eqref{eq:SCM} when the deductible is continuous (joint severity models SCM1, SCM2 and SCM3) or by \eqref{eq:SDM} when the deductible is discrete (joint severity models SDM1, SDM2 and SDM3).}
 
-\rev{If the deductible $D$ is exogenous to the claim severity, so that $Y^*|D; \bm{x}  \,{\buildrel d \over =}\,   Y^*;\bm{x}$, then SEM1, SEM2, and SEM3 are inherently the same model fitted under different observation scenarios, so that the estimates of $\beta_{Y}$ from the three marginal severity models should be close to each other. Conversely, a substantial discrepancy among them is an indication that the exogeneity assumption is questionable, i.e., $Y^*|\bm{x} \not\perp D|\bm{x}$, in which case the joint severity models are needed to capture the endogeneity of the deductible.}
+\rev{If the deductible $D$ is exogenous to the claim severity, so that $Y|D; \bm{x}  \,{\buildrel d \over =}\,   Y;\bm{x}$, then SEM1, SEM2, and SEM3 are inherently the same model fitted under different observation scenarios, so that the estimates of $\beta_{Y}$ from the three marginal severity models should be close to each other. Conversely, a substantial discrepancy among them is an indication that the exogeneity assumption is questionable, i.e., $Y|\bm{x} \not\perp D|\bm{x}$, in which case the joint severity models are needed to capture the endogeneity of the deductible.}
 
 \begin{table}[!ht]
 \color{blue}
@@ -365,63 +365,63 @@ For the severity component, we postulate \rev{that the ground-up loss follows a}
 \renewcommand{\arraystretch}{1.15}
 \begin{tabular}{llllcc}
 \toprule
-\multicolumn{6}{l}{\textit{Severity models} (marginal GB2 distribution for $Y^*$)}\\
-Model & Deductible & Observation scenario & Response $Y$ & $g(y|d;\bm{x})$ & $f_{Y^*|D},\,F_{Y^*|D}$ \\
+\multicolumn{6}{l}{\textit{Severity models} (marginal GB2 distribution for $Y$)}\\
+Model & Deductible & Observation scenario & Response $Y^*$ & $g(y|d;\bm{x})$ & $f_{Y|D},\,F_{Y|D}$ \\
 \midrule
-SEM1 & exogenous  & full      & $Y^*$                 & \eqref{eq:fr}  & $f_{Y^*},\,F_{Y^*}$ \\
-SEM2 & exogenous  & censored  & $(Y^*-d)_+$           & \eqref{eq:urc} & $f_{Y^*},\,F_{Y^*}$ \\
-SEM3 & exogenous  & truncated & $Y^*-d\,|\,Y^*>d$     & \eqref{eq:urt} & $f_{Y^*},\,F_{Y^*}$ \\
-SCM1 & continuous & full      & $Y^*$                 & \eqref{eq:fr}  & \eqref{eq:SCM} \\
-SCM2 & continuous & censored  & $(Y^*-d)_+$           & \eqref{eq:urc} & \eqref{eq:SCM} \\
-SCM3 & continuous & truncated & $Y^*-d\,|\,Y^*>d$     & \eqref{eq:urt} & \eqref{eq:SCM} \\
-SDM1 & discrete   & full      & $Y^*$                 & \eqref{eq:fr}  & \eqref{eq:SDM} \\
-SDM2 & discrete   & censored  & $(Y^*-d)_+$           & \eqref{eq:urc} & \eqref{eq:SDM} \\
-SDM3 & discrete   & truncated & $Y^*-d\,|\,Y^*>d$     & \eqref{eq:urt} & \eqref{eq:SDM} \\
+SEM1 & exogenous  & full      & $Y$                 & \eqref{eq:fr}  & $f_{Y},\,F_{Y}$ \\
+SEM2 & exogenous  & censored  & $(Y-d)_+$           & \eqref{eq:urc} & $f_{Y},\,F_{Y}$ \\
+SEM3 & exogenous  & truncated & $Y-d\,|\,Y>d$     & \eqref{eq:urt} & $f_{Y},\,F_{Y}$ \\
+SCM1 & continuous & full      & $Y$                 & \eqref{eq:fr}  & \eqref{eq:SCM} \\
+SCM2 & continuous & censored  & $(Y-d)_+$           & \eqref{eq:urc} & \eqref{eq:SCM} \\
+SCM3 & continuous & truncated & $Y-d\,|\,Y>d$     & \eqref{eq:urt} & \eqref{eq:SCM} \\
+SDM1 & discrete   & full      & $Y$                 & \eqref{eq:fr}  & \eqref{eq:SDM} \\
+SDM2 & discrete   & censored  & $(Y-d)_+$           & \eqref{eq:urc} & \eqref{eq:SDM} \\
+SDM3 & discrete   & truncated & $Y-d\,|\,Y>d$     & \eqref{eq:urt} & \eqref{eq:SDM} \\
 \midrule
-\multicolumn{6}{l}{\textit{Frequency models} (marginal negative binomial distribution for $N^*$)}\\
-Model & Deductible & Observation scenario & Response $N$ & $g(n|d;\bm{x})$ & $f_{N^*|D}$;\ $p(d;\bm{x})$ from \\
+\multicolumn{6}{l}{\textit{Frequency models} (marginal negative binomial distribution for $N$)}\\
+Model & Deductible & Observation scenario & Response $N^*$ & $g(n|d;\bm{x})$ & $f_{N|D}$;\ $p(d;\bm{x})$ from \\
 \midrule
-FEM1 & exogenous  & full / censored & $N^*$                            & \eqref{eq:fr}  & $f_{N^*}$;\ --- \\
-FEM2 & exogenous  & truncated       & $\sum_{j=1}^{N^*} I(Y^*_j>d)$    & \eqref{eq:urt} & $f_{N^*}$;\ SEM3 \\
-FCM1 & continuous & full / censored & $N^*$                            & \eqref{eq:fr}  & \eqref{eq:FCM};\ --- \\
-FCM2 & continuous & truncated       & $\sum_{j=1}^{N^*} I(Y^*_j>d)$    & \eqref{eq:urt} & \eqref{eq:FCM};\ SCM3 \\
-FDM1 & discrete   & full / censored & $N^*$                            & \eqref{eq:fr}  & \eqref{eq:FDM};\ --- \\
-FDM2 & discrete   & truncated       & $\sum_{j=1}^{N^*} I(Y^*_j>d)$    & \eqref{eq:urt} & \eqref{eq:FDM};\ SDM3 \\
+FEM1 & exogenous  & full / censored & $N$                            & \eqref{eq:fr}  & $f_{N}$;\ --- \\
+FEM2 & exogenous  & truncated       & $\sum_{j=1}^{N} I(Y_j>d)$    & \eqref{eq:urt} & $f_{N}$;\ SEM3 \\
+FCM1 & continuous & full / censored & $N$                            & \eqref{eq:fr}  & \eqref{eq:FCM};\ --- \\
+FCM2 & continuous & truncated       & $\sum_{j=1}^{N} I(Y_j>d)$    & \eqref{eq:urt} & \eqref{eq:FCM};\ SCM3 \\
+FDM1 & discrete   & full / censored & $N$                            & \eqref{eq:fr}  & \eqref{eq:FDM};\ --- \\
+FDM2 & discrete   & truncated       & $\sum_{j=1}^{N} I(Y_j>d)$    & \eqref{eq:urt} & \eqref{eq:FDM};\ SDM3 \\
 \bottomrule
 \end{tabular}
-\caption{\rev{Summary of the severity and frequency models. ``Exogenous'' means that the copula ($C_{DY}$ or $C_{DN}$) is the independence copula; ``continuous'' and ``discrete'' refer to the treatment of the deductible in a non-trivial copula. The last column of the lower panel indicates the severity model from which the retention probability $p(d;\bm{x})=1-F_{Y^*|D}(d|d;\bm{x})$ is computed for the truncated frequency models.}}
+\caption{\rev{Summary of the severity and frequency models. ``Exogenous'' means that the copula ($C_{DY}$ or $C_{DN}$) is the independence copula; ``continuous'' and ``discrete'' refer to the treatment of the deductible in a non-trivial copula. The last column of the lower panel indicates the severity model from which the retention probability $p(d;\bm{x})=1-F_{Y|D}(d|d;\bm{x})$ is computed for the truncated frequency models.}}
 \label{tab:modelsummary}
 \end{table}
 %\authnote{Please confirm the last column of the lower panel: FEM2 uses $p(d;\bm{x})$ from SEM3 (and FEM2G from SEM1), FCM2 from SCM3, and FDM2 from SDM3. This is our reading of the original text and of the commented-out sentence in Section 3; please correct if a different severity model was used.}
 
 \subsubsection{Frequency model with deductible}
-Suppose $N^*$ and $N$ marginally follow the negative binomial distribution. Note that it is known that if $N^*|D$ belongs to $(a,b,m)$ family for arbitrary $m \in \mathbb{N} \cup \{ 0 \}$, then we may have a simplified expression of $g(n|d;\bm{x})$ from \citet{Klugman2012}. For example, negative binomial distribution with parameters $r$ and $\lambda$, which is denoted by $\mathcal{NB}(r, \lambda)$ has the following probability function:
+Suppose $N$ and $N^*$ marginally follow the negative binomial distribution. Note that it is known that if $N|D$ belongs to $(a,b,m)$ family for arbitrary $m \in \mathbb{N} \cup \{ 0 \}$, then we may have a simplified expression of $g(n|d;\bm{x})$ from \citet{Klugman2012}. For example, negative binomial distribution with parameters $r$ and $\lambda$, which is denoted by $\mathcal{NB}(r, \lambda)$ has the following probability function:
 $$
 f(n)=	 {n+r-1 \choose n} \cdot \left( \frac{1}{1+\lambda} \right)^{r} \left( \frac{\lambda}{1+\lambda} \right)^{n},
 $$
-\rev{with mean $r\lambda$ and variance $r\lambda(1+\lambda)$,} and it naturally belongs to $(a,b,0)$ family. Therefore, if $N^*|D, \bm{x} \sim \mathcal{NB}(r, \lambda(\bm{x}))$, then
+\rev{with mean $r\lambda$ and variance $r\lambda(1+\lambda)$,} and it naturally belongs to $(a,b,0)$ family. Therefore, if $N|D, \bm{x} \sim \mathcal{NB}(r, \lambda(\bm{x}))$, then
 \begin{equation} 
 \begin{aligned}  \label{eq:fg}
 g(n|d;\bm{x})=	 {n+r-1 \choose n} \cdot \left( \frac{1}{1+p(d;\bm{x})\lambda(\bm{x})} \right)^{r} \left( \frac{p(d;\bm{x})\lambda(\bm{x})}{1+p(d;\bm{x})\lambda(\bm{x})} \right)^{n},
 \end{aligned}
 \end{equation}
-so that $N|D=d; \bm{x} \sim \mathcal{NB}(r, p(d;\bm{x}) \lambda(\bm{x}))$.
+so that $N^*|D=d; \bm{x} \sim \mathcal{NB}(r, p(d;\bm{x}) \lambda(\bm{x}))$.
 
-\rev{The frequency models considered in this article are summarized in the lower panel of Table~\ref{tab:modelsummary}. In all of them, the number of loss events marginally follows $N^*|\bm{x} \sim \mathcal{NB}(r, \exp(\bm{x}\beta_{N}) /r)$, so that $\mathbb{E}[N^*|\bm{x}]=\exp(\bm{x}\beta_{N})$. Under full or censored reporting the response is $N=N^*$ and the likelihood component is \eqref{eq:fr}; under truncated reporting the response is the number of payments $N=\sum_{j=1}^{N^*} I(Y^*_{j}>d)$ and the likelihood component is \eqref{eq:urt}, which reduces to \eqref{eq:fg} so that $\mathbb{E}[N|D=d; \bm{x}]=p(d;\bm{x}) \cdot \mathbb{E}[N^*|D=d;\bm{x}]$. Under the exogeneity assumption, $C_{DN}$ is the independence copula and $f_{N^*|D}=f_{N^*}$ (marginal frequency models FEM1 and FEM2 for the full/censored and truncated reporting scenarios, respectively); under endogeneity, $f_{N^*|D}$ is given by \eqref{eq:FCM} for a continuous deductible (joint frequency models FCM1 and FCM2) or by \eqref{eq:FDM} for a discrete deductible (joint frequency models FDM1 and FDM2). The truncated frequency models FEM2, FCM2 and FDM2 require the retention probability $p(d;\bm{x})$, which is computed from the estimated severity model of the corresponding reporting scenario and deductible treatment (SEM3, SCM3 and SDM3, respectively), in line with the sequential estimation of Section 2.3. Since the truncated marginal frequency model inherits any bias in the severity model through $p(d;\bm{x})$, we additionally consider the variant FEM2G, in which $p(d;\bm{x})$ is computed from the ground-up severity model SEM1, in order to isolate the effect of the severity model on the truncated frequency model.}
+\rev{The frequency models considered in this article are summarized in the lower panel of Table~\ref{tab:modelsummary}. In all of them, the number of loss events marginally follows $N|\bm{x} \sim \mathcal{NB}(r, \exp(\bm{x}\beta_{N}) /r)$, so that $\mathbb{E}[N|\bm{x}]=\exp(\bm{x}\beta_{N})$. Under full or censored reporting the response is $N^*=N$ and the likelihood component is \eqref{eq:fr}; under truncated reporting the response is the number of payments $N^*=\sum_{j=1}^{N} I(Y_{j}>d)$ and the likelihood component is \eqref{eq:urt}, which reduces to \eqref{eq:fg} so that $\mathbb{E}[N^*|D=d; \bm{x}]=p(d;\bm{x}) \cdot \mathbb{E}[N|D=d;\bm{x}]$. Under the exogeneity assumption, $C_{DN}$ is the independence copula and $f_{N|D}=f_{N}$ (marginal frequency models FEM1 and FEM2 for the full/censored and truncated reporting scenarios, respectively); under endogeneity, $f_{N|D}$ is given by \eqref{eq:FCM} for a continuous deductible (joint frequency models FCM1 and FCM2) or by \eqref{eq:FDM} for a discrete deductible (joint frequency models FDM1 and FDM2). The truncated frequency models FEM2, FCM2 and FDM2 require the retention probability $p(d;\bm{x})$, which is computed from the estimated severity model of the corresponding reporting scenario and deductible treatment (SEM3, SCM3 and SDM3, respectively), in line with the sequential estimation of Section 2.3. Since the truncated marginal frequency model inherits any bias in the severity model through $p(d;\bm{x})$, we additionally consider the variant FEM2G, in which $p(d;\bm{x})$ is computed from the ground-up severity model SEM1, in order to isolate the effect of the severity model on the truncated frequency model.}
 
-As in the severity models, one can assume that the deductible $D$ is exogenous to the claim frequency so that \rev{$N^* \perp D|\bm{x}$}, then FEM1 is equivalent to 
-FEM2, %$N|\bm{x} \,{\buildrel d \over =}\,  N|D, \bm{x}$ since $N|D, \bm{x} \sim \mathcal{NB}(r,  p(\bm{x}) \cdot \exp(\bm{x}\beta_{N}) /r)$
-according to the argument in (\ref{eq:fg}). Therefore, if the exogenous assumption holds, then the estimates of $\beta_{N}$ from FEM1 and FEM2 should be also quite close. However, once we consider endogeneity of $D$ (that implies \rev{$N^*|\bm{x} \not\perp D|\bm{x}$}), \rev{the joint frequency models FCM1/FCM2 (continuous deductible) or FDM1/FDM2 (discrete deductible) are needed to capture the endogeneity of the deductible.}
+As in the severity models, one can assume that the deductible $D$ is exogenous to the claim frequency so that \rev{$N \perp D|\bm{x}$}, then FEM1 is equivalent to 
+FEM2, %$N^*|\bm{x} \,{\buildrel d \over =}\,  N^*|D, \bm{x}$ since $N^*|D, \bm{x} \sim \mathcal{NB}(r,  p(\bm{x}) \cdot \exp(\bm{x}\beta_{N}) /r)$
+according to the argument in (\ref{eq:fg}). Therefore, if the exogenous assumption holds, then the estimates of $\beta_{N}$ from FEM1 and FEM2 should be also quite close. However, once we consider endogeneity of $D$ (that implies \rev{$N|\bm{x} \not\perp D|\bm{x}$}), \rev{the joint frequency models FCM1/FCM2 (continuous deductible) or FDM1/FDM2 (discrete deductible) are needed to capture the endogeneity of the deductible.}
 
 \subsubsection{Ratemaking with frequency and severity models and reporting scenarios}
 
 \rev{The pure premium given deductible $D=d$ is the expected sum of the insurer's actual payouts, which can be written in two equivalent ways:}
 \begin{align}
-	{\rm Premium} = {\rm E}(S|D=d;\bm{x})&={\rm E}(N^*|D=d;\bm{x}) \times {\rm E}(\{Y^*-d\}_+\ |\ D=d;\bm{x})\label{eq:censoredpremium}\\
-    &={\rm E}(N^*|D=d;\bm{x}) \times \rev{p(d;\bm{x})}\times{\rm E}(\rev{Y^*-d\ |\ Y^*>d,}\ D=d;\bm{x})\nonumber\\
-    &={\rm E}(N|D=d;\bm{x}) \times {\rm E}(Y^*-d\ |\ Y^*>d,\ D=d;\bm{x})\label{eq:truncatedpremium}
+	{\rm Premium} = {\rm E}(S|D=d;\bm{x})&={\rm E}(N|D=d;\bm{x}) \times {\rm E}(\{Y-d\}_+\ |\ D=d;\bm{x})\label{eq:censoredpremium}\\
+    &={\rm E}(N|D=d;\bm{x}) \times \rev{p(d;\bm{x})}\times{\rm E}(\rev{Y-d\ |\ Y>d,}\ D=d;\bm{x})\nonumber\\
+    &={\rm E}(N^*|D=d;\bm{x}) \times {\rm E}(Y-d\ |\ Y>d,\ D=d;\bm{x})\label{eq:truncatedpremium}
 \end{align}
-where $N = \sum_{\rev{j}=1}^{N^*}I(Y^{*}_{\rev{j}}>d)$\rev{, the second equality uses ${\rm E}[(Y^*-d)_+|D=d;\bm{x}]=\Pr(Y^*>d|D=d;\bm{x})\,{\rm E}[Y^*-d|Y^*>d,D=d;\bm{x}]$ with $p(d;\bm{x})=\Pr(Y^*>d|D=d;\bm{x})$, and the third equality uses ${\rm E}(N|D=d;\bm{x})=p(d;\bm{x})\,{\rm E}(N^*|D=d;\bm{x})$, which follows from the binomial thinning in \eqref{eq:urt}}. While \rev{the} full reporting scenario provides both pure premiums by (\ref{eq:censoredpremium}) and (\ref{eq:truncatedpremium}), the pure premium can be estimated by (\ref{eq:censoredpremium}) under \rev{the} censored reporting scenario and \rev{by} (\ref{eq:truncatedpremium}) under \rev{the} truncated reporting scenario.
+where $N^* = \sum_{\rev{j}=1}^{N}I(Y_{\rev{j}}>d)$\rev{, the second equality uses ${\rm E}[(Y-d)_+|D=d;\bm{x}]=\Pr(Y>d|D=d;\bm{x})\,{\rm E}[Y-d|Y>d,D=d;\bm{x}]$ with $p(d;\bm{x})=\Pr(Y>d|D=d;\bm{x})$, and the third equality uses ${\rm E}(N^*|D=d;\bm{x})=p(d;\bm{x})\,{\rm E}(N|D=d;\bm{x})$, which follows from the binomial thinning in \eqref{eq:urt}}. While \rev{the} full reporting scenario provides both pure premiums by (\ref{eq:censoredpremium}) and (\ref{eq:truncatedpremium}), the pure premium can be estimated by (\ref{eq:censoredpremium}) under \rev{the} censored reporting scenario and \rev{by} (\ref{eq:truncatedpremium}) under \rev{the} truncated reporting scenario.
 %\subsection{The Endogeneity with Joint models}
 
 %\subsubsection{Frequency Joint Models}
@@ -430,19 +430,19 @@ where $N = \sum_{\rev{j}=1}^{N^*}I(Y^{*}_{\rev{j}}>d)$\rev{, the second equality
 
 %\todonote{The tables and figures of this section are currently based on $R=50$ replications per case (the run on our side); the full design with 500 replications is generated by the enclosed code (\texttt{run\_sim.R}, about 7--8 hours on 8 cores), after which \texttt{summarize\_sim.R} and \texttt{update\_manuscript\_sim.py} regenerate all tables and figures of this section and of the Appendix. The Monte Carlo standard errors in the Appendix refer to the actual number of replications; the coverage proportions in Table~\ref{tab:simcoverage} in particular need the full run. The numbers quoted in the text should be re-checked against the regenerated tables.}
 
-As briefly mentioned in Section 2.4, usage of marginal models with incomplete data (FEM2 for frequency and SEM2/SEM3 for severity) could be innocuous in case the deductible can be assumed to be exogenous so that these marginal models with incomplete claim data can be equivalent to the marginal models with complete claim data (FEM1 and SEM1, respectively). In other words, to the extent that such exogeneity assumption of the deductible is violated, reliability of the marginal models with incomplete data can be susceptible. \rev{While it is to be expected that a misspecified (exogenous) model fitted to less informative (censored or truncated) data performs worse than a correctly specified model fitted to complete data, the simulation study serves three purposes that cannot be settled by this qualitative argument alone. First, it verifies that the parameters of the proposed joint models, including the dependence parameters, are recoverable from censored and truncated data under the sequential estimation of Section 2.3, which is not obvious a priori because the truncated frequency likelihood depends on the severity model through $p(d;\bm{x})$. Second, it quantifies the magnitude of the biases incurred by the marginal models under a moderate degree of endogeneity, and shows that they are of practical relevance for ratemaking. Third, it shows that the efficiency loss of the joint models fitted to incomplete data relative to those fitted to complete data is modest, and it disentangles the direct effect of the endogeneity of the deductible on the frequency model from the indirect effect transmitted through $p(d;\bm{x})$ from a biased severity model (via the FEM2G variant).} \rev{Since the deductible of a property insurance policy is in practice chosen from a small menu of amounts, as in the LGPIF data of Section~\ref{sec:empirical}, the deductible is generated as a discrete (ordinal) variable, so that the joint models under study are the discrete-deductible models SDM1--3 and FDM1--2 of Section~\ref{section:exoendo}.} To concretely assess \rev{these points}, we conducted a simulation study where we generated $\{D_i, N^*_{i},Y^*_{i,j} |i=1,\ldots, 5000, \, j=1,\ldots, N_i^* \}$ with the following marginal distributions:
+As briefly mentioned in Section 2.4, usage of marginal models with incomplete data (FEM2 for frequency and SEM2/SEM3 for severity) could be innocuous in case the deductible can be assumed to be exogenous so that these marginal models with incomplete claim data can be equivalent to the marginal models with complete claim data (FEM1 and SEM1, respectively). In other words, to the extent that such exogeneity assumption of the deductible is violated, reliability of the marginal models with incomplete data can be susceptible. \rev{While it is to be expected that a misspecified (exogenous) model fitted to less informative (censored or truncated) data performs worse than a correctly specified model fitted to complete data, the simulation study serves three purposes that cannot be settled by this qualitative argument alone. First, it verifies that the parameters of the proposed joint models, including the dependence parameters, are recoverable from censored and truncated data under the sequential estimation of Section 2.3, which is not obvious a priori because the truncated frequency likelihood depends on the severity model through $p(d;\bm{x})$. Second, it quantifies the magnitude of the biases incurred by the marginal models under a moderate degree of endogeneity, and shows that they are of practical relevance for ratemaking. Third, it shows that the efficiency loss of the joint models fitted to incomplete data relative to those fitted to complete data is modest, and it disentangles the direct effect of the endogeneity of the deductible on the frequency model from the indirect effect transmitted through $p(d;\bm{x})$ from a biased severity model (via the FEM2G variant).} \rev{Since the deductible of a property insurance policy is in practice chosen from a small menu of amounts, as in the LGPIF data of Section~\ref{sec:empirical}, the deductible is generated as a discrete (ordinal) variable, so that the joint models under study are the discrete-deductible models SDM1--3 and FDM1--2 of Section~\ref{section:exoendo}.} To concretely assess \rev{these points}, we conducted a simulation study where we generated $\{D_i, N_{i},Y_{i,j} |i=1,\ldots, 5000, \, j=1,\ldots, N_i \}$ with the following marginal distributions:
 {\color{blue}
 $$
 \begin{aligned}
 & \bm{x}_i = (1, X^{[1]}_{i}, X^{[2]}_{i})' \in \mathbb{R}^{3}, X^{[1]}_{i} \sim \mathcal{N}(0, 1), \ X^{[2]}_{i} \sim \mathcal{BN}(0.6), \\
 & D_i \in \{d_1,\ldots,d_5\}=\{500,\, 1000,\, 2500,\, 5000,\, 10000\}, \\
 &\mathbb{P}(D_i \le d_k \mid \bm{x}_i) = \frac{\exp(\kappa_k + \tilde{\bm{x}}_i'\bm{\beta}_D)}{1+\exp(\kappa_k + \tilde{\bm{x}}_i'\bm{\beta}_D)}, \quad k=1,\ldots,4, \\
-&N^*_{i} \sim \mathcal{NB}(r,\,\exp(\bm{x}_i'\bm{\beta}_N)/ r), \\
-&Y^*_{i,j} \sim \mathcal{PR}(\exp(\bm{x}_i'\bm{\beta}_Y), \, \,\alpha)
+&N_{i} \sim \mathcal{NB}(r,\,\exp(\bm{x}_i'\bm{\beta}_N)/ r), \\
+&Y_{i,j} \sim \mathcal{PR}(\exp(\bm{x}_i'\bm{\beta}_Y), \, \,\alpha)
 \end{aligned}
 $$
 }
-where \rev{$\mathcal{BN}(0.6)$ denotes a Bernoulli distribution with success probability $0.6$,} \rev{the deductible follows the proportional-odds (cumulative logit) model used for the LGPIF data in Section~\ref{sec:empirical} with thresholds $\kappa_1<\kappa_2<\kappa_3<\kappa_4$ and covariate vector $\tilde{\bm{x}}_i=(X^{[1]}_{i}, X^{[2]}_{i})'$ (the intercept is absorbed in the thresholds; a negative coefficient means that the covariate increases the deductible),} $\mathbb{E}[N_i^*]=\exp(\bm{x}_i'\bm{\beta}_N)$, \rev{$\mathbb{V}ar[N_i^*]= \exp(\bm{x}_i'\bm{\beta}_N) \left(1+\exp(\bm{x}_i'\bm{\beta}_N)/r\right)$}, and
+where \rev{$\mathcal{BN}(0.6)$ denotes a Bernoulli distribution with success probability $0.6$,} \rev{the deductible follows the proportional-odds (cumulative logit) model used for the LGPIF data in Section~\ref{sec:empirical} with thresholds $\kappa_1<\kappa_2<\kappa_3<\kappa_4$ and covariate vector $\tilde{\bm{x}}_i=(X^{[1]}_{i}, X^{[2]}_{i})'$ (the intercept is absorbed in the thresholds; a negative coefficient means that the covariate increases the deductible),} $\mathbb{E}[N_i]=\exp(\bm{x}_i'\bm{\beta}_N)$, \rev{$\mathbb{V}ar[N_i]= \exp(\bm{x}_i'\bm{\beta}_N) \left(1+\exp(\bm{x}_i'\bm{\beta}_N)/r\right)$}, and
 {\color{blue}
 $$
 \begin{aligned}
@@ -453,25 +453,25 @@ $$
 \end{aligned}
 $$
 }
-Note that $\mathcal{PR}$ is Pareto distribution, a special case of the GB2 distribution where $\sigma=\alpha_1=1$ and $\alpha_2=\alpha$. \rev{The thresholds are chosen such that the five deductible levels have unconditional proportions of about 45\%, 20\%, 15\%, 10\% and 10\%, similar to the LGPIF data, and the intercept of $\bm{\beta}_Y$ is chosen such that a substantial fraction of the ground-up losses, about 42\% when the deductible is exogenous, falls below the deductible.} We also define $N_i ={N^*_i}$ under censored reporting, $N_i =\sum_{j=1}^{N^*_i} I(Y^*_{i,j}>D_i)$ under truncated reporting\rev{, and 500 datasets are generated for each of the following cases}:
+Note that $\mathcal{PR}$ is Pareto distribution, a special case of the GB2 distribution where $\sigma=\alpha_1=1$ and $\alpha_2=\alpha$. \rev{The thresholds are chosen such that the five deductible levels have unconditional proportions of about 45\%, 20\%, 15\%, 10\% and 10\%, similar to the LGPIF data, and the intercept of $\bm{\beta}_Y$ is chosen such that a substantial fraction of the ground-up losses, about 42\% when the deductible is exogenous, falls below the deductible.} We also define $N^*_i ={N_i}$ under censored reporting, $N^*_i =\sum_{j=1}^{N_i} I(Y_{i,j}>D_i)$ under truncated reporting\rev{, and 500 datasets are generated for each of the following cases}:
 
 \begin{itemize}
     \item Case 1 \\
-    : $D$ is entirely exogenous, \rev{$D_i \perp N^*_i$, and $D_i \perp Y^*_{i,j}$}.
+    : $D$ is entirely exogenous, \rev{$D_i \perp N_i$, and $D_i \perp Y_{i,j}$}.
     \item Case 2 \\
-    : $D\perp Y^*$, but $(D_i, N^*_i)$ are paired with a Gaussian copula with $\rho_N<0$.
+    : $D\perp Y$, but $(D_i, N_i)$ are paired with a Gaussian copula with $\rho_N<0$.
     \item Case 3 \\
-    : $D\perp N^*$, but $(D_i, Y^*_{i,j})$ are paired with a Gaussian copula with $\rho_Y<0$.
+    : $D\perp N$, but $(D_i, Y_{i,j})$ are paired with a Gaussian copula with $\rho_Y<0$.
     \item Case 4 \\
-    : $(D_i, N^*_{i}), (D_i, Y^*_{i,j})$ are paired with Gaussian copulas with $\rho_N,\rho_Y<0$.
+    : $(D_i, N_{i}), (D_i, Y_{i,j})$ are paired with Gaussian copulas with $\rho_N,\rho_Y<0$.
     % \item \rev{Case 5 \\
-    % : as Case 4, but the conditional independence assumption $N^*\perp Y^*\,|\,D$ of Section~\ref{sec:condind} is violated: a single latent risk propensity drives the deductible, the frequency and the severity (see below).}
+    % : as Case 4, but the conditional independence assumption $N\perp Y\,|\,D$ of Section~\ref{sec:condind} is violated: a single latent risk propensity drives the deductible, the frequency and the severity (see below).}
     % \item \rev{Case 6 \\
     % : as Case 5, with an additional direct dependence between the frequency and the severity given the deductible.}
 \end{itemize}
-\rev{In Cases 1--4 the data are generated exactly from the model of Section 2.2 with a discrete deductible. Writing $[F_D(d_{k-1};\bm{x}_i),F_D(d_k;\bm{x}_i)]$ for the ``atom'' of the level $d_k$ (with $F_D(d_0;\bm{x}_i)=0$), the deductible level $D_i$ is first drawn from the ordinal model; then a uniform position $U^{N}_i$ is drawn in the atom of $D_i$ and $N_i^*=F_{N^*}^{-1}(V^{N}_i;\bm{x}_i)$ with $(U^{N}_i,V^{N}_i)$ distributed according to the Gaussian copula $C_{DN}$; likewise, for each claim an independent position $U^{Y}_{i,j}$ is drawn in the same atom and $Y^*_{i,j}=F_{Y^*}^{-1}(V^{Y}_{i,j};\bm{x}_i)$ with $(U^{Y}_{i,j},V^{Y}_{i,j})\sim C_{DY}$. Integrating the uniform positions over the atom gives precisely $f_{N^*|D}$ and $f_{Y^*|D}$ of \eqref{eq:FDM}--\eqref{eq:SDM}, and $N^*_i$ and $Y^*_{i,j}$ are conditionally independent given $(D_i,\bm{x}_i)$.} 
-%In Case 5 the three positions $U^{N}_i$ and $U^{Y}_{i,j}$ are replaced by the single latent uniform $U^{D}_i$ that generates the level $D_i$ itself, i.e., $D_i=F_D^{-1}(U^{D}_i;\bm{x}_i)$: the pairs $(D_i,N^*_i)$ and $(D_i,Y^*_{i,j})$ still follow $C_{DN}$ and $C_{DY}$, and $N^*_i\perp Y^*_{i,j}\,|\,U^{D}_i$, but $N^*_i$ and $Y^*_{i,j}$ are dependent given the observed level $D_i$ through their common position inside the atom (policy-years with many claims tend to sit at the end of the atom with the smaller latent deductible and larger losses). In Case 6, in addition, the latent normal variable of each $Y^*_{i,j}$ has correlation $\rho_{NY}=0.3$ with the residual of the latent normal variable of $N^*_i$ given the deductible, which induces a positive dependence between the frequency and the severity given the deductible. Cases 5 and 6 thus assess the sensitivity of the joint models to two forms of violation of the conditional independence assumption.
-\rev{The dependence parameters are $\rho_N=-0.5$ in Case 2, $\rho_Y=-0.5$ in Case 3, and $(\rho_N,\rho_Y)=(-0.6,-0.4)$ in Case 4; they are the parameters of the Gaussian copulas between the latent uniforms and the claims, and because of the ties in the ordinal deductible the Kendall's $\tau$ between the observed level and the claims is attenuated (for example, in Case 4 the average Kendall's $\tau$ between $D_i$ and $N^*_i$ is about $-0.28$ and that between $D_i$ and $Y^*_{i,j}$ about $-0.15$, compared with $2\arcsin(\rho)/\pi=-0.41$ and $-0.26$ on the latent scale).}
+\rev{In Cases 1--4 the data are generated exactly from the model of Section 2.2 with a discrete deductible. Writing $[F_D(d_{k-1};\bm{x}_i),F_D(d_k;\bm{x}_i)]$ for the ``atom'' of the level $d_k$ (with $F_D(d_0;\bm{x}_i)=0$), the deductible level $D_i$ is first drawn from the ordinal model; then a uniform position $U^{N}_i$ is drawn in the atom of $D_i$ and $N_i=F_{N}^{-1}(V^{N}_i;\bm{x}_i)$ with $(U^{N}_i,V^{N}_i)$ distributed according to the Gaussian copula $C_{DN}$; likewise, for each claim an independent position $U^{Y}_{i,j}$ is drawn in the same atom and $Y_{i,j}=F_{Y}^{-1}(V^{Y}_{i,j};\bm{x}_i)$ with $(U^{Y}_{i,j},V^{Y}_{i,j})\sim C_{DY}$. Integrating the uniform positions over the atom gives precisely $f_{N|D}$ and $f_{Y|D}$ of \eqref{eq:FDM}--\eqref{eq:SDM}, and $N_i$ and $Y_{i,j}$ are conditionally independent given $(D_i,\bm{x}_i)$.} 
+%In Case 5 the three positions $U^{N}_i$ and $U^{Y}_{i,j}$ are replaced by the single latent uniform $U^{D}_i$ that generates the level $D_i$ itself, i.e., $D_i=F_D^{-1}(U^{D}_i;\bm{x}_i)$: the pairs $(D_i,N_i)$ and $(D_i,Y_{i,j})$ still follow $C_{DN}$ and $C_{DY}$, and $N_i\perp Y_{i,j}\,|\,U^{D}_i$, but $N_i$ and $Y_{i,j}$ are dependent given the observed level $D_i$ through their common position inside the atom (policy-years with many claims tend to sit at the end of the atom with the smaller latent deductible and larger losses). In Case 6, in addition, the latent normal variable of each $Y_{i,j}$ has correlation $\rho_{NY}=0.3$ with the residual of the latent normal variable of $N_i$ given the deductible, which induces a positive dependence between the frequency and the severity given the deductible. Cases 5 and 6 thus assess the sensitivity of the joint models to two forms of violation of the conditional independence assumption.
+\rev{The dependence parameters are $\rho_N=-0.5$ in Case 2, $\rho_Y=-0.5$ in Case 3, and $(\rho_N,\rho_Y)=(-0.6,-0.4)$ in Case 4; they are the parameters of the Gaussian copulas between the latent uniforms and the claims, and because of the ties in the ordinal deductible the Kendall's $\tau$ between the observed level and the claims is attenuated (for example, in Case 4 the average Kendall's $\tau$ between $D_i$ and $N_i$ is about $-0.28$ and that between $D_i$ and $Y_{i,j}$ about $-0.15$, compared with $2\arcsin(\rho)/\pi=-0.41$ and $-0.26$ on the latent scale).}
 
 Through the sequential maximum likelihood scheme as in the paragraphs following  \eqref{eq:jointloglik}, we estimated the parameters \rev{$\bm{\kappa}$, $\bm{\beta}_D$ of the ordinal deductible model, $\bm{\beta}_Y$, $\alpha$ (and $\rho_Y$) of the severity models SEM1--3 and SDM1--3, and $\bm{\beta}_N$, $r$ (and $\rho_N$) of the frequency models FEM1, FEM2, FEM2G and FDM1--2} under each case with the reporting scenarios\rev{; the joint models use the Gaussian copula, i.e., the copula family of the data-generating process. As in Section~\ref{sec:empirical}, FEM2 and FEM2G evaluate $p(d;\bm{x})$ with the severity models SEM3 and SEM1, respectively, and FDM2 with the joint severity model SDM3 and the fitted deductible model. Starting values are obtained from the data of the respective scenario (a log-linear regression for the severity, a Poisson regression for the frequency and $\rho=0$ for the copula); the true values are never used.} The estimation performance for parameter $\theta$ was assessed with the following measures:
 $$
@@ -485,11 +485,11 @@ $$
 where $\hat{\theta}^{(r)}$ is the estimated value of $\theta$ under the specified model using the $r${th} simulation sample. \rev{In the tables of the Appendix, the entry ``(s.e.)'' below each mean denotes the Monte Carlo standard error of the mean, $\sqrt{\text{Var}/500}$, so that a bias that is small relative to this Monte Carlo standard error is compatible with an unbiased estimator; note also that $\text{RMSE}^2=\text{Var}+\text{Bias}^2$. Since these are finite-sample Monte Carlo results for one particular design, we refer to an estimator whose bias is negligible relative to its RMSE as ``approximately unbiased'' in what follows, without claiming exact unbiasedness.} \\
 To assess the predictive performance of insurance claims with $\hat{\theta}^{(r)}$, the following mean absolute errors (MAE) of \rev{the frequency and severity components of the pure premium in} (\ref{eq:censoredpremium}), (\ref{eq:truncatedpremium}) are measured under each model,
 \begin{align*}
-    \text{Frequency}&:=\frac{1}{500}\sum_{r=1}^{500}\left(\frac{1}{5000}\sum_{s=1}^{5000}|{N}^{(r)}_s -{\hat{N}}^{(r)}_s|\right),\nonumber\\
+    \text{Frequency}&:=\frac{1}{500}\sum_{r=1}^{500}\left(\frac{1}{5000}\sum_{s=1}^{5000}|N^{*(r)}_s -\hat{N}^{*(r)}_s|\right),\nonumber\\
     \text{Severity}&:=
-        \frac{1}{500}\sum_{r=1}^{500}\left(\frac{1}{S^{(r)}}\sum_{\rev{t}=1}^{S^{(r)}}|Y^{(r)}_{\rev{t}} -\hat{Y}^{(r)}_{\rev{t}}|\right),\nonumber
+        \frac{1}{500}\sum_{r=1}^{500}\left(\frac{1}{S^{(r)}}\sum_{\rev{t}=1}^{S^{(r)}}|Y^{*(r)}_{\rev{t}} -\hat{Y}^{*(r)}_{\rev{t}}|\right),\nonumber
 \end{align*}
- where $S^{(r)}$ is the total number of \rev{claim} observations under censored reporting and truncated reporting in $r$th dataset and $\hat{N}^{(r)}_s$ / $\hat{Y}^{(r)}_{\rev{t}}$ are predicted values of claim frequency / severity in $r$th dataset, respectively\rev{, namely the conditional means of the observed frequency and severity given the deductible and the covariates under the fitted model: $\hat{\rm E}(N^*|D=d;\bm{x})$ and $\hat{\rm E}(\{Y^*-d\}_+|D=d;\bm{x})$ under censored reporting, and $\hat{\rm E}(N|D=d;\bm{x})=\hat p(d;\bm{x})\hat{\rm E}(N^*|D=d;\bm{x})$ and $\hat{\rm E}(Y^*-d|Y^*>d,D=d;\bm{x})$ under truncated reporting, where the marginal models evaluate ${\rm E}(N^*|D=d;\bm{x})$ and the distribution of $Y^*$ given $D=d$ without conditioning on the deductible. Because these MAEs are dominated by the irreducible variability of the claims (in particular of the heavy-tailed severities), we also report the error of the premium components themselves, which is what matters for ratemaking:}
+ where $S^{(r)}$ is the total number of \rev{claim} observations under censored reporting and truncated reporting in $r$th dataset and $\hat{N}^{*(r)}_s$ / $\hat{Y}^{*(r)}_{\rev{t}}$ are predicted values of claim frequency / severity in $r$th dataset, respectively\rev{, namely the conditional means of the observed frequency and severity given the deductible and the covariates under the fitted model: $\hat{\rm E}(N|D=d;\bm{x})$ and $\hat{\rm E}(\{Y-d\}_+|D=d;\bm{x})$ under censored reporting, and $\hat{\rm E}(N^*|D=d;\bm{x})=\hat p(d;\bm{x})\hat{\rm E}(N|D=d;\bm{x})$ and $\hat{\rm E}(Y-d|Y>d,D=d;\bm{x})$ under truncated reporting, where the marginal models evaluate ${\rm E}(N|D=d;\bm{x})$ and the distribution of $Y$ given $D=d$ without conditioning on the deductible. Because these MAEs are dominated by the irreducible variability of the claims (in particular of the heavy-tailed severities), we also report the error of the premium components themselves, which is what matters for ratemaking:}
 {\color{blue}
 \begin{align*}
     \text{Frequency}_{\text{prem}}&:=\frac{1}{500}\sum_{r=1}^{500}\left(\frac{1}{5000}\sum_{s=1}^{5000}|m^{(r)}_s -\hat{m}^{(r)}_s|\right),\qquad
@@ -498,7 +498,7 @@ To assess the predictive performance of insurance claims with $\hat{\theta}^{(r)
 }
 \rev{where $m_s^{(r)}$ and $\mu_t^{(r)}$ are the true conditional means of the observed frequency and severity given $(D,\bm{x})$ under the data-generating process (the frequency and severity factors of \eqref{eq:censoredpremium} or \eqref{eq:truncatedpremium}, computed with the true parameters) and $\hat m_s^{(r)}$, $\hat\mu_t^{(r)}$ their estimates under the fitted model. The detailed estimation results (mean, Monte Carlo standard error, RMSE and bias of each parameter) are reported in Tables~\ref{tab:AppSimDed}--\ref{tab:AppSimEndCase4} in the Appendix, and are summarized graphically in Figures~\ref{fig:simcase1}--\ref{fig:simcase4}; the optimizer converged in all replications and for all models.}%with one exception (the deductible model in one replication of Case 6, whose line search terminated abnormally at estimates that are nevertheless regular), 
 
-\subsection{Case 1 : $D_i$ is exogenous to $N^*, Y^*$}
+\subsection{Case 1 : $D_i$ is exogenous to $N, Y$}
 
 Figure \ref{fig:simcase1} \rev{and Tables~\ref{tab:AppSimExoCase1}--\ref{tab:AppSimEndCase1} show} that even in case the exogeneity of deductible is assured both for the frequency and severity, usage of either FEM2 or SEM2/SEM3 is less efficient in terms of the estimation performance so that the RMSE are larger than the ones from FEM1 and SEM1, respectively. As FEM2 depends on $p(d;\bm{x})$ from the severity models, FEM2G suffers less than FEM2. \rev{The joint models do not find spurious dependence: the estimates of $\rho_Y$ in SDM1--3 and of $\rho_N$ in FDM1--2 are centered at zero, their regression coefficients are approximately unbiased, and the price paid for estimating an unnecessary dependence parameter is small, with RMSEs close to those of the corresponding marginal models (Table~\ref{tab:AppSimEndCase1}). The ordinal deductible model itself is estimated with negligible bias in all cases (Table~\ref{tab:AppSimDed}).} Table \ref{tab:maecase1} shows that the predictions for the censored and truncated reporting scenarios exhibit comparable levels of estimation error \rev{under all models} when the deductible is exogenous\rev{; the while the premium errors of the joint models are larger than those of the marginal models, the actual errors of the joint models are comparable to or even smaller than those of the marginal models.}
 
@@ -544,8 +544,8 @@ MAE$_{\text{prem}}$ & 103.7 & 107.6 & 113.3 & 122.1 & 146.2 & 185.0 & 155.4 & 21
 
 \FloatBarrier
 
-\subsection{Case 2 : $D_i$ is exogenous to $Y^*$ and $(D, N^*)$ is from a Gaussian copula with $\rho_N=-0.5$}
-Figure \ref{fig:simcase2} shows that even in case the exogeneity of deductible is assured for the severity, usage of  SEM2/SEM3 is less efficient in terms of the estimation performance so that the RMSE are larger than the ones from SEM1.  It is further observed that usage of FEM2 suffers from biases in the estimated parameters as it fails to capture possible endogeneity of the deductible with incomplete data\rev{: the intercept of $\bm{\beta}_N$ is overestimated by about $0.18$ and $r$ by about $0.5$ (Table~\ref{tab:AppSimExoCase2}), i.e., the thinning of the claims by the endogenous deductible is wrongly attributed to the mean and the dispersion of $N^*$}. Moreover, FEM2G still shows similar bias and RMSE to those of FEM2, which implies that fixing $p(d;\bm{x})$ gives less improvement when the deductible is not exogenous to the frequency. It is also notable that even with incomplete frequency data, \rev{FDM2} still yields \rev{approximately unbiased} estimates of the parameters \rev{including $\rho_N$ (the biases in Table~\ref{tab:AppSimEndCase2} are within a few Monte Carlo standard errors of zero)} by successfully incorporating the existing endogeneity of the deductible for the frequency component. In Table \ref{tab:maecase2}, \rev{FDM1/FDM2} also show lower prediction error in both censored and truncated frequency\rev{, and the error of the frequency component of the premium is reduced by an order of magnitude (from about $0.38$ to $0.03$ claims per policy-year under censored reporting, and from about $0.19$ to $0.02$ under truncated reporting), with FDM2 providing the same level of prediction as FDM1 from complete data}.
+\subsection{Case 2 : $D_i$ is exogenous to $Y$ and $(D, N)$ is from a Gaussian copula with $\rho_N=-0.5$}
+Figure \ref{fig:simcase2} shows that even in case the exogeneity of deductible is assured for the severity, usage of  SEM2/SEM3 is less efficient in terms of the estimation performance so that the RMSE are larger than the ones from SEM1.  It is further observed that usage of FEM2 suffers from biases in the estimated parameters as it fails to capture possible endogeneity of the deductible with incomplete data\rev{: the intercept of $\bm{\beta}_N$ is overestimated by about $0.18$ and $r$ by about $0.5$ (Table~\ref{tab:AppSimExoCase2}), i.e., the thinning of the claims by the endogenous deductible is wrongly attributed to the mean and the dispersion of $N$}. Moreover, FEM2G still shows similar bias and RMSE to those of FEM2, which implies that fixing $p(d;\bm{x})$ gives less improvement when the deductible is not exogenous to the frequency. It is also notable that even with incomplete frequency data, \rev{FDM2} still yields \rev{approximately unbiased} estimates of the parameters \rev{including $\rho_N$ (the biases in Table~\ref{tab:AppSimEndCase2} are within a few Monte Carlo standard errors of zero)} by successfully incorporating the existing endogeneity of the deductible for the frequency component. In Table \ref{tab:maecase2}, \rev{FDM1/FDM2} also show lower prediction error in both censored and truncated frequency\rev{, and the error of the frequency component of the premium is reduced by an order of magnitude (from about $0.38$ to $0.03$ claims per policy-year under censored reporting, and from about $0.19$ to $0.02$ under truncated reporting), with FDM2 providing the same level of prediction as FDM1 from complete data}.
 
 \begin{figure}[h!]
     \centering
@@ -589,8 +589,8 @@ MAE$_{\text{prem}}$ & 112.6 & 114.5 & 123.0 & 127.6 & 137.7 & 161.3 & 144.2 & 18
 
 \FloatBarrier
 
-\subsection{Case 3 : $D_i$ is exogenous to $N^*$ and $(D, Y^*)$ is from a Gaussian copula with $\rho_Y=-0.5$}
-Figure \ref{fig:simcase3} shows that in case the exogeneity of deductible is assured only for the frequency, it is observed that usage of SEM2/SEM3 suffers from more biases in the estimated parameters as it fails to capture possible endogeneity of the deductible with incomplete data\rev{; the biases are large (about $+0.6$ to $+0.7$ for the intercept of $\bm{\beta}_Y$ and about $+1.4$ for $\alpha$, Table~\ref{tab:AppSimExoCase3}), because the losses that are censored or truncated by the deductible are not a random subset of the losses when the deductible is informative about the loss size}. It is also notable that even with incomplete severity data, \rev{SDM2/SDM3} still yield \rev{approximately unbiased} estimates of the parameters \rev{(Table~\ref{tab:AppSimEndCase3})} by successfully incorporating the existing endogeneity of the deductible for the severity component. \rev{Note that in this case FEM2 and FEM2G are also biased, although $D\perp N^*$ (Table~\ref{tab:AppSimExoCase3}), because the retention probability $p(d;\bm{x})$ used by the truncated marginal frequency models is computed under the exogeneity assumption, i.e., from the marginal rather than the conditional distribution of $Y^*$ given $D$ (and, for FEM2, from the biased marginal severity model SEM3); this illustrates the indirect channel through which the endogeneity of the deductible with respect to the severity contaminates the frequency model under truncated reporting, and FDM2, which evaluates $p(d;\bm{x})$ with SDM3, is free of it.} In Table \ref{tab:maecase3}, \rev{SDMs} provide lower prediction errors than SEMs and \rev{SDM2/SDM3} show improved prediction \rev{at a similar level to SDM1; the error of the severity component of the premium drops from above $1{,}300$ under SEM1--3 to between about $100$ and $200$ under SDM1--3, and the frequency premium error of FDM2 is about one fifth of that of FEM2}.
+\subsection{Case 3 : $D_i$ is exogenous to $N$ and $(D, Y)$ is from a Gaussian copula with $\rho_Y=-0.5$}
+Figure \ref{fig:simcase3} shows that in case the exogeneity of deductible is assured only for the frequency, it is observed that usage of SEM2/SEM3 suffers from more biases in the estimated parameters as it fails to capture possible endogeneity of the deductible with incomplete data\rev{; the biases are large (about $+0.6$ to $+0.7$ for the intercept of $\bm{\beta}_Y$ and about $+1.4$ for $\alpha$, Table~\ref{tab:AppSimExoCase3}), because the losses that are censored or truncated by the deductible are not a random subset of the losses when the deductible is informative about the loss size}. It is also notable that even with incomplete severity data, \rev{SDM2/SDM3} still yield \rev{approximately unbiased} estimates of the parameters \rev{(Table~\ref{tab:AppSimEndCase3})} by successfully incorporating the existing endogeneity of the deductible for the severity component. \rev{Note that in this case FEM2 and FEM2G are also biased, although $D\perp N$ (Table~\ref{tab:AppSimExoCase3}), because the retention probability $p(d;\bm{x})$ used by the truncated marginal frequency models is computed under the exogeneity assumption, i.e., from the marginal rather than the conditional distribution of $Y$ given $D$ (and, for FEM2, from the biased marginal severity model SEM3); this illustrates the indirect channel through which the endogeneity of the deductible with respect to the severity contaminates the frequency model under truncated reporting, and FDM2, which evaluates $p(d;\bm{x})$ with SDM3, is free of it.} In Table \ref{tab:maecase3}, \rev{SDMs} provide lower prediction errors than SEMs and \rev{SDM2/SDM3} show improved prediction \rev{at a similar level to SDM1; the error of the severity component of the premium drops from above $1{,}300$ under SEM1--3 to between about $100$ and $200$ under SDM1--3, and the frequency premium error of FDM2 is about one fifth of that of FEM2}.
 
 \begin{figure}[h!]
     \centering
@@ -634,9 +634,9 @@ MAE$_{\text{prem}}$ & 1404.4 & 1367.3 & 105.9 & 116.2 & 1648.9 & 1458.3 & 162.5 
 
 \FloatBarrier
 
-\subsection{Case 4 : Both $(D,N^*),(D, Y^*)$ from Gaussian copulas with $\rho_N=-0.6,  \rho_Y=-0.4$}
+\subsection{Case 4 : Both $(D,N),(D, Y)$ from Gaussian copulas with $\rho_N=-0.6,  \rho_Y=-0.4$}
 
-Figure \ref{fig:simcase4} shows that in case the exogeneity of deductible is not assured, it is observed that usage of FEM2 and SEM2/SEM3 severely suffers from biases in the estimated parameters as they fail to capture possible endogeneity of the deductible with incomplete data. \rev{In this case even SEM1, which uses the complete ground-up losses, is biased (Table~\ref{tab:AppSimExoCase4}). The reason is that the units of the severity likelihood are the claims: since $N^*$ and $D$ are dependent, policy-years with a small deductible contribute more claims, and since $Y^*$ and $D$ are dependent, their losses are larger, so that the pooled distribution of the ground-up losses over the claims is not the marginal distribution of $Y^*$ given $\bm{x}$ assumed by SEM1. The joint severity models condition on the deductible and are therefore not affected by this size-biased sampling of the claims.}
+Figure \ref{fig:simcase4} shows that in case the exogeneity of deductible is not assured, it is observed that usage of FEM2 and SEM2/SEM3 severely suffers from biases in the estimated parameters as they fail to capture possible endogeneity of the deductible with incomplete data. \rev{In this case even SEM1, which uses the complete ground-up losses, is biased (Table~\ref{tab:AppSimExoCase4}). The reason is that the units of the severity likelihood are the claims: since $N$ and $D$ are dependent, policy-years with a small deductible contribute more claims, and since $Y$ and $D$ are dependent, their losses are larger, so that the pooled distribution of the ground-up losses over the claims is not the marginal distribution of $Y$ given $\bm{x}$ assumed by SEM1. The joint severity models condition on the deductible and are therefore not affected by this size-biased sampling of the claims.}
 It is also notable that even with incomplete  data, \rev{FDM2 and SDM2/SDM3} still yield \rev{approximately unbiased} estimates of the parameters \rev{(Table~\ref{tab:AppSimEndCase4})} by successfully incorporating the existing endogeneity of the deductible for both the frequency and severity components. In Table \ref{tab:maecase4}, one can observe that \rev{FDM/SDMs} show lower prediction error than FEM/SEMs and the gap of MAE between \rev{FDM1/SDM1} and \rev{FDM2/SDM2/SDM3} decreases providing comparable level of error with complete data. \rev{Table~\ref{tab:bylevel4} shows what the biases of the marginal models mean for ratemaking. Since the marginal models ignore the deductible, their premium components are too low for the policies with the lowest deductible and far too high for the policies with high deductibles: under censored reporting the frequency component is underestimated by about $42\%$ at the deductible of $500$ and overestimated by about $20\%$ to $440\%$ at the higher levels by FEM1, and the severity component by SEM1/SEM2 shows errors between $-18\%$ and $+680\%$; under truncated reporting the frequency errors of FEM1/FEM2 are even larger (above $+2{,}000\%$ at the highest level, where only a small fraction of the losses exceeds the deductible). The joint models, which price each deductible level with its own conditional distribution, are within about $3\%$ at every level for the frequency and within about $1\%$ for the severity, under complete and incomplete data alike.}
 
 \begin{figure}[h!]
@@ -752,7 +752,7 @@ FDM2 (Case 4) & $\beta_{N,0}$ & 0.0479 & 0.0393 & 0.0393 & 0.0442 & 0.872 & 0.87
 
 % \subsection{\rev{Cases 5 and 6 : violation of the conditional independence assumption}}
 
-% \rev{Cases 5 and 6 keep the dependence parameters of Case 4 and violate the assumption $N^*\perp Y^*\,|\,D$ in the two ways described above; the results are given in Tables~\ref{tab:AppSimExoCase5}--\ref{tab:AppSimEndCase6} and Figures~\ref{fig:simcase5}--\ref{fig:simcase6}. In Case 5, where a common latent propensity drives the deductible, the frequency and the severity, the pairs $(D,N^*)$ and $(D,Y^*)$ still follow the assumed copulas, and FDM1 remains approximately unbiased. The severity joint models, however, are fitted to claims that concentrate at the low-deductible end of each atom and show moderate biases: about $-0.04$ for the slopes of $\bm{\beta}_Y$, $-0.1$ to $-0.15$ for $\alpha$ and $-0.02$ to $-0.04$ for $\rho_Y$; FDM2 inherits a small bias through $p(d;\bm{x})$ (about $-0.05$ for $r$). These biases are an order of magnitude smaller than those of the marginal models (for example $+0.6$ to $+0.7$ for the intercept of $\bm{\beta}_Y$ and $+0.6$ to $+0.8$ for $\alpha$ under SEM1--3, and $+0.17$ for the intercept of $\bm{\beta}_N$ and $+0.18$ for $r$ under FEM2), and the prediction errors in Table~\ref{tab:maecase5} remain much lower under the joint models. In Case 6, where in addition the frequency and the severity are directly dependent given the deductible, the size-biased sampling of the claims operates within each deductible level, and the joint severity models become substantially biased even with complete data (about $+0.6$ for the intercept of $\bm{\beta}_Y$ and $+0.5$ for $\alpha$ under SDM1), although still less than the marginal models (about $+1.2$ and $+1.5$ under SEM1); the frequency models are more robust, with FDM1 approximately unbiased and FDM2 showing moderate biases (about $+0.04$ for the intercept of $\bm{\beta}_N$, $-0.07$ for $r$ and $+0.04$ for $\rho_N$). In both cases the estimated dependence parameters stay close to their true values, so that the endogeneity of the deductible is still correctly detected; what suffers is the severity regression. A direct frequency--severity dependence given the deductible would therefore have to be modeled explicitly, which, as discussed in Section~\ref{sec:condind}, is not straightforward under censored or truncated losses and is left for future research.}
+% \rev{Cases 5 and 6 keep the dependence parameters of Case 4 and violate the assumption $N\perp Y\,|\,D$ in the two ways described above; the results are given in Tables~\ref{tab:AppSimExoCase5}--\ref{tab:AppSimEndCase6} and Figures~\ref{fig:simcase5}--\ref{fig:simcase6}. In Case 5, where a common latent propensity drives the deductible, the frequency and the severity, the pairs $(D,N)$ and $(D,Y)$ still follow the assumed copulas, and FDM1 remains approximately unbiased. The severity joint models, however, are fitted to claims that concentrate at the low-deductible end of each atom and show moderate biases: about $-0.04$ for the slopes of $\bm{\beta}_Y$, $-0.1$ to $-0.15$ for $\alpha$ and $-0.02$ to $-0.04$ for $\rho_Y$; FDM2 inherits a small bias through $p(d;\bm{x})$ (about $-0.05$ for $r$). These biases are an order of magnitude smaller than those of the marginal models (for example $+0.6$ to $+0.7$ for the intercept of $\bm{\beta}_Y$ and $+0.6$ to $+0.8$ for $\alpha$ under SEM1--3, and $+0.17$ for the intercept of $\bm{\beta}_N$ and $+0.18$ for $r$ under FEM2), and the prediction errors in Table~\ref{tab:maecase5} remain much lower under the joint models. In Case 6, where in addition the frequency and the severity are directly dependent given the deductible, the size-biased sampling of the claims operates within each deductible level, and the joint severity models become substantially biased even with complete data (about $+0.6$ for the intercept of $\bm{\beta}_Y$ and $+0.5$ for $\alpha$ under SDM1), although still less than the marginal models (about $+1.2$ and $+1.5$ under SEM1); the frequency models are more robust, with FDM1 approximately unbiased and FDM2 showing moderate biases (about $+0.04$ for the intercept of $\bm{\beta}_N$, $-0.07$ for $r$ and $+0.04$ for $\rho_N$). In both cases the estimated dependence parameters stay close to their true values, so that the endogeneity of the deductible is still correctly detected; what suffers is the severity regression. A direct frequency--severity dependence given the deductible would therefore have to be modeled explicitly, which, as discussed in Section~\ref{sec:condind}, is not straightforward under censored or truncated losses and is left for future research.}
 
 % \begin{figure}[h!]
 %     \centering
@@ -898,9 +898,9 @@ We also consider the case where deductible is assumed to be discrete since there
 
 \FloatBarrier
 
-\subsection{Marginal modeling of $N, Y$ under the exogeneity assumption}\label{section:marginalNY}
+\subsection{Marginal modeling of $N^*, Y^*$ under the exogeneity assumption}\label{section:marginalNY}
 
-In this section, we investigate the deductible's exogeneity via marginal modeling of $N, Y$ respectively. As aforementioned in Section~\ref{section:exoendo}, two marginal models (FEM1, FEM2) for $N$ and three models (SEM1, SEM2, SEM3) for $Y$ are implemented. \rev{Throughout Sections~\ref{section:marginalNY} and \ref{sec:jointcopula}, the reported standard errors are the sandwich (Godambe) standard errors of Section 2.3; for the single-stage marginal models they reduce to the robust sandwich estimator $\bm{H}_{kk}^{-1}\bm{J}_{kk}\bm{H}_{kk}^{-1}$.}
+In this section, we investigate the deductible's exogeneity via marginal modeling of $N^*, Y^*$ respectively. As aforementioned in Section~\ref{section:exoendo}, two marginal models (FEM1, FEM2) for $N^*$ and three models (SEM1, SEM2, SEM3) for $Y^*$ are implemented. \rev{Throughout Sections~\ref{section:marginalNY} and \ref{sec:jointcopula}, the reported standard errors are the sandwich (Godambe) standard errors of Section 2.3; for the single-stage marginal models they reduce to the robust sandwich estimator $\bm{H}_{kk}^{-1}\bm{J}_{kk}\bm{H}_{kk}^{-1}$.}
 
 
 Table~\ref{marginalY} provides regression estimates of the fixed effects from SEM1, SEM2, and SEM3. It is observed that the estimated $\beta_Y$ from all severity marginal models are not close to each other, which challenges the exogenous assumption of deductible to the claim severity. More specifically, the estimated coefficient for log(Coverage) in SEM3 is negative so that the expected severity decreases as the log(Coverage) increases in SEM3, which is not intuitive in non-life insurance.
@@ -979,7 +979,7 @@ $r$ & 0.9096 & 0.0704 & 1.6683 & 0.1863 & 1.8500 & 0.2163\\
 \label{tab:MFreq_LGPIF}
 \end{table}
 
-Table \ref{tab:FreqmarginalGOF} showcases the actual and expected values of censored and truncated frequencies using the estimated regression coefficients from FEM1 and FEM2. FEM1 and FEM2 provide a comparable level of goodness-of-fit for $N^*$ and $N$ respectively. \rev{The column ``Truncated--FEM1'' reports the expected truncated frequencies implied by FEM1 under the exogeneity assumption, i.e., obtained from $N|D=d;\bm{x}\sim\mathcal{NB}(r, p(d;\bm{x})\exp(\bm{x}\beta_N)/r)$ with $\beta_N$ and $r$ estimated from the complete data by FEM1 and $p(d;\bm{x})$ computed from SEM1. If the deductible were exogenous, this thinned distribution would be the correct distribution of $N$ by \eqref{eq:fg}, and the fit should be as good as that of FEM1 to $N^*$. Instead, the expected counts are markedly too low for $N\ge 1$ ($\chi^2$ statistic of 83.71 versus 11.19 for $N^*$), whereas FEM2, which is fitted directly to the truncated frequencies, fits well (12.67). Since FEM1 fits $N^*$ well, this lack of fit is not attributable to the negative binomial specification itself; rather, it indicates that the thinning under exogeneity (with $p(d;\bm{x})$ computed from the marginal severity distribution) does not reproduce the observed truncated frequencies, which is consistent with the discrepancy between the FEM1 and FEM2 estimates in Table~\ref{tab:MFreq_LGPIF}. We acknowledge that such a lack of fit could also arise from other sources of misspecification (for instance, in the severity model used to compute $p(d;\bm{x})$); it does not prove endogeneity by itself, but together with the coefficient discrepancies it casts doubt on the exogeneity assumption and motivates the joint frequency models below, whose fit is examined in Table~\ref{tab:Freqcopula}.}
+Table \ref{tab:FreqmarginalGOF} showcases the actual and expected values of censored and truncated frequencies using the estimated regression coefficients from FEM1 and FEM2. FEM1 and FEM2 provide a comparable level of goodness-of-fit for $N$ and $N^*$ respectively. \rev{The column ``Truncated--FEM1'' reports the expected truncated frequencies implied by FEM1 under the exogeneity assumption, i.e., obtained from $N^*|D=d;\bm{x}\sim\mathcal{NB}(r, p(d;\bm{x})\exp(\bm{x}\beta_N)/r)$ with $\beta_N$ and $r$ estimated from the complete data by FEM1 and $p(d;\bm{x})$ computed from SEM1. If the deductible were exogenous, this thinned distribution would be the correct distribution of $N^*$ by \eqref{eq:fg}, and the fit should be as good as that of FEM1 to $N$. Instead, the expected counts are markedly too low for $N^*\ge 1$ ($\chi^2$ statistic of 83.71 versus 11.19 for $N$), whereas FEM2, which is fitted directly to the truncated frequencies, fits well (12.67). Since FEM1 fits $N$ well, this lack of fit is not attributable to the negative binomial specification itself; rather, it indicates that the thinning under exogeneity (with $p(d;\bm{x})$ computed from the marginal severity distribution) does not reproduce the observed truncated frequencies, which is consistent with the discrepancy between the FEM1 and FEM2 estimates in Table~\ref{tab:MFreq_LGPIF}. We acknowledge that such a lack of fit could also arise from other sources of misspecification (for instance, in the severity model used to compute $p(d;\bm{x})$); it does not prove endogeneity by itself, but together with the coefficient discrepancies it casts doubt on the exogeneity assumption and motivates the joint frequency models below, whose fit is examined in Table~\ref{tab:Freqcopula}.}
 
 \begin{table}[!h]
 \centering
@@ -1012,7 +1012,7 @@ $\chi^2$--stat & 0.00 & 11.19 & 0.00 & 83.71 & 12.67\\
 
 \subsection{Joint copula modeling with the deductible's endogeneity}\label{sec:jointcopula}
 
-At this stage, we fitted \rev{nine bivariate copula families (Gaussian, Student's $t$, Clayton, Gumbel, Frank, Joe, and the survival versions of the Clayton, Gumbel and Joe copulas)} for $C_{DN},C_{DY}$ to model the pair $(D, N^*),(D, Y^*)$. Since we take the sequential estimation procedure (parameters of the marginal model for $D$ is estimated first and fixed thereafter), we compared the AICs and BICs corresponding to the model fitted to $N^*|D, Y^*|D$ via copulas in the Appendix (Tables \ref{tab:fcmcopula}--~\ref{tab:sdmcopula}). \rev{For each of the ten joint models, the copula family with the lowest AIC is retained. For the severity, the selected families are the survival Clayton (SCM1), survival Gumbel (SCM2) and Student's $t$ (SCM3) copulas when the deductible is treated as continuous, and the Student's $t$ (SDM1), survival Gumbel (SDM2) and Student's $t$ (SDM3) copulas when it is treated as discrete; for the frequency, the Student's $t$ copula is selected for all four joint models (FCM1, FCM2, FDM1 and FDM2). In several cases the AIC difference between the two leading families is small (for instance, 1.5 between the survival Gumbel and Clayton copulas for SDM2, and 1.0 between the Student's $t$ and Gaussian copulas for FDM2), so that the choice among the leading families is not critical. On the other hand, the one-parameter Archimedean families, which accommodate positive dependence only, are clearly rejected for the frequency, for which the dependence with the deductible turns out to be negative.}
+At this stage, we fitted \rev{nine bivariate copula families (Gaussian, Student's $t$, Clayton, Gumbel, Frank, Joe, and the survival versions of the Clayton, Gumbel and Joe copulas)} for $C_{DN},C_{DY}$ to model the pair $(D, N),(D, Y)$. Since we take the sequential estimation procedure (parameters of the marginal model for $D$ is estimated first and fixed thereafter), we compared the AICs and BICs corresponding to the model fitted to $N|D, Y|D$ via copulas in the Appendix (Tables \ref{tab:fcmcopula}--~\ref{tab:sdmcopula}). \rev{For each of the ten joint models, the copula family with the lowest AIC is retained. For the severity, the selected families are the survival Clayton (SCM1), survival Gumbel (SCM2) and Student's $t$ (SCM3) copulas when the deductible is treated as continuous, and the Student's $t$ (SDM1), survival Gumbel (SDM2) and Student's $t$ (SDM3) copulas when it is treated as discrete; for the frequency, the Student's $t$ copula is selected for all four joint models (FCM1, FCM2, FDM1 and FDM2). In several cases the AIC difference between the two leading families is small (for instance, 1.5 between the survival Gumbel and Clayton copulas for SDM2, and 1.0 between the Student's $t$ and Gaussian copulas for FDM2), so that the choice among the leading families is not critical. On the other hand, the one-parameter Archimedean families, which accommodate positive dependence only, are clearly rejected for the frequency, for which the dependence with the deductible turns out to be negative.}
 
 \rev{Table~\ref{tab:Sevcopularesult} shows the estimation results of the joint severity models. One can find that the estimate of log(Coverage) from all joint models is positive, being more intuitive and consistent than the result of the marginal model SEM3 under the exogeneity assumption; in the joint models fitted to the censored and truncated data (SCM2, SCM3, SDM2 and SDM3), the coefficient of log(Coverage) is moreover significantly positive. The estimated Kendall's $\tau_Y$ is positive and significant in all six models, which indicates that, given the rating variables, policyholders with larger ground-up losses tend to hold higher deductibles, in line with the findings of \citet{shi2022copula}; the estimated dependence is stronger when it is estimated from the censored or truncated data ($\hat{\tau}_Y$ between 0.21 and 0.33) than from the complete data (0.08 and 0.11). The estimated entity-type effects, however, differ noticeably between the complete-data model and the incomplete-data models when the deductible is treated as continuous (for instance, the TypeCity effect is $-0.07$ in SCM1 but $-0.99$ in SCM2 and SCM3), whereas they are more stable across SDM1, SDM2 and SDM3; we come back to this point in Section~\ref{sec:outofsample}. We also note that under censored reporting the lower tail of the ground-up loss distribution, which is governed by the GB2 parameter $\alpha_1$, is not observed, so that $\alpha_1$ is only weakly identified in SEM2, SCM2 and SDM2. In SDM2, the estimate of $\alpha_1$ drifts to a very large value with a correspondingly large standard error; this reflects the lack of identification of the lower tail rather than a feature of the data (as $\alpha_1\to\infty$ the GB2 distribution approaches a generalized gamma distribution), and the remaining parameters of SDM2 are estimated with a precision comparable to that of the other models. Finally, the sandwich standard errors in Table~\ref{tab:Sevcopularesult} exceed the stage-wise standard errors that treat the deductible model as known by 25--65\% for log(Coverage) and by 15--130\% for $\tau_Y$ (the largest increases being for SCM1 and SDM1), whereas they are of similar size for the entity-type effects: the dependence parameter is the quantity most affected by the sampling variability of $F_D(d;\bm{x})$, which enters the copula, and its precision would be overstated by the stage-wise standard errors.}
 
@@ -1045,7 +1045,7 @@ $\nu_Y$ &  &  &  &  & 10.6665 & 2.7556 & 6.6426 & 2.2289 &  &  & 7.7173 & 2.1779
 \label{tab:Sevcopularesult}
 \end{table}
 
-In Figure~\ref{qq_sev_copula}, the QQ-plots of \rev{the ground-up losses $Y^*$} under SCM1/2/3 and SDM1/2/3 are drawn\rev{, using the conditional distribution functions $F_{Y^*|D}(y^*|d;\bm{x})$ of \eqref{eq:SCM} and \eqref{eq:SDM}}. One can \rev{observe} that
+In Figure~\ref{qq_sev_copula}, the QQ-plots of \rev{the ground-up losses $Y$} under SCM1/2/3 and SDM1/2/3 are drawn\rev{, using the conditional distribution functions $F_{Y|D}(y|d;\bm{x})$ of \eqref{eq:SCM} and \eqref{eq:SDM}}. One can \rev{observe} that
 \begin{itemize}
 \item \rev{SCM1 and SDM1 fit the ground-up losses well over the whole range of the distribution.}
 \item Goodness-of-fits of SCM2/SDM2 are improved compared to that of SEM2, in the sense that they cover most of the body parts of the diagonal after the endogenous deductible is considered\rev{, while the lower tail, which corresponds to the losses below the deductible that are censored, remains poorly captured}.
@@ -1089,8 +1089,8 @@ $\nu_N$ & 11.7642 & 4.0471 & 13.8685 & 6.0418 & 6.8592 & 1.8559 & 12.0597 & 7.50
 \label{tab:freqcopularesult}
 \end{table}
 
-Table~\ref{tab:Freqcopula} showcases the actual and expected values of $N^*|D$ and $N|D$ using the estimated regression
-coefficients from frequency models with endogenous deductible\rev{; as in Table~\ref{tab:FreqmarginalGOF}, the truncated frequencies implied by the complete-data models (FEM1, FCM1 and FDM1) are obtained by thinning the fitted distribution of $N^*|D$ with $p(d;\bm{x})$ computed from the corresponding complete-data severity model (SEM1, SCM1 and SDM1), whereas FEM2, FCM2 and FDM2 are fitted directly to the truncated frequencies. For the complete frequency, FEM1, FCM1 and FDM1 provide comparable fits ($\chi^2$ statistics of 11.19, 12.78 and 10.88). For the truncated frequency, the thinned complete-data joint models improve on the exogenous thinning of FEM1 (26.13 and 19.28 versus 83.71) but still underpredict the positive counts, whereas the joint models fitted to the truncated data, FCM2 and FDM2, provide the best fits of all models (8.98 and 8.05), better than the marginal model FEM2 (12.67). Together with Table~\ref{tab:freqcopularesult}, this shows that the joint models with truncated data reproduce both the observed truncated counts and the risk classification of the complete data.}
+Table~\ref{tab:Freqcopula} showcases the actual and expected values of $N|D$ and $N^*|D$ using the estimated regression
+coefficients from frequency models with endogenous deductible\rev{; as in Table~\ref{tab:FreqmarginalGOF}, the truncated frequencies implied by the complete-data models (FEM1, FCM1 and FDM1) are obtained by thinning the fitted distribution of $N|D$ with $p(d;\bm{x})$ computed from the corresponding complete-data severity model (SEM1, SCM1 and SDM1), whereas FEM2, FCM2 and FDM2 are fitted directly to the truncated frequencies. For the complete frequency, FEM1, FCM1 and FDM1 provide comparable fits ($\chi^2$ statistics of 11.19, 12.78 and 10.88). For the truncated frequency, the thinned complete-data joint models improve on the exogenous thinning of FEM1 (26.13 and 19.28 versus 83.71) but still underpredict the positive counts, whereas the joint models fitted to the truncated data, FCM2 and FDM2, provide the best fits of all models (8.98 and 8.05), better than the marginal model FEM2 (12.67). Together with Table~\ref{tab:freqcopularesult}, this shows that the joint models with truncated data reproduce both the observed truncated counts and the risk classification of the complete data.}
 \begin{table}[h!]
 \centering
 \color{blue}
@@ -1148,12 +1148,12 @@ Coverage & 38.818 & 86.792\\
 To assess the quality of frequency models, we used the following validation measures:
 $$
 \begin{aligned}
-\text{RMSE}&: \sqrt{\frac{1}{I}\sum_{i=1}^I (N_{i}-\hat{N}_i)^2}, \\
-\text{NB deviance}&: \rev{\sum_{i=1}^{I} d(N_i, \hat{N}_i), \qquad d(N,\nu)=2\left\{\ell(N;N)-\ell(N;\nu)\right\},} \\
+\text{RMSE}&: \sqrt{\frac{1}{I}\sum_{i=1}^I (N^*_{i}-\hat{N}^*_i)^2}, \\
+\text{NB deviance}&: \rev{\sum_{i=1}^{I} d(N^*_i, \hat{N}^*_i), \qquad d(N^*,\nu)=2\left\{\ell(N^*;N^*)-\ell(N^*;\nu)\right\},} \\
 \end{aligned}
 $$
-where $I$ is the total number of observations in the out-of-sample validation set and $d(N, \nu)$ is \rev{the} unit deviance of a negative binomial distribution between actual frequency $N$ and predicted frequency $\nu$\rev{, with $\ell(N;\nu)$ denoting the negative binomial log-likelihood of the observation $N$ with mean $\nu$ (and the estimated dispersion parameter $r$)}. For simplicity, we compared the prediction performance of FEM/FCM1/FDM1 and FEM/FCM/FDM2 to predict $N^*|D$ and $N|D$. It is straightforward to observe that the endogenous models with discrete deductible outperform their benchmarks as shown in Table~\ref{tab:Freqoutofsample}.%Predicted values of the copula models were obtained via a simulation machine as in Algorithm 1 of \citet{shi2022copula}.
-%\authnote{The NB deviance was originally written as $2\sum d(N_i,N_i)-2\sum d(N_i,\hat N_i)$, which double counts the factor 2 and the saturated term if $d(\cdot,\cdot)$ is the unit deviance; we rewrote it in the standard form. Please check that this matches the quantity actually computed in Table~\ref{tab:Freqoutofsample}.}
+where $I$ is the total number of observations in the out-of-sample validation set and $d(N^*, \nu)$ is \rev{the} unit deviance of a negative binomial distribution between actual frequency $N^*$ and predicted frequency $\nu$\rev{, with $\ell(N^*;\nu)$ denoting the negative binomial log-likelihood of the observation $N^*$ with mean $\nu$ (and the estimated dispersion parameter $r$)}. For simplicity, we compared the prediction performance of FEM/FCM1/FDM1 and FEM/FCM/FDM2 to predict $N|D$ and $N^*|D$. It is straightforward to observe that the endogenous models with discrete deductible outperform their benchmarks as shown in Table~\ref{tab:Freqoutofsample}.%Predicted values of the copula models were obtained via a simulation machine as in Algorithm 1 of \citet{shi2022copula}.
+%\authnote{The NB deviance was originally written as $2\sum d(N^*_i,N^*_i)-2\sum d(N^*_i,\hat N^*_i)$, which double counts the factor 2 and the saturated term if $d(\cdot,\cdot)$ is the unit deviance; we rewrote it in the standard form. Please check that this matches the quantity actually computed in Table~\ref{tab:Freqoutofsample}.}
 
 \begin{table}[!h]
 \centering
@@ -1175,14 +1175,14 @@ where $I$ is the total number of observations in the out-of-sample validation se
 
 %Question: Why the estimated signs $\rho_N$ are different from the cases with continous and discrete deductibles? I found that when I found the initial estimates of $\rho_N$ via IFM method, the same trend is observed. (initial estimate of $\rho_N$ is positive/negative when discrete/continuous deductible is used)
 
-For the severity models, \rev{we assess the prediction of the individual claim amounts in the validation set. For each policy in the validation set, the predicted claim amount $\hat{Y}_i$ is the expected payment implied by the fitted severity model given the policy's deductible and rating variables, i.e., ${\rm E}[(Y^*-d_i)_+|D=d_i;\bm{x}_i]$ under censored reporting and ${\rm E}[Y^*-d_i|Y^*>d_i,D=d_i;\bm{x}_i]$ under truncated reporting, and the observed claim amounts in 2010 are censored or truncated by each policy's deductible in the same way as the training data.} RMSE of severity model can be written as
+For the severity models, \rev{we assess the prediction of the individual claim amounts in the validation set. For each policy in the validation set, the predicted claim amount $\hat{Y}^*_i$ is the expected payment implied by the fitted severity model given the policy's deductible and rating variables, i.e., ${\rm E}[(Y-d_i)_+|D=d_i;\bm{x}_i]$ under censored reporting and ${\rm E}[Y-d_i|Y>d_i,D=d_i;\bm{x}_i]$ under truncated reporting, and the observed claim amounts in 2010 are censored or truncated by each policy's deductible in the same way as the training data.} RMSE of severity model can be written as
 $$
 \begin{aligned}
-\text{RMSE}&: \sqrt{\frac{1}{S}\sum_{i=1}^{S} (Y_{i}-\hat{Y}_i)^2}, \\
+\text{RMSE}&: \sqrt{\frac{1}{S}\sum_{i=1}^{S} (Y^*_{i}-\hat{Y}^*_i)^2}, \\
 \end{aligned}
 $$
-where $S$ is the total number of \rev{claim} observations under censored reporting and truncated reporting\rev{, and $Y_i$ and $\hat Y_i$ are measured on the logarithmic scale}.
-\authnote{Reviewer 2 (comment 7) raised three issues here that we could not resolve from the manuscript alone: (a) the text said ``we considered the policy's aggregate loss'' but the RMSE is claim-level; (b) ``After generating ground-up losses with the frequency $\hat N_i$'' suggested a simulation step that is not described; (c) the RMSEs in Table~\ref{tab:Sevoutofsample} (0.47--0.54) are far too small for dollar amounts with mean around \$19,000. We rewrote the paragraph assuming that (i) the RMSE is computed at the claim level from the model-implied expected payment, and (ii) $Y_i$ and $\hat Y_i$ are on the log scale. Please correct this description if the predictions were instead obtained by simulation (in which case the simulation algorithm, e.g., Algorithm 1 of Shi and Lee (2022), and the number of replications should be described), and state the actual scale of the RMSE (log-dollars, dollars in thousands, etc.). The row ``Log-likelihood'' in Table~\ref{tab:Sevoutofsample} should also be described (out-of-sample predictive log-likelihood of the 2010 claims?).}
+where $S$ is the total number of \rev{claim} observations under censored reporting and truncated reporting\rev{, and $Y^*_i$ and $\hat Y^*_i$ are measured on the logarithmic scale}.
+\authnote{Reviewer 2 (comment 7) raised three issues here that we could not resolve from the manuscript alone: (a) the text said ``we considered the policy's aggregate loss'' but the RMSE is claim-level; (b) ``After generating ground-up losses with the frequency $\hat N^*_i$'' suggested a simulation step that is not described; (c) the RMSEs in Table~\ref{tab:Sevoutofsample} (0.47--0.54) are far too small for dollar amounts with mean around \$19,000. We rewrote the paragraph assuming that (i) the RMSE is computed at the claim level from the model-implied expected payment, and (ii) $Y^*_i$ and $\hat Y^*_i$ are on the log scale. Please correct this description if the predictions were instead obtained by simulation (in which case the simulation algorithm, e.g., Algorithm 1 of Shi and Lee (2022), and the number of replications should be described), and state the actual scale of the RMSE (log-dollars, dollars in thousands, etc.). The row ``Log-likelihood'' in Table~\ref{tab:Sevoutofsample} should also be described (out-of-sample predictive log-likelihood of the 2010 claims?).}
 
 Table~\ref{tab:Sevoutofsample} provides RMSEs of severity from each model. For the ground-up loss prediction, both exogenous and endogenous models have similar performance \rev{under the} full\rev{ }reporting scenario. The joint copula models show better prediction under the censored scenario while the models with truncated data seem to suffer from the prediction. However, when we compare the actual payout of the insurers, the endogenous models under both censored (SCM2 and SDM2) and truncated (SCM3 and SDM3) scenarios outperform the exogenous models (SEM2 and SEM3, respectively) consistently in case ground-up loss amounts are not available so that SEM1/SCM1/SDM1 are not able to be used.
 
@@ -1215,23 +1215,23 @@ Tables~\ref{tab:Freqoutofsample} and \ref{tab:Sevoutofsample} show that, under i
 Lastly, we identify each premium under two reporting scenarios and various models.
 There are four types of premium with exogenous models:
     \begin{itemize}
-	\item \textbf{Exogenous Ratemaking in censored reporting (XR1)}: It uses ${\rm E}(N^*|D=d;\bm{x})$ in FEM1 and ${\rm E}(\{Y^*-d\}_+\ |\ D=d;\bm{x})$ in SEM1.
-    \item \textbf{Exogenous Ratemaking in censored reporting (XR2)}: It uses ${\rm E}(N^*|D=d;\bm{x})$ in FEM1 and ${\rm E}(\{Y^*-d\}_+\ |\ D=d;\bm{x})$ in SEM2.
-    \item \textbf{Exogenous Ratemaking in truncated reporting (XR3)}: It uses ${\rm E}(N|D=d;\bm{x})$ in FEM2 and ${\rm E}(Y^*-d\ |\ Y^*>d,\ D=d;\bm{x})$ in SEM3.
+	\item \textbf{Exogenous Ratemaking in censored reporting (XR1)}: It uses ${\rm E}(N|D=d;\bm{x})$ in FEM1 and ${\rm E}(\{Y-d\}_+\ |\ D=d;\bm{x})$ in SEM1.
+    \item \textbf{Exogenous Ratemaking in censored reporting (XR2)}: It uses ${\rm E}(N|D=d;\bm{x})$ in FEM1 and ${\rm E}(\{Y-d\}_+\ |\ D=d;\bm{x})$ in SEM2.
+    \item \textbf{Exogenous Ratemaking in truncated reporting (XR3)}: It uses ${\rm E}(N^*|D=d;\bm{x})$ in FEM2 and ${\rm E}(Y-d\ |\ Y>d,\ D=d;\bm{x})$ in SEM3.
 \end{itemize}
 Likewsie, there are eight types of premium with endogenous models depending on the type of $D$. If $D$ is a continuous variable,
 \begin{itemize}
-	\item \textbf{Endogenous Ratemaking in censored reporting (NRC1)}: It uses ${\rm E}(N^*|D=d;\bm{x})$ in FCM1 and ${\rm E}(\{Y^*-d\}_+\ |\ D=d;\bm{x})$ in SCM1.
-    \item \textbf{Endogenous Ratemaking in censored reporting (NRC2)}: It uses ${\rm E}(N^*|D=d;\bm{x})$ in FCM1 and ${\rm E}(\{Y^*-d\}_+\ |\ D=d;\bm{x})$ in SCM2.
-    \item \textbf{Endogenous Ratemaking in truncated reporting (NRC3)}: It uses ${\rm E}(N|D=d;\bm{x})$ in FCM1 and ${\rm E}(Y^*-d\ |\ Y^*>d,\ D=d;\bm{x})$ in SCM1.
-    \item \textbf{Endogenous Ratemaking in truncated reporting (NRC4)}: It uses ${\rm E}(N|D=d;\bm{x})$ in FCM2 and ${\rm E}(Y^*-d\ |\ Y^*>d,\ D=d;\bm{x})$ in SCM3.
+	\item \textbf{Endogenous Ratemaking in censored reporting (NRC1)}: It uses ${\rm E}(N|D=d;\bm{x})$ in FCM1 and ${\rm E}(\{Y-d\}_+\ |\ D=d;\bm{x})$ in SCM1.
+    \item \textbf{Endogenous Ratemaking in censored reporting (NRC2)}: It uses ${\rm E}(N|D=d;\bm{x})$ in FCM1 and ${\rm E}(\{Y-d\}_+\ |\ D=d;\bm{x})$ in SCM2.
+    \item \textbf{Endogenous Ratemaking in truncated reporting (NRC3)}: It uses ${\rm E}(N^*|D=d;\bm{x})$ in FCM1 and ${\rm E}(Y-d\ |\ Y>d,\ D=d;\bm{x})$ in SCM1.
+    \item \textbf{Endogenous Ratemaking in truncated reporting (NRC4)}: It uses ${\rm E}(N^*|D=d;\bm{x})$ in FCM2 and ${\rm E}(Y-d\ |\ Y>d,\ D=d;\bm{x})$ in SCM3.
 \end{itemize}
 If $D$ is a discrete variable,
 \begin{itemize}
-	\item \textbf{Endogenous Ratemaking in censored reporting (NRD1)}: It uses ${\rm E}(N^*|D=d;\bm{x})$ in FDM1 and ${\rm E}(\{Y^*-d\}_+\ |\ D=d;\bm{x})$ in SDM1.
-    \item \textbf{Endogenous Ratemaking in censored reporting (NRD2)}: It uses ${\rm E}(N^*|D=d;\bm{x})$ in FDM1 and ${\rm E}(\{Y^*-d\}_+\ |\ D=d;\bm{x})$ in SDM2.
-    \item \textbf{Endogenous Ratemaking in truncated reporting (NRD3)}: It uses ${\rm E}(N|D=d;\bm{x})$ in FDM1 and ${\rm E}(Y^*-d\ |\ Y^*>d,\ D=d;\bm{x})$ in SDM1.
-    \item \textbf{Endogenous Ratemaking in truncated reporting (NRD4)}: It uses ${\rm E}(N|D=d;\bm{x})$ in FDM2 and ${\rm E}(Y^*-d\ |\ Y^*>d,\ D=d;\bm{x})$ in SDM3.
+	\item \textbf{Endogenous Ratemaking in censored reporting (NRD1)}: It uses ${\rm E}(N|D=d;\bm{x})$ in FDM1 and ${\rm E}(\{Y-d\}_+\ |\ D=d;\bm{x})$ in SDM1.
+    \item \textbf{Endogenous Ratemaking in censored reporting (NRD2)}: It uses ${\rm E}(N|D=d;\bm{x})$ in FDM1 and ${\rm E}(\{Y-d\}_+\ |\ D=d;\bm{x})$ in SDM2.
+    \item \textbf{Endogenous Ratemaking in truncated reporting (NRD3)}: It uses ${\rm E}(N^*|D=d;\bm{x})$ in FDM1 and ${\rm E}(Y-d\ |\ Y>d,\ D=d;\bm{x})$ in SDM1.
+    \item \textbf{Endogenous Ratemaking in truncated reporting (NRD4)}: It uses ${\rm E}(N^*|D=d;\bm{x})$ in FDM2 and ${\rm E}(Y-d\ |\ Y>d,\ D=d;\bm{x})$ in SDM3.
 \end{itemize}
 
 
@@ -1293,25 +1293,25 @@ In this article, we explored a framework to consider possible dependence between
 
 \subsection*{Marginal Severity model selection via in-sample estimation}
 
-For the severity component $Y^*$, we consider various distributions in the generalized beta of the second kind (GB2) family and the generalized gamma (GG) family. The density function of GB2 distribution is given as follows:
+For the severity component $Y$, we consider various distributions in the generalized beta of the second kind (GB2) family and the generalized gamma (GG) family. The density function of GB2 distribution is given as follows:
 $$
-f_{Y^*}(y)={\frac {\exp(\alpha_1 z)}{y |\sigma| B(\alpha_1,\alpha_2)[1+\exp(z)]^{\alpha_1+\alpha_2}}},
+f_{Y}(y)={\frac {\exp(\alpha_1 z)}{y |\sigma| B(\alpha_1,\alpha_2)[1+\exp(z)]^{\alpha_1+\alpha_2}}},
 $$
-where  $z=\frac{\log y - \mu}{\sigma}$ so that $\mathbb{E}[Y^*]=\exp(\mu) \frac{B(\alpha_1+\sigma, \alpha_2-\sigma)}{B(\alpha_1, \alpha_2)}$, which exists provided $\alpha_2>\sigma>0$. Note that this parametrization is equivalent to the parametrization of GB2 distribution in the Appendix A of \citet{Klugman2012}, where $\alpha=\alpha_2$, $\theta= \exp(\mu)$, $\gamma=\alpha_1$, and $\tau=1/\sigma$. 
+where  $z=\frac{\log y - \mu}{\sigma}$ so that $\mathbb{E}[Y]=\exp(\mu) \frac{B(\alpha_1+\sigma, \alpha_2-\sigma)}{B(\alpha_1, \alpha_2)}$, which exists provided $\alpha_2>\sigma>0$. Note that this parametrization is equivalent to the parametrization of GB2 distribution in the Appendix A of \citet{Klugman2012}, where $\alpha=\alpha_2$, $\theta= \exp(\mu)$, $\gamma=\alpha_1$, and $\tau=1/\sigma$. 
 
 There are several distributions that are special cases of GB2 distribution as follows:
 \begin{itemize}
-	\item Generalized Pareto (GP): $\sigma=1$, $\mathbb{E}[Y^*]$ exists provided $\alpha_2>1$.
-	\item Burr: $\alpha_1=1$, $\mathbb{E}[Y^*]$ exists provided $\alpha_2>\sigma >0$.
-	\item Inverse Burr: $\alpha_2=1$, $\mathbb{E}[Y^*]$ exists provided $1>\sigma >0$.
-	\item Pareto: $\sigma=\alpha_1=1$, $\mathbb{E}[Y^*]$ exists provided $\alpha_2>1$.
-	\item Inverse Pareto: $\sigma=\alpha_2=1$, $\mathbb{E}[Y^*]$ does not exist.
-	\item Loglogistic: $\alpha_1=\alpha_2=1$, $\mathbb{E}[Y^*]$ exists provided $1>\sigma >0$.
+	\item Generalized Pareto (GP): $\sigma=1$, $\mathbb{E}[Y]$ exists provided $\alpha_2>1$.
+	\item Burr: $\alpha_1=1$, $\mathbb{E}[Y]$ exists provided $\alpha_2>\sigma >0$.
+	\item Inverse Burr: $\alpha_2=1$, $\mathbb{E}[Y]$ exists provided $1>\sigma >0$.
+	\item Pareto: $\sigma=\alpha_1=1$, $\mathbb{E}[Y]$ exists provided $\alpha_2>1$.
+	\item Inverse Pareto: $\sigma=\alpha_2=1$, $\mathbb{E}[Y]$ does not exist.
+	\item Loglogistic: $\alpha_1=\alpha_2=1$, $\mathbb{E}[Y]$ exists provided $1>\sigma >0$.
 \end{itemize}
 
 The density function of GG distribution is given as follows:
 $$
-f_{Y^*}(y)={\frac  {\sigma/\theta^{\alpha}}{\Gamma (\alpha/\sigma)}}y^{{\alpha-1}}e^{{-(y/\theta)^{\sigma}}}.
+f_{Y}(y)={\frac  {\sigma/\theta^{\alpha}}{\Gamma (\alpha/\sigma)}}y^{{\alpha-1}}e^{{-(y/\theta)^{\sigma}}}.
 $$
 It is known that gamma and Weibull distributions that are special cases of GG distribution where $\sigma=1$ and $\alpha=1$, respectively.
 
